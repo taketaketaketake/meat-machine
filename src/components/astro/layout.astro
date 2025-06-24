@@ -1,0 +1,156 @@
+---
+// src/components/astro/Layout.astro
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noIndex?: boolean;
+  class?: string;
+}
+
+const {
+  title = "Meat - AI Content Platform",
+  description = "Discover, create, and share the future of AI-generated content. Where human creativity meets artificial intelligence.",
+  image = "/images/og-image.jpg",
+  noIndex = false,
+  class: className = "",
+} = Astro.props;
+
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : new URL(Astro.url.pathname, 'http://localhost:4321');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={Astro.site ? new URL(image, Astro.site) : image} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={Astro.site ? new URL(image, Astro.site) : image} />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/images/hero-bg.jpg" as="image" />
+  </head>
+  
+  <body class={`min-h-screen bg-gray-950 ${className}`}>
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-xl border-b border-gray-800/50">
+      <nav class="container mx-auto px-6">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <a 
+              href="/" 
+              class="text-2xl font-black text-white hover:text-pink-400 transition-colors duration-300"
+              aria-label="Meat - Home"
+            >
+              MEAT
+            </a>
+          </div>
+          
+          <!-- Search Bar -->
+          <div class="flex-1 max-w-md mx-8">
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="search"
+                placeholder="Search creations..."
+                class="block w-full pl-10 pr-4 py-2 bg-gray-900/50 border border-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
+              />
+            </div>
+          </div>
+          
+          <!-- Profile Icon -->
+          <div class="flex items-center">
+            <button 
+              type="button"
+              class="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center hover:from-pink-400 hover:to-pink-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-950"
+              aria-label="Profile menu"
+            >
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="flex-1">
+      <slot />
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 border-t border-gray-800/50 mt-24">
+      <div class="container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="col-span-1 md:col-span-2">
+            <h3 class="text-2xl font-black text-white mb-4">MEAT</h3>
+            <p class="text-gray-400 mb-6 max-w-md leading-relaxed">
+              A curated gallery for AI-generated art. Where human creativity meets artificial intelligence in a space designed for contemplation and discovery.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-4">Explore</h4>
+            <ul class="space-y-3">
+              <li><a href="/discover" class="text-gray-400 hover:text-pink-400 transition-colors duration-200">Discover</a></li>
+              <li><a href="/create" class="text-gray-400 hover:text-pink-400 transition-colors duration-200">Create</a></li>
+              <li><a href="/collections" class="text-gray-400 hover:text-pink-400 transition-colors duration-200">Collections</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-4">Support</h4>
+            <ul class="space-y-3">
+              <li><a href="/help" class="text-gray-400 hover:text-pink-400 transition-colors duration-200">Help</a></li>
+              <li><a href="/contact" class="text-gray-400 hover:text-pink-400 transition-colors duration-200">Contact</a></li>
+              <li><a href="/privacy" class="text-gray-400 hover:text-pink-400 transition-colors duration-200">Privacy</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="border-t border-gray-800/50 mt-8 pt-8 text-center">
+          <p class="text-gray-500 text-sm">© 2025 Meat. A space for AI creativity.</p>
+        </div>
+      </div>
+    </footer>
+    
+    <!-- Remove mobile menu script since we simplified the nav -->
+  </body>
+  </body>
+</html>

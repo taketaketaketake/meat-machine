@@ -1,16 +1,329 @@
 ---
-
+// src/pages/index.astro
+import Layout from '../components/astro/layout.astro';
+import '../styles/global.css';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout 
+  title="Meat - AI Content Platform" 
+  description="A warm, visual community for AI-generated content. Discover amazing creations made with your favorite AI tools."
+>
+  <!-- Welcome Section (compact) -->
+  <section class="py-12 border-b border-gray-800">
+    <div class="container">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+          Welcome to <span class="text-gradient-pink">Meat</span>
+        </h1>
+        <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+          The cozy corner of the internet for AI-generated awesomeness ✨
+        </p>
+      </div>
+      
+      <!-- Simple Feed Controls -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-8">
+        <button class="px-4 py-2 bg-pink-500 text-white rounded-lg font-medium">🔥 Trending</button>
+        <button class="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600">🆕 Fresh</button>
+        <button class="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg font-medium hover:bg-gray-600">❤️ Following</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- YouTube-Style Content Gallery -->
+  <section class="py-8">
+    <div class="container">
+      <h2 class="text-2xl font-bold text-white mb-6">Trending AI Creations</h2>
+      
+      <!-- YouTube-style Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        
+        <!-- Video-style Card 1 -->
+        <div class="bg-gray-900/50 rounded-xl overflow-hidden hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+          <!-- Thumbnail -->
+          <div class="aspect-video bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">🎨</div>
+              <div class="text-sm font-medium">Cyberpunk Dreams</div>
+            </div>
+            <!-- Play button overlay -->
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl">▶</span>
+              </div>
+            </div>
+            <!-- Duration badge -->
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              3:42
+            </div>
+          </div>
+          
+          <!-- Video Info -->
+          <div class="p-4">
+            <h3 class="text-white font-semibold mb-2 line-clamp-2">
+              Amazing Cyberpunk Cityscape - Made with Midjourney
+            </h3>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                A
+              </div>
+              <div>
+                <div class="text-gray-300 text-sm font-medium">@AIArtist_42</div>
+                <div class="text-gray-400 text-xs">1.2K views • 2 hours ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video-style Card 2 -->
+        <div class="bg-gray-900/50 rounded-xl overflow-hidden hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+          <div class="aspect-video bg-gradient-to-br from-emerald-600/30 to-blue-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">🎵</div>
+              <div class="text-sm font-medium">Lofi Study Beats</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl">▶</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              2:15
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-white font-semibold mb-2 line-clamp-2">
+              Perfect Lofi Track for Coding Sessions
+            </h3>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                M
+              </div>
+              <div>
+                <div class="text-gray-300 text-sm font-medium">@MusicMaker_AI</div>
+                <div class="text-gray-400 text-xs">892 views • 4 hours ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video-style Card 3 -->
+        <div class="bg-gray-900/50 rounded-xl overflow-hidden hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+          <div class="aspect-video bg-gradient-to-br from-red-600/30 to-orange-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">🎬</div>
+              <div class="text-sm font-medium">Morphing Landscapes</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl">▶</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              0:47
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-white font-semibold mb-2 line-clamp-2">
+              Mind-Bending AI Video - Nature Flows Like Dreams
+            </h3>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                V
+              </div>
+              <div>
+                <div class="text-gray-300 text-sm font-medium">@VideoMage_99</div>
+                <div class="text-gray-400 text-xs">2.1K views • 1 day ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video-style Card 4 -->
+        <div class="bg-gray-900/50 rounded-xl overflow-hidden hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+          <div class="aspect-video bg-gradient-to-br from-blue-600/30 to-indigo-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">📖</div>
+              <div class="text-sm font-medium">The Last Algorithm</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl">📖</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              5 min read
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-white font-semibold mb-2 line-clamp-2">
+              Sci-Fi Short Story About AI Consciousness
+            </h3>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                S
+              </div>
+              <div>
+                <div class="text-gray-300 text-sm font-medium">@StoryWeaver_AI</div>
+                <div class="text-gray-400 text-xs">634 views • 3 days ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video-style Card 5 -->
+        <div class="bg-gray-900/50 rounded-xl overflow-hidden hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+          <div class="aspect-video bg-gradient-to-br from-gray-700/40 to-gray-600/40 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">💻</div>
+              <div class="text-sm font-medium">Quantum Calculator</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl">⚡</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              Code
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-white font-semibold mb-2 line-clamp-2">
+              AI Built This Quantum Physics Calculator
+            </h3>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                C
+              </div>
+              <div>
+                <div class="text-gray-300 text-sm font-medium">@CodeCrafter_AI</div>
+                <div class="text-gray-400 text-xs">456 views • 5 days ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video-style Card 6 -->
+        <div class="bg-gray-900/50 rounded-xl overflow-hidden hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+          <div class="aspect-video bg-gradient-to-br from-orange-600/30 to-pink-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">💎</div>
+              <div class="text-sm font-medium">Fractal Architecture</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl">👁</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              3D Model
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-white font-semibold mb-2 line-clamp-2">
+              Impossible Geometry Made Possible with AI
+            </h3>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                3
+              </div>
+              <div>
+                <div class="text-gray-300 text-sm font-medium">@ArchitectBot</div>
+                <div class="text-gray-400 text-xs">789 views • 1 week ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video-style Card 7 -->
+        <div class="bg-gray-900/50 rounded-xl overflow-hidden hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+          <div class="aspect-video bg-gradient-to-br from-green-600/30 to-teal-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">🤖</div>
+              <div class="text-sm font-medium">AI Chat Demo</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl">▶</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              8:12
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-white font-semibold mb-2 line-clamp-2">
+              Building a ChatBot That Actually Understands You
+            </h3>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                B
+              </div>
+              <div>
+                <div class="text-gray-300 text-sm font-medium">@BotBuilder_Pro</div>
+                <div class="text-gray-400 text-xs">3.2K views • 2 weeks ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video-style Card 8 -->
+        <div class="bg-gray-900/50 rounded-xl overflow-hidden hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+          <div class="aspect-video bg-gradient-to-br from-yellow-600/30 to-orange-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">🎭</div>
+              <div class="text-sm font-medium">Character Voices</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl">▶</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              1:23
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-white font-semibold mb-2 line-clamp-2">
+              AI Voices That Sound Like Real Characters
+            </h3>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                V
+              </div>
+              <div>
+                <div class="text-gray-300 text-sm font-medium">@VoiceAI_Magic</div>
+                <div class="text-gray-400 text-xs">912 views • 3 weeks ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Load More -->
+      <div class="text-center mt-12">
+        <button class="btn-ghost">Load More Awesome Stuff 🚀</button>
+      </div>
+    </div>
+  </section>
+</Layout>white text-sm font-medium">@ArchitectBot</div>
+            
+</div>
+            <p class="text-gray-300 text-sm mb-3">Impossible geometry made possible 🏗️</p>
+            <div class="card-actions">
+              <button class="action-btn applause">👏 789</button>
+              <button class="action-btn">💬 45</button>
+              <button class="action-btn">🔄</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Load More -->
+      <div class="text-center mt-12">
+        <button class="btn-ghost">Load More Awesome Stuff 🚀</button>
+      </div>
+    </div>
+  </section>
+</Layout>
