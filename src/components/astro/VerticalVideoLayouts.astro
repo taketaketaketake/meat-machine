@@ -1,0 +1,480 @@
+---
+// src/pages/video-layouts.astro
+import Layout from '../components/astro/layout.astro';
+import '../styles/global.css';
+---
+
+<Layout 
+  title="Video Layouts - Meat AI Platform" 
+  description="Explore different video layout options for AI-generated content on Meat platform"
+  class="bg-gray-950"
+>
+  <div class="max-w-7xl mx-auto p-8 space-y-16">
+
+    <!-- Page Header -->
+    <div class="text-center py-12">
+      <h1 class="text-4xl font-black text-white mb-4">
+        Video Layout <span class="text-gradient-pink">Showcase</span>
+      </h1>
+      <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+        Explore different ways to display AI-generated video content
+      </p>
+    </div>
+
+    <!-- Option 1: Responsive Grid Gallery -->
+    <section id="option1" class="space-y-6">
+      <div class="border-l-4 border-pink-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Responsive Grid Gallery
+        </h2>
+        <p class="text-gray-400 text-sm">4 video thumbnails in a responsive grid layout</p>
+      </div>
+      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div class="aspect-[9/16] bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-pink-500/20 transition-all duration-300 group cursor-pointer">
+            <div class="w-full h-full bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex items-center justify-center relative">
+              <div class="text-center text-gray-300">
+                <div class="text-4xl mb-2">🎬</div>
+                <div class="text-sm font-medium">AI Video {i + 1}</div>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                  <span class="text-black text-xl ml-1">▶</span>
+                </div>
+              </div>
+              <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+                {Math.floor(Math.random() * 5) + 1}:{String(Math.floor(Math.random() * 60)).padStart(2, '0')}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Option 2: Horizontal Carousel -->
+    <section id="option2" class="space-y-6">
+      <div class="border-l-4 border-emerald-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Horizontal Carousel
+        </h2>
+        <p class="text-gray-400 text-sm">Swipeable video carousel with snap scrolling</p>
+      </div>
+      <div class="flex space-x-6 overflow-x-auto px-4 snap-x snap-mandatory pb-4">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div class="flex-shrink-0 snap-start w-64 sm:w-72 md:w-80 aspect-[9/16] rounded-xl overflow-hidden shadow-lg bg-gray-900/50 hover:bg-gray-800/60 transition-all duration-300 group cursor-pointer">
+            <div class="w-full h-full bg-gradient-to-br from-emerald-600/30 to-blue-600/30 flex items-center justify-center relative">
+              <div class="text-center text-gray-300">
+                <div class="text-4xl mb-2">🌊</div>
+                <div class="text-sm font-medium">Carousel {i + 1}</div>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                  <span class="text-black text-xl ml-1">▶</span>
+                </div>
+              </div>
+              <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+                {Math.floor(Math.random() * 10) + 1}:{String(Math.floor(Math.random() * 60)).padStart(2, '0')}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Option 3: Full-Screen Stories -->
+    <section id="option3" class="space-y-6">
+      <div class="border-l-4 border-yellow-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Full-Screen Stories
+        </h2>
+        <p class="text-gray-400 text-sm">Instagram/TikTok style vertical stories</p>
+      </div>
+      <div class="h-screen overflow-y-auto snap-y snap-mandatory rounded-xl">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div class="snap-start h-screen relative bg-gray-900 flex items-center justify-center">
+            <div class="w-full h-full bg-gradient-to-br from-red-600/40 to-orange-600/40 flex items-center justify-center relative">
+              <div class="text-center text-gray-300">
+                <div class="text-6xl mb-4">🎭</div>
+                <div class="text-xl font-bold">Story {i + 1}</div>
+              </div>
+              <div class="absolute bottom-6 left-4 text-white">
+                <h3 class="text-2xl font-bold">AI Generated Story {i + 1}</h3>
+                <p class="text-sm opacity-75">Swipe up for next story</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Option 4: Hero Banner + Grid -->
+    <section id="option4" class="space-y-8">
+      <div class="border-l-4 border-blue-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Hero Banner + Thumbnail Grid
+        </h2>
+        <p class="text-gray-400 text-sm">Featured video with supporting thumbnails</p>
+      </div>
+      <div class="relative aspect-video w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl group cursor-pointer">
+        <div class="w-full h-full bg-gradient-to-br from-blue-600/40 to-indigo-600/40 flex items-center justify-center relative">
+          <div class="text-center text-gray-300">
+            <div class="text-6xl mb-4">⭐</div>
+            <div class="text-2xl font-bold">Featured AI Creation</div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+            <div class="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center">
+              <span class="text-black text-3xl ml-1">▶</span>
+            </div>
+          </div>
+          <div class="absolute bottom-4 left-4 bg-pink-500 text-white px-3 py-1 rounded font-bold">
+            FEATURED
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div class="aspect-video bg-gray-900/50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer">
+            <div class="w-full h-full bg-gradient-to-br from-gray-600/30 to-gray-500/30 flex items-center justify-center relative">
+              <div class="text-center text-gray-300">
+                <div class="text-2xl mb-1">📱</div>
+                <div class="text-xs font-medium">Related {i + 1}</div>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                <div class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
+                  <span class="text-black text-sm ml-0.5">▶</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Option 5: Masonry Layout -->
+    <section id="option5" class="space-y-6">
+      <div class="border-l-4 border-purple-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Masonry Brick Layout
+        </h2>
+        <p class="text-gray-400 text-sm">Pinterest-style staggered video grid</p>
+      </div>
+      <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div class="break-inside-avoid rounded-xl overflow-hidden shadow-lg bg-gray-900/50 hover:bg-gray-800/60 transition-all duration-300 group cursor-pointer mb-4">
+            <div class={`w-full bg-gradient-to-br ${[
+              'from-purple-600/30 to-pink-600/30',
+              'from-emerald-600/30 to-blue-600/30', 
+              'from-orange-600/30 to-red-600/30',
+              'from-indigo-600/30 to-purple-600/30'
+            ][i % 4]} flex items-center justify-center relative`} style={`height: ${200 + (i % 3) * 50}px`}>
+              <div class="text-center text-gray-300">
+                <div class="text-3xl mb-2">{['🎨', '🎵', '📹', '✨', '🌟', '🎭', '🚀', '💎'][i]}</div>
+                <div class="text-sm font-medium">Brick {i + 1}</div>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                <div class="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center">
+                  <span class="text-black text-lg ml-0.5">▶</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Option 6: Hover-Play Cards -->
+    <section id="option6" class="space-y-6">
+      <div class="border-l-4 border-teal-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Hover-Play Preview Cards
+        </h2>
+        <p class="text-gray-400 text-sm">Thumbnail previews that activate on hover</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div class="relative group overflow-hidden rounded-xl shadow-lg bg-gray-900/50 hover:bg-gray-800/60 transition-all duration-300 cursor-pointer">
+            <div class="w-full aspect-[9/16] bg-gradient-to-br from-teal-600/30 to-cyan-600/30 flex items-center justify-center relative">
+              <div class="text-center text-gray-300 transition-opacity group-hover:opacity-50">
+                <div class="text-4xl mb-2">🎬</div>
+                <div class="text-sm font-medium">Hover Preview {i + 1}</div>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-pink-600/20 to-purple-600/20">
+                <div class="text-center text-white">
+                  <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center mb-2 mx-auto">
+                    <span class="text-black text-2xl ml-1">▶</span>
+                  </div>
+                  <div class="text-sm font-medium">Playing Preview...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Option 7: Interactive Map Markers -->
+    <section id="option7" class="space-y-6">
+      <div class="border-l-4 border-red-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Interactive Map Video Markers
+        </h2>
+        <p class="text-gray-400 text-sm">Click markers to watch location-based content</p>
+      </div>
+      <div class="relative h-96 w-full rounded-xl overflow-hidden bg-gray-800">
+        <div id="map-demo" class="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+          <div class="text-gray-400 text-center">
+            <div class="text-2xl mb-2">🗺️</div>
+            <div class="text-sm">Interactive Map Demo</div>
+          </div>
+          <!-- Demo Markers -->
+          <button id="marker1" class="absolute top-1/4 left-1/4 w-8 h-8 bg-red-500 rounded-full cursor-pointer hover:bg-red-400 transition-colors shadow-lg pulse-marker flex items-center justify-center text-white text-sm font-bold">1</button>
+          <button id="marker2" class="absolute top-1/2 left-1/2 w-8 h-8 bg-red-500 rounded-full cursor-pointer hover:bg-red-400 transition-colors shadow-lg pulse-marker flex items-center justify-center text-white text-sm font-bold">2</button>
+          <button id="marker3" class="absolute bottom-1/4 right-1/4 w-8 h-8 bg-red-500 rounded-full cursor-pointer hover:bg-red-400 transition-colors shadow-lg pulse-marker flex items-center justify-center text-white text-sm font-bold">3</button>
+        </div>
+        <div id="video-popup" class="hidden absolute top-1/4 left-1/4 w-80 aspect-[9/16] bg-gray-900 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
+          <button id="close-popup" class="absolute top-2 right-2 text-white bg-black/60 rounded-full p-2 hover:bg-black/80 transition-colors z-10">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div id="popup-content" class="w-full h-full bg-gradient-to-br from-red-600/30 to-orange-600/30 flex items-center justify-center">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">📍</div>
+              <div class="text-sm font-medium">Location Video</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Option 8: Sticky Mini-Player -->
+    <section id="option8" class="space-y-6">
+      <div class="border-l-4 border-green-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Sticky Mini-Player
+        </h2>
+        <p class="text-gray-400 text-sm">Video minimizes to corner when scrolling</p>
+      </div>
+      <div class="relative">
+        <div class="h-96 bg-gray-900 rounded-xl overflow-hidden" id="main-video">
+          <div class="w-full h-full bg-gradient-to-br from-green-600/30 to-emerald-600/30 flex items-center justify-center relative group cursor-pointer">
+            <div class="text-center text-gray-300">
+              <div class="text-6xl mb-4">📺</div>
+              <div class="text-xl font-bold">Main Video Player</div>
+              <div class="text-sm opacity-75">Scroll down to see mini-player</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-3xl ml-1">▶</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="mini-player" class="fixed bottom-4 right-4 w-48 aspect-video rounded-lg overflow-hidden shadow-xl z-50 bg-gray-900 border border-gray-700 hidden">
+          <div class="w-full h-full bg-gradient-to-br from-green-600/50 to-emerald-600/50 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-2xl mb-1">📺</div>
+              <div class="text-xs font-medium">Mini Player</div>
+            </div>
+            <button id="close-mini" class="absolute top-1 right-1 text-white bg-black/60 rounded-full p-1 hover:bg-black/80 transition-colors">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Option 9: Modal Lightbox Gallery -->
+    <section id="option9" class="space-y-6">
+      <div class="border-l-4 border-pink-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Modal Lightbox Gallery
+        </h2>
+        <p class="text-gray-400 text-sm">Click thumbnails to open in full-screen modal</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <button class="lightbox-trigger cursor-pointer group" data-video={`video-${i + 1}`}>
+            <div class="w-full aspect-square bg-gray-900/50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 group-hover:scale-105">
+              <div class={`w-full h-full bg-gradient-to-br ${[
+                'from-pink-600/30 to-purple-600/30',
+                'from-blue-600/30 to-cyan-600/30',
+                'from-orange-600/30 to-red-600/30',
+                'from-green-600/30 to-emerald-600/30',
+                'from-purple-600/30 to-indigo-600/30'
+              ][i % 5]} flex items-center justify-center relative`}>
+                <div class="text-center text-gray-300">
+                  <div class="text-2xl mb-1">{['🎨', '🎵', '📹', '✨', '🌟'][i % 5]}</div>
+                  <div class="text-xs font-medium">Thumb {i + 1}</div>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                  <div class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
+                    <span class="text-black text-sm ml-0.5">▶</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+      
+      <!-- Lightbox Modal -->
+      <div id="lightbox-modal" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50 backdrop-blur-sm">
+        <button id="close-lightbox" class="absolute top-4 right-4 text-white text-2xl hover:text-pink-400 transition-colors">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div id="lightbox-content" class="w-11/12 md:w-3/4 lg:w-1/2 max-w-2xl aspect-video bg-gray-900 rounded-xl overflow-hidden">
+          <div class="w-full h-full bg-gradient-to-br from-pink-600/30 to-purple-600/30 flex items-center justify-center">
+            <div class="text-center text-gray-300">
+              <div class="text-6xl mb-4">🎬</div>
+              <div class="text-xl font-bold">Lightbox Video Player</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Option 10: Split-Screen Dual Video -->
+    <section id="option10" class="space-y-6">
+      <div class="border-l-4 border-indigo-500 pl-6">
+        <h2 class="text-2xl font-bold text-white">
+          Split-Screen Dual Video
+        </h2>
+        <p class="text-gray-400 text-sm">Compare two videos side by side</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="aspect-[9/16] bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-indigo-500/20 transition-all duration-300 group cursor-pointer">
+          <div class="w-full h-full bg-gradient-to-br from-indigo-600/30 to-blue-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">🎨</div>
+              <div class="text-sm font-medium">AI Art Creation</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl ml-1">▶</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              4:23
+            </div>
+          </div>
+        </div>
+        <div class="aspect-[9/16] bg-gray-900/50 rounded-xl overflow-hidden shadow-lg hover:shadow-purple-500/20 transition-all duration-300 group cursor-pointer">
+          <div class="w-full h-full bg-gradient-to-br from-purple-600/30 to-pink-600/30 flex items-center justify-center relative">
+            <div class="text-center text-gray-300">
+              <div class="text-4xl mb-2">🎵</div>
+              <div class="text-sm font-medium">AI Music Video</div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+              <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                <span class="text-black text-xl ml-1">▶</span>
+              </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
+              3:47
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- JavaScript for Interactive Features -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Map Markers Popup
+      const markers = ['marker1', 'marker2', 'marker3'];
+      const popup = document.getElementById('video-popup');
+      const closePopup = document.getElementById('close-popup');
+      
+      markers.forEach(markerId => {
+        const marker = document.getElementById(markerId);
+        if (marker) {
+          marker.addEventListener('click', () => {
+            popup.classList.remove('hidden');
+          });
+        }
+      });
+      
+      if (closePopup) {
+        closePopup.addEventListener('click', () => {
+          popup.classList.add('hidden');
+        });
+      }
+      
+      // Sticky Mini-Player
+      const mainVideo = document.getElementById('main-video');
+      const miniPlayer = document.getElementById('mini-player');
+      const closeMini = document.getElementById('close-mini');
+      
+      if (mainVideo && miniPlayer) {
+        const observer = new IntersectionObserver(([entry]) => {
+          if (entry.intersectionRatio < 0.5) {
+            miniPlayer.classList.remove('hidden');
+          } else {
+            miniPlayer.classList.add('hidden');
+          }
+        }, { threshold: [0.5] });
+        
+        observer.observe(mainVideo);
+      }
+      
+      if (closeMini) {
+        closeMini.addEventListener('click', () => {
+          miniPlayer.classList.add('hidden');
+        });
+      }
+      
+      // Lightbox Modal
+      const lightboxTriggers = document.querySelectorAll('.lightbox-trigger');
+      const lightboxModal = document.getElementById('lightbox-modal');
+      const closeLightbox = document.getElementById('close-lightbox');
+      
+      lightboxTriggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          lightboxModal.classList.remove('hidden');
+          lightboxModal.classList.add('flex');
+        });
+      });
+      
+      if (closeLightbox) {
+        closeLightbox.addEventListener('click', () => {
+          lightboxModal.classList.add('hidden');
+          lightboxModal.classList.remove('flex');
+        });
+      }
+      
+      // Close modal on background click
+      if (lightboxModal) {
+        lightboxModal.addEventListener('click', (e) => {
+          if (e.target === lightboxModal) {
+            lightboxModal.classList.add('hidden');
+            lightboxModal.classList.remove('flex');
+          }
+        });
+      }
+      
+      // Pulse animation for markers
+      const style = document.createElement('style');
+      style.textContent = `
+        .pulse-marker {
+          animation: pulse-marker 2s infinite;
+        }
+        @keyframes pulse-marker {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+          }
+          50% {
+            box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    });
+  </script>
+</Layout>
