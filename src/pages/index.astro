@@ -10,7 +10,8 @@ const recentVideos = Array(12).fill(null).map((_, i) => ({
   business: [`Detroit Dabs`, `Detroit Dabs`, `Motor City Muncher`, `Motor City Muncher`, `Detroit Dabs`, `The Canna-seur`, `Explore Detroit`, `Motor City Muncher`, `The Canna-seur`, `Motor City Muncher`, `The Canna-seur`, `Explore Detroit`][i],
   duration: [`3:45`, `1:20`, `4:10`, `2:35`, `5:15`, `8:20`, `2:45`, `0:58`, `6:32`, `1:45`, `7:15`, `3:20`][i],
   date: new Date(2025, 5, 24 - i * 2).toISOString().split('T')[0],
-  category: [`cannabis`, `cannabis`, `food`, `food`, `cannabis`, `cannabis`, `local`, `food`, `cannabis`, `food`, `cannabis`, `events`][i]
+  // FIXED: Expanded this array to prevent 'undefined' errors when mapping.
+  category: [`videos`, `videos`, `photos`, `photos`, `videos`, `videos`, `events`, `photos`, `videos`, `photos`, `videos`, `events`][i]
 }));
 
 const gradients = [
@@ -26,34 +27,10 @@ const creators = [
 ];
 
 const tools = [
-  {
-    name: 'Midjourney',
-    icon: '⛵️',
-    description: 'The industry-leading platform for crafting breathtaking, high-resolution images from simple text prompts.',
-    tags: ['Image', 'Art'],
-    gradient: 'from-indigo-500/20 to-blue-500/20'
-  },
-  {
-    name: 'OpenAI Sora',
-    icon: '🎬',
-    description: 'A revolutionary text-to-video model that generates cinematic, high-fidelity video clips from your imagination.',
-    tags: ['Video', 'Cinematic'],
-    gradient: 'from-teal-500/20 to-cyan-500/20'
-  },
-  {
-    name: 'Suno',
-    icon: '🎵',
-    description: 'Create radio-quality music in any genre, complete with custom lyrics and vocals, in just a matter of seconds.',
-    tags: ['Music', 'Audio'],
-    gradient: 'from-orange-500/20 to-amber-500/20'
-  },
-  {
-    name: 'ElevenLabs',
-    icon: '🎤',
-    description: 'The premier toolkit for generating ultra-realistic text-to-speech and cloning voices for any project.',
-    tags: ['Voice', 'Audio'],
-    gradient: 'from-rose-500/20 to-pink-500/20'
-  }
+  { name: 'Midjourney', icon: '⛵️', description: 'The industry-leading platform for crafting breathtaking, high-resolution images from simple text prompts.', tags: ['Image', 'Art'], gradient: 'from-indigo-500/20 to-blue-500/20' },
+  { name: 'OpenAI Sora', icon: '🎬', description: 'A revolutionary text-to-video model that generates cinematic, high-fidelity video clips from your imagination.', tags: ['Video', 'Cinematic'], gradient: 'from-teal-500/20 to-cyan-500/20' },
+  { name: 'Suno', icon: '🎵', description: 'Create radio-quality music in any genre, complete with custom lyrics and vocals, in just a matter of seconds.', tags: ['Music', 'Audio'], gradient: 'from-orange-500/20 to-amber-500/20' },
+  { name: 'ElevenLabs', icon: '🎤', description: 'The premier toolkit for generating ultra-realistic text-to-speech and cloning voices for any project.', tags: ['Voice', 'Audio'], gradient: 'from-rose-500/20 to-pink-500/20' }
 ];
 
 const trendingTags = ['#cyberpunk', '#solarpunk', 'cinematic lighting', '80s anime style', 'photorealistic', '#creepy', 'lofi beats', '#fantasyart'];
@@ -70,14 +47,7 @@ const newestMembers = [
     { handle: '@code_poet', avatarEmoji: '✍️' }
 ];
 
-const categories = [ { id: "all", label: "All Videos" }, { id: "cannabis", label: "Cannabis" }, { id: "food", label: "Food & Drink" }, { id: "local", label: "Local Businesses" }, { id: "events", label: "Events" }];
-
-// --- NEW: Data for the Hero Slider ---
-const sliderItems = [
-  { type: 'overview' },
-  { type: 'creators' },
-  { type: 'tools' }
-];
+const categories = [ { id: "all", label: "All" }, { id: "photos", label: "Photos" }, { id: "videos", label: "Videos" }, { id: "music", label: "Audio" }, { id: "3d-models", label: "3D Models" }, { id: "words", label: "Words" }];
 
 const today = new Date('2025-06-24T14:39:00'); 
 
@@ -117,18 +87,6 @@ function isNew(videoDateStr: string) {
           </div>
           <div class="absolute bottom-4 left-4 bg-pink-500 text-white px-3 py-1 rounded font-bold">FEATURED</div>
         </div>
-      </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div class="aspect-video bg-gray-900/50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer">
-            <div class="w-full h-full bg-gradient-to-br from-gray-600/30 to-gray-500/30 flex items-center justify-center relative">
-              <div class="text-center text-gray-300"><div class="text-2xl mb-1">📱</div><div class="text-xs font-medium">Related {i + 1}</div></div>
-              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-                <div class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center"><span class="text-black text-sm ml-0.5">▶</span></div>
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
     </section>
 
@@ -204,105 +162,6 @@ function isNew(videoDateStr: string) {
         </div>
     </section>
 
-    <section class="w-full py-12 md:py-16 bg-gray-950">
-      <div class="swiper hero-slider">
-        <div class="swiper-wrapper">
-          
-          <div class="swiper-slide">
-            <div class="max-w-7xl mx-auto px-4">
-              <div class="relative bg-gray-900/50 border border-gray-800 rounded-2xl p-8 sm:p-12 lg:p-16 overflow-hidden">
-                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center">
-                    <div class="space-y-6">
-                      <h2 class="text-4xl md:text-5xl font-black text-white leading-tight">More Than a Gallery.<br>A <span class="text-gradient-pink">Living Community.</span></h2>
-                      <p class="text-lg text-gray-300">Whether you're crafting visuals with <strong class="text-white">Midjourney</strong>, directing films with <strong class="text-white">Sora</strong>, or composing symphonies with <strong class="text-white">Suno</strong>, your work has a home here.</p>
-                      <div class="flex flex-wrap gap-4 pt-4">
-                        <a href="#main-content" class="px-6 py-3 bg-pink-600 text-white rounded-lg font-semibold shadow-lg hover:bg-pink-500 transition-colors">Explore Creations</a>
-                        <a href="#" class="px-6 py-3 bg-gray-700 text-gray-300 rounded-lg font-semibold hover:bg-gray-600 transition-colors">Share Your Work</a>
-                      </div>
-                    </div>
-                    <div class="relative h-96 lg:h-[450px] w-full">
-                      <div class="absolute w-2/3 top-0 left-0 aspect-square bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-2xl shadow-2xl flex items-center justify-center -rotate-6 transform hover:rotate-[-8deg] hover:scale-105 transition-all duration-300"><div class="text-6xl">🎨</div></div>
-                      <div class="absolute w-2/3 bottom-0 right-0 aspect-video bg-gradient-to-br from-emerald-600/30 to-blue-600/30 rounded-2xl shadow-2xl flex items-center justify-center rotate-3 transform hover:rotate-[5deg] hover:scale-105 transition-all duration-300"><div class="text-6xl">🎬</div></div>
-                      <div class="absolute w-1/2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-square bg-gradient-to-br from-sky-600/30 to-indigo-600/30 rounded-2xl shadow-2xl flex items-center justify-center rotate-12 transform hover:rotate-[15deg] hover:scale-105 transition-all duration-300"><div class="text-6xl">🎵</div></div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-  
-          <div class="swiper-slide">
-              <div class="max-w-7xl mx-auto px-4">
-                  <div class="relative bg-gray-900/50 border border-gray-800 rounded-2xl p-8 sm:p-12 lg:p-16 overflow-hidden">
-                      <div class="border-l-4 border-purple-500 pl-6 mb-8">
-                          <h2 class="text-4xl font-bold text-white">Featured Creators</h2>
-                          <p class="text-gray-400">Meet the voices and visionaries behind the content.</p>
-                      </div>
-                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {creators.map((creator) => (
-                          <div class="bg-gray-900 rounded-xl shadow-lg border border-gray-700 flex flex-col text-center">
-                            <div class={`h-24 rounded-t-xl bg-gradient-to-br ${creator.bannerGradient}`}></div>
-                            <div class="flex-grow p-6 pt-0"><div class="flex justify-center -mt-12"><div class="w-24 h-24 rounded-full bg-gray-800 border-4 border-gray-900 flex items-center justify-center text-4xl shadow-lg">{creator.avatarEmoji}</div></div>
-                              <div class="mt-4"><h3 class="text-xl font-bold text-white">{creator.name}</h3><p class="text-pink-400 text-sm">{creator.handle}</p></div>
-                              <p class="text-gray-400 text-sm my-4">{creator.bio}</p>
-                            </div>
-                            <div class="p-4 mt-auto"><button class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-pink-600 text-white shadow hover:bg-pink-500 transition-colors">View Channel</button></div>
-                          </div>
-                        ))}
-                      </div>
-                  </div>
-              </div>
-          </div>
-  
-          <div class="swiper-slide">
-              <div class="max-w-7xl mx-auto px-4">
-                   <div class="relative bg-gray-900/50 border border-gray-800 rounded-2xl p-8 sm:p-12 lg:p-16 overflow-hidden">
-                      <div class="border-l-4 border-cyan-500 pl-6 mb-8">
-                        <h2 class="text-4xl font-bold text-white">Spotlight on the Tools</h2>
-                        <p class="text-gray-400">Discover the magic behind the masterpieces.</p>
-                      </div>
-                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {tools.slice(0, 3).map(tool => (
-                          <div class="bg-gray-900 rounded-xl p-6 border border-gray-700 hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col">
-                            <div class={`w-16 h-16 rounded-lg bg-gradient-to-br ${tool.gradient} flex items-center justify-center text-4xl mb-4`}>{tool.icon}</div>
-                            <h3 class="text-xl font-bold text-white">{tool.name}</h3>
-                            <div class="flex gap-2 mt-2">{tool.tags.map(tag => <span class="text-xs bg-cyan-500/10 text-cyan-300 px-2 py-1 rounded-full">{tag}</span>)}</div>
-                            <p class="text-gray-400 mt-4 text-sm flex-grow">{tool.description}</p>
-                            <a href="#" class="inline-block mt-6 text-sm font-semibold text-cyan-400 hover:text-cyan-300">View Creations &rarr;</a>
-                          </div>
-                        ))}
-                      </div>
-                  </div>
-              </div>
-          </div>
-  
-        </div>
-        <div class="hero-pagination"></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="border-l-4 border-cyan-500 pl-6 mb-8">
-        <h2 class="text-3xl font-bold text-white">Spotlight on the Tools</h2>
-        <p class="text-gray-400">Discover the magic behind the masterpieces.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {tools.map(tool => (
-          <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800 hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col">
-            <div class={`w-16 h-16 rounded-lg bg-gradient-to-br ${tool.gradient} flex items-center justify-center text-4xl mb-4`}>
-              {tool.icon}
-            </div>
-            <h3 class="text-xl font-bold text-white">{tool.name}</h3>
-            <div class="flex gap-2 mt-2">
-              {tool.tags.map(tag => <span class="text-xs bg-cyan-500/10 text-cyan-300 px-2 py-1 rounded-full">{tag}</span>)}
-            </div>
-            <p class="text-gray-400 mt-4 text-sm flex-grow">{tool.description}</p>
-            <a href="#" class="inline-block mt-6 text-sm font-semibold text-cyan-400 hover:text-cyan-300">View Creations &rarr;</a>
-          </div>
-        ))}
-      </div>
-    </section>
-
-
     <section>
       <div class="border-l-4 border-purple-500 pl-6 mb-8">
           <h2 class="text-3xl font-bold text-white">Featured Communities</h2>
@@ -325,109 +184,12 @@ function isNew(videoDateStr: string) {
                 <div><div class="font-bold text-white">{(creator.subscriberCount / 1000).toFixed(1)}K</div><div class="text-gray-400 text-xs">Subscribers</div></div>
                 <div><div class="font-bold text-white">{creator.videoCount}</div><div class="text-gray-400 text-xs">Videos</div></div>
               </div>
-               <div class="mt-4">
-                  <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 text-center">Latest Videos</h5>
-                  <div class="space-y-3">
-                    {creator.latestVideos.map(video => (
-                        <a href="#" class="flex items-center gap-3 bg-gray-800/50 p-2 rounded-lg hover:bg-gray-700/50 transition-colors">
-                            <div class="w-16 h-10 bg-gradient-to-tr from-gray-500/10 to-gray-400/10 rounded flex-shrink-0 flex items-center justify-center text-xl">📹</div>
-                            <div><p class="text-xs font-semibold text-white line-clamp-2 leading-tight">{video.title}</p></div>
-                        </a>
-                    ))}
-                  </div>
-              </div>
             </div>
             <div class="p-4 mt-auto">
                <button class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-pink-600 text-white shadow hover:bg-pink-500 transition-colors">View Channel</button>
             </div>
           </div>
         ))}
-      </div>
-    </section>
-
-    <section>
-      <div class="border-l-4 border-green-500 pl-6 mb-8">
-          <h2 class="text-3xl font-bold text-white">Community Pulse</h2>
-          <p class="text-gray-400">What's happening in the community, right now.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div class="bg-gray-900/50 p-6 rounded-xl border border-gray-800">
-              <h3 class="font-bold text-white mb-4">Trending Tags & Prompts</h3>
-              <div class="flex flex-wrap gap-2">
-                  {trendingTags.map(tag => (
-                      <a href="#" class="text-sm bg-gray-800 text-gray-300 px-3 py-1 rounded-full hover:bg-gray-700 hover:text-white transition-colors">{tag}</a>
-                  ))}
-              </div>
-          </div>
-          <div class="bg-gray-900/50 p-6 rounded-xl border border-gray-800">
-              <h3 class="font-bold text-white mb-4">Top Voted This Week</h3>
-              <ol class="space-y-4">
-                  {topVoted.map((item, index) => (
-                      <li class="flex items-center gap-4 text-sm">
-                          <span class="font-bold text-gray-500">{index + 1}</span>
-                          <div class="w-10 h-10 rounded bg-gray-700 flex-shrink-0 flex items-center justify-center text-lg">{item.emoji}</div>
-                          <div class="flex-grow">
-                              <p class="text-white font-semibold line-clamp-1">{item.title}</p>
-                              <p class="text-gray-400 line-clamp-1">{item.creator}</p>
-                          </div>
-                          <div class="text-pink-400 font-bold">{(item.votes / 1000).toFixed(1)}k</div>
-                      </li>
-                  ))}
-              </ol>
-          </div>
-          <div class="bg-gray-900/50 p-6 rounded-xl border border-gray-800">
-              <h3 class="font-bold text-white mb-4">Welcome New Creators</h3>
-              <div class="space-y-3">
-                  {newestMembers.map(member => (
-                      <div class="flex items-center justify-between gap-4">
-                          <a href="#" class="flex items-center gap-3 group">
-                              <div class="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0 flex items-center justify-center text-xl">{member.avatarEmoji}</div>
-                              <span class="text-white font-medium group-hover:text-pink-400 transition-colors">{member.handle}</span>
-                          </a>
-                          <button class="text-xs font-semibold bg-gray-700 text-gray-300 px-3 py-1 rounded-full hover:bg-pink-600 hover:text-white transition-colors">Follow</button>
-                      </div>
-                  ))}
-              </div>
-          </div>
-      </div>
-  </section>
-
-    <section class="py-16 sm:py-24">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12 items-center">
-        
-        <div class="space-y-6">
-          <h2 class="text-4xl md:text-5xl font-black text-white leading-tight">
-            More Than a Gallery.
-            <br>
-            A <span class="text-gradient-pink">Living Community.</span>
-          </h2>
-          
-          <p class="text-lg text-gray-300">
-            Whether you're crafting stunning visuals with <strong class="text-white">Midjourney</strong>, directing short films with <strong class="text-white">Sora</strong>, composing symphonies with <strong class="text-white">Suno</strong>, or writing poetry with a custom LLM, your work has a home here. We are a platform for every artist and every tool.
-          </p>
-          
-          <div class="flex flex-wrap gap-4 pt-4">
-            <a href="#video-grid" class="px-6 py-3 bg-pink-600 text-white rounded-lg font-semibold shadow-lg hover:bg-pink-500 transition-colors">
-              Explore Creations
-            </a>
-            <a href="#" class="px-6 py-3 bg-gray-700 text-gray-300 rounded-lg font-semibold hover:bg-gray-600 transition-colors">
-              Share Your Work
-            </a>
-          </div>
-        </div>
-    
-        <div class="relative h-96 lg:h-[500px] w-full">
-          <div class="absolute w-2/3 top-0 left-0 aspect-square bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-2xl shadow-2xl flex items-center justify-center -rotate-6 transform hover:rotate-[-8deg] hover:scale-105 transition-all duration-300">
-              <div class="text-6xl">🎨</div>
-          </div>
-          <div class="absolute w-2/3 bottom-0 right-0 aspect-video bg-gradient-to-br from-emerald-600/30 to-blue-600/30 rounded-2xl shadow-2xl flex items-center justify-center rotate-3 transform hover:rotate-[5deg] hover:scale-105 transition-all duration-300">
-              <div class="text-6xl">🎬</div>
-          </div>
-          <div class="absolute w-1/2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-square bg-gradient-to-br from-sky-600/30 to-indigo-600/30 rounded-2xl shadow-2xl flex items-center justify-center rotate-12 transform hover:rotate-[15deg] hover:scale-105 transition-all duration-300">
-              <div class="text-6xl">🎵</div>
-          </div>
-        </div>
-    
       </div>
     </section>
 

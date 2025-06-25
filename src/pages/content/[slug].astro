@@ -1,0 +1,190 @@
+---
+// src/pages/content/[slug].astro
+import Layout from '../../components/astro/layout.astro';
+import '../../styles/global.css';
+
+const content = {
+  type: 'video', 
+  title: 'Cybernetic Serenity',
+  description: 'A visual exploration of a tranquil world where nature and advanced technology coexist in harmony. Generated using a custom-trained diffusion model, this piece aims to evoke a sense of calm futurism.',
+  creator: {
+    name: 'AURA',
+    handle: '@aura_vistas',
+    avatarEmoji: '✨',
+  },
+  stats: {
+    likes: 22700,
+    views: 345000,
+    comments: 212,
+  },
+  details: {
+    published: 'June 18, 2025',
+    resolution: '4K UHD (3840x2160)',
+    license: 'Creative Commons BY-NC',
+  },
+  tags: ['#solarpunk', '#scifi', 'generative art', '#tranquil', 'Midjourney'],
+  toolsUsed: [
+    { name: 'Midjourney', icon: '⛵️', description: 'Primary image sequence generation.' },
+    { name: 'Suno', icon: '🎵', description: 'Ambient soundtrack composition.' },
+    { name: 'Topaz Video AI', icon: '💎', description: 'Upscaling and frame interpolation.' }
+  ]
+};
+
+const relatedContent = Array(4).fill(null).map((_, i) => ({
+  id: i,
+  title: `Ethereal Structure ${i + 1}`,
+  creator: 'AURA',
+}));
+
+const gradients = [
+    'from-pink-500/10 to-purple-500/10',
+    'from-emerald-500/10 to-teal-500/10',
+    'from-sky-500/10 to-indigo-500/10',
+    'from-orange-500/10 to-yellow-500/10'
+];
+---
+
+<Layout title={content.title} description={content.description}>
+  
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+      .font-display {
+        font-family: 'Playfair Display', serif;
+      }
+      .tab-content { display: none; }
+      .tab-content.active { display: block; }
+    </style>
+  </Fragment>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 md:py-16 space-y-16">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-10 gap-12">
+
+      <div class="lg:col-span-7">
+        <div class="space-y-6">
+          <div class="aspect-video w-full rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center relative shadow-2xl shadow-black/30">
+            <div class="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-transparent to-cyan-500/10"></div>
+            <div class="text-center">
+              <span class="text-6xl">🎬</span>
+              <p class="text-lg font-medium text-gray-600 mt-2">Video Player</p>
+            </div>
+          </div>
+
+          <div>
+            <h1 class="font-display text-4xl md:text-5xl font-bold text-white">{content.title}</h1>
+            <p class="text-lg text-gray-400 mt-2">A generative artwork by <a href="#" class="text-cyan-400 hover:underline">{content.creator.name}</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-3">
+        <div class="sticky top-24 space-y-6">
+          <div class="grid grid-cols-3 gap-2">
+              <button class="col-span-3 text-white bg-pink-600 hover:bg-pink-500 transition-colors h-11 rounded-lg flex items-center justify-center gap-2 text-sm font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path d="M12.784 2.323a1.5 1.5 0 0 0-1.568 0l-8.92 5.043a1.5 1.5 0 0 0-.776 1.326v10.092c0 .532.28.1021.776.1326l8.92 5.043a1.5 1.5 0 0 0 1.568 0l8.92-5.043a1.5 1.5 0 0 0 .776-1.326V8.692a1.5 1.5 0 0 0-.776-1.326L12.784 2.323ZM3.75 9.173l8.25 4.66v9.319l-8.25-4.66V9.173Zm16.5 0v9.319l-8.25 4.66v-9.319l8.25-4.66Z"/></svg>
+                Like ({ (content.stats.likes / 1000).toFixed(1) }k)
+              </button>
+          </div>
+
+          <div id="content-tabs">
+            <div class="border-b border-gray-700">
+              <nav class="-mb-px flex gap-6" aria-label="Tabs">
+                <button data-tab="details" class="tab-btn shrink-0 border-b-2 px-1 pb-3 text-sm font-medium border-pink-500 text-pink-500">Details</button>
+                <button data-tab="tools" class="tab-btn shrink-0 border-b-2 px-1 pb-3 text-sm font-medium border-transparent text-gray-400 hover:border-gray-500 hover:text-gray-200">Tools</button>
+                <button data-tab="comments" class="tab-btn shrink-0 border-b-2 px-1 pb-3 text-sm font-medium border-transparent text-gray-400 hover:border-gray-500 hover:text-gray-200">Comments</button>
+              </nav>
+            </div>
+            <div class="py-4">
+              <div id="details-content" class="tab-content active">
+                  <div class="space-y-4 text-sm">
+                    <p class="text-gray-300 leading-relaxed">{content.description}</p>
+                    <div class="flex flex-wrap gap-2 pt-2">
+                      {content.tags.map(tag => <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full">{tag}</span>)}
+                    </div>
+                    <div class="border-t border-gray-800 pt-4 mt-4 space-y-2">
+                      <div class="flex justify-between"><span class="text-gray-400">Published</span><span class="text-white font-medium">{content.details.published}</span></div>
+                      <div class="flex justify-between"><span class="text-gray-400">Resolution</span><span class="text-white font-medium">{content.details.resolution}</span></div>
+                      <div class="flex justify-between"><span class="text-gray-400">License</span><span class="text-white font-medium">{content.details.license}</span></div>
+                    </div>
+                  </div>
+              </div>
+              <div id="tools-content" class="tab-content">
+                  <div class="space-y-4">
+                    {content.toolsUsed.map(tool => (
+                      <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-gray-800 flex-shrink-0 flex items-center justify-center text-2xl">{tool.icon}</div>
+                        <div>
+                          <p class="font-semibold text-white">{tool.name}</p>
+                          <p class="text-sm text-gray-400">{tool.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+               <div id="comments-content" class="tab-content">
+                  <div class="text-center py-8">
+                      <p class="text-gray-500 text-sm">Comments are not available for this creation.</p>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <div class="border-t border-gray-800 pt-12 mt-12">
+        <h2 class="font-display text-3xl font-bold text-white mb-6">More from {content.creator.name}</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {relatedContent.map((item, i) => (
+            <a href="#" class="group">
+              <div class="aspect-video rounded-lg bg-gray-900 border border-transparent group-hover:border-pink-500/50 transition-colors overflow-hidden">
+                 <div class={`w-full h-full bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-3xl opacity-80 group-hover:opacity-100 transition-opacity`}>
+                    ✨
+                 </div>
+              </div>
+              <div class="pt-3">
+                <p class="font-semibold text-white line-clamp-1">{item.title}</p>
+                <p class="text-sm text-gray-500">{item.creator}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabContainer = document.getElementById('content-tabs');
+    if (!tabContainer) return;
+
+    const tabButtons = tabContainer.querySelectorAll('.tab-btn');
+    const tabContents = tabContainer.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tab = button.dataset.tab;
+
+        tabButtons.forEach(btn => {
+          btn.classList.remove('border-pink-500', 'text-pink-500');
+          btn.classList.add('border-transparent', 'text-gray-400');
+        });
+        button.classList.add('border-pink-500', 'text-pink-500');
+        button.classList.remove('border-transparent', 'text-gray-400');
+
+        tabContents.forEach(content => {
+          if (content.id === `${tab}-content`) {
+            content.classList.add('active');
+          } else {
+            content.classList.remove('active');
+          }
+        });
+      });
+    });
+  });
+</script>

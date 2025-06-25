@@ -1,0 +1,137 @@
+---
+// src/pages/discussions.astro
+import Layout from '../components/astro/layout.astro';
+import '../styles/global.css';
+
+
+// --- Hardcoded Mock Data for the Discussions Page ---
+const channels = [
+  { id: 'tool-talk', name: 'Tool-Talk', description: 'Discuss specific AI models like Midjourney, Suno, etc.', icon: '🛠️' },
+  { id: 'prompt-craft', name: 'Prompt-Craft', description: 'Share and refine prompting techniques.', icon: '✍️' },
+  { id: 'critique-corner', name: 'Critique-Corner', description: 'Ask for and receive constructive feedback.', icon: '🖼️' },
+  { id: 'announcements', name: 'Announcements', description: 'Platform news and updates from the Meat team.', icon: '📢' },
+];
+
+const threads = [
+  {
+    id: 1,
+    title: 'Has anyone mastered the "--style raw" parameter in Midjourney v6?',
+    author: { name: 'AURA', avatarEmoji: '✨' },
+    channel: 'Tool-Talk',
+    replies: 18,
+    likes: 122,
+    timestamp: '3 hours ago',
+    tags: ['midjourney', 'v6', 'parameters']
+  },
+  {
+    id: 2,
+    title: 'Requesting Feedback: Is this synthwave piece too busy?',
+    author: { name: 'Synthwave_Sound', avatarEmoji: '🎧' },
+    channel: 'Critique-Corner',
+    replies: 5,
+    likes: 45,
+    timestamp: '8 hours ago',
+    tags: ['suno', 'music', 'feedback']
+  },
+  {
+    id: 3,
+    title: 'My go-to prompt structure for creating consistent characters',
+    author: { name: 'Code_Poet', avatarEmoji: '✍️' },
+    channel: 'Prompt-Craft',
+    replies: 42,
+    likes: 256,
+    timestamp: '1 day ago',
+    tags: ['prompting', 'character-design', 'tutorial']
+  },
+    {
+    id: 4,
+    title: 'New Feature Announcement: Collections are now live!',
+    author: { name: 'Meat Team', avatarEmoji: '🥩' },
+    channel: 'Announcements',
+    replies: 112,
+    likes: 840,
+    timestamp: '2 days ago',
+    tags: ['platform-update', 'features']
+  },
+  {
+    id: 5,
+    title: 'How to get more cinematic lighting from Sora?',
+    author: { name: 'VideoMage_99', avatarEmoji: '🧙' },
+    channel: 'Tool-Talk',
+    replies: 25,
+    likes: 180,
+    timestamp: '3 days ago',
+    tags: ['sora', 'video', 'lighting']
+  }
+];
+---
+
+<Layout title="Discussions - Meat" description="Join the conversation with other AI creators.">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+      .font-display { font-family: 'Playfair Display', serif; }
+    </style>
+  </head>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 md:py-16">
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-12">
+      <div>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-white">The Lounge</h1>
+        <p class="text-lg text-gray-400 mt-2">Discuss the craft of AI content creation.</p>
+      </div>
+      <a href="/discussions/new" class="inline-block text-center h-11 px-6 font-semibold rounded-lg bg-pink-600 text-white hover:bg-pink-500 transition-colors shrink-0">
+        Start a Discussion
+      </a>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+      
+      <!-- Left Column: Channels -->
+      <aside class="lg:col-span-1">
+        <nav class="sticky top-24 space-y-2">
+          <h2 class="px-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Channels</h2>
+          {channels.map(channel => (
+            <a href={`/discussions/${channel.id}`} class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/50 hover:text-white transition-colors">
+              <span class="text-xl">{channel.icon}</span>
+              <span class="font-semibold">{channel.name}</span>
+            </a>
+          ))}
+        </nav>
+      </aside>
+
+      <!-- Right Column: Thread List -->
+      <main class="lg:col-span-3">
+        <div class="space-y-4">
+          {threads.map(thread => (
+            <a href={`/discussions/thread/${thread.id}`} class="block p-5 rounded-xl border border-gray-800 bg-gray-900/50 hover:border-pink-500/30 hover:bg-gray-800/50 transition-all duration-200">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <h3 class="font-bold text-lg text-white line-clamp-2">{thread.title}</h3>
+                <p class="text-xs text-gray-500 mt-1 sm:mt-0 shrink-0 sm:ml-6">{thread.timestamp}</p>
+              </div>
+              <div class="flex items-center gap-4 mt-3 text-sm">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-sm">{thread.author.avatarEmoji}</div>
+                  <span class="font-medium text-gray-300">{thread.author.name}</span>
+                </div>
+                <div class="flex items-center gap-4 text-gray-400">
+                  <div class="flex items-center gap-1.5">
+                    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <span>{thread.replies}</span>
+                  </div>
+                   <div class="flex items-center gap-1.5">
+                    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.784 2.323a1.5 1.5 0 0 0-1.568 0l-8.92 5.043a1.5 1.5 0 0 0-.776 1.326v10.092c0 .532.28.1021.776.1326l8.92 5.043a1.5 1.5 0 0 0 1.568 0l8.92-5.043a1.5 1.5 0 0 0 .776-1.326V8.692a1.5 1.5 0 0 0-.776-1.326L12.784 2.323ZM3.75 9.173l8.25 4.66v9.319l-8.25-4.66V9.173Zm16.5 0v9.319l-8.25 4.66v-9.319l8.25-4.66Z"/></svg>
+                    <span>{thread.likes}</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </main>
+
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,219 @@
+---
+// src/pages/creator/[handle].astro
+import Layout from '../components/astro/layout.astro';
+import '../styles/global.css';
+
+// --- Dynamic Data Fetching (Simulation) ---
+// In a real app, this data would come from your database/CMS.
+// You would use `Astro.params.handle` to look up the correct creator.
+const { handle } = Astro.params;
+
+// This is a mock function. Replace with your actual data source.
+async function getCreatorData(handle: string | undefined) {
+  // Simulating an API call
+  await new Promise(res => setTimeout(res, 100));
+  
+  // Return mock data for this example
+  return {
+    creator: {
+      name: 'Motor City Muncher',
+      handle: '@mcmuncher',
+      avatarEmoji: '🍕',
+      bannerGradient: 'from-orange-500/20 to-red-500/20',
+      bio: "Your go-to guide for Detroit's food scene. From greasy spoons to gourmet dining, I'm eating my way through the city one bite at a time.",
+      stats: [
+        { value: 128, label: 'Patrons' },
+        { value: 112, label: 'Creations' },
+        { value: '1.2M', label: 'Likes' },
+      ],
+    },
+    creations: Array(8).fill(null).map((_, i) => ({
+      id: i,
+      title: [`Top 5 Detroit Coffee Shops`, `Food Truck Festival Highlights`, `Morning Routine at Coffee House Detroit`, `Late Night Food Options in Detroit`, `New Burger Joint Review`, `Taco Tuesday Special`, `Hidden Gem: Bakery`, `Best Pizza in Detroit`][i],
+      creator: 'Motor City Muncher'
+    })),
+  };
+}
+
+const { creator, creations } = await getCreatorData(handle);
+
+const gradients = [
+    'from-pink-500/10 to-purple-500/10',
+    'from-emerald-500/10 to-teal-500/10',
+    'from-sky-500/10 to-indigo-500/10',
+    'from-orange-500/10 to-yellow-500/10'
+];
+---
+
+<Layout title={creator.name} description={creator.bio}>
+  <div class="w-full">
+    <!-- Section 1: Creator Header (FIXED: More robust flexbox/margin layout) -->
+    <section class="relative">
+      <div class={`h-48 md:h-64 w-full bg-gradient-to-br ${creator.bannerGradient}`}></div>
+      <div class="max-w-5xl mx-auto px-4">
+        <!-- This container now uses a negative margin to pull itself up, which is more reliable than absolute positioning -->
+        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6 -mt-16 md:-mt-20">
+          <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gray-800 border-8 border-gray-950 flex items-center justify-center text-7xl shadow-lg flex-shrink-0">
+            {creator.avatarEmoji}
+          </div>
+          <div class="flex flex-col sm:flex-row items-center gap-4 w-full pt-2">
+            <div class="text-center sm:text-left">
+              <h1 class="text-3xl md:text-4xl font-bold text-white">{creator.name}</h1>
+              <p class="text-lg text-pink-400">{creator.handle}</p>
+            </div>
+            <div class="flex items-center gap-2 mt-2 sm:mt-0 sm:ml-auto">
+              <button class="h-10 px-6 font-semibold rounded-lg bg-pink-600 text-white hover:bg-pink-500 transition-colors whitespace-nowrap">Become a Patron</button>
+              <button class="size-10 border border-gray-700 bg-gray-800/50 rounded-lg flex items-center justify-center text-gray-300 hover:border-gray-500 hover:text-white transition-colors flex-shrink-0" title="Share Creator">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: About & Stats -->
+    <section class="max-w-5xl mx-auto px-4 mt-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-2">
+          <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">About</h2>
+          <p class="text-gray-300 leading-relaxed">{creator.bio}</p>
+        </div>
+        <div class="md:col-span-1">
+          <h2 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Stats</h2>
+          <div class="flex justify-around md:justify-start gap-6 rounded-xl bg-gray-900/50 border border-gray-800 p-4">
+            <!-- Inlined StatItem component logic -->
+            {creator.stats.map(stat => (
+              <div class="text-center">
+                <div class="text-2xl font-bold text-white">{stat.value}</div>
+                <div class="text-sm text-gray-400">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Creator Content Tabs (FIXED: Added ARIA roles for accessibility) -->
+    <section class="max-w-5xl mx-auto px-4 mt-12">
+      <div id="creator-tabs">
+        <div class="border-b border-gray-700">
+          <div role="tablist" aria-label="Creator Content" class="-mb-px flex gap-6">
+            <button role="tab" id="tab-creations" aria-selected="true" aria-controls="panel-creations" class="tab-btn is-active">Creations</button>
+            <button role="tab" id="tab-collections" aria-selected="false" aria-controls="panel-collections" class="tab-btn">Collections</button>
+            <button role="tab" id="tab-likes" aria-selected="false" aria-controls="panel-likes" class="tab-btn">Likes</button>
+          </div>
+        </div>
+        <div class="py-8">
+          <div role="tabpanel" id="panel-creations" aria-labelledby="tab-creations" class="tab-panel is-active">
+              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Inlined CreationCard component logic -->
+                {creations.map((item, i) => (
+                  <a href={`/content/${item.id}`} class="group block">
+                    <div class="aspect-square rounded-lg bg-gray-900 border border-transparent group-hover:border-pink-500/50 transition-colors overflow-hidden">
+                       <div class={`w-full h-full bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-3xl opacity-80 group-hover:opacity-100 transition-opacity`}>
+                          {creator.avatarEmoji}
+                       </div>
+                    </div>
+                    <div class="pt-3">
+                      <p class="font-semibold text-white truncate">{item.title}</p>
+                      <p class="text-sm text-gray-500">{item.creator}</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+          </div>
+          <div role="tabpanel" id="panel-collections" aria-labelledby="tab-collections" class="tab-panel" hidden>
+              <div class="text-center py-16 text-gray-500">
+                <p>This creator hasn't curated any collections yet.</p>
+              </div>
+          </div>
+           <div role="tabpanel" id="panel-likes" aria-labelledby="tab-likes" class="tab-panel" hidden>
+              <div class="text-center py-16 text-gray-500">
+                  <p>A history of liked creations will appear here.</p>
+              </div>
+           </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<!-- Astro styles are scoped and processed. This is the idiomatic way. -->
+<style>
+  .tab-btn {
+    @apply shrink-0 border-b-2 px-1 pb-3 text-sm font-medium border-transparent text-gray-400;
+  }
+  .tab-btn:hover {
+    @apply border-gray-500 text-gray-200;
+  }
+  .tab-btn.is-active {
+    @apply border-pink-500 text-pink-500;
+  }
+  .tab-panel {
+    display: none;
+  }
+  .tab-panel.is-active {
+    display: block;
+  }
+</style>
+
+<!-- This script is now more robust and accessible -->
+<script>
+  class AccessibleTabs {
+    private container: HTMLElement;
+    private tabs: HTMLButtonElement[];
+    private panels: HTMLElement[];
+
+    constructor(container: HTMLElement) {
+      this.container = container;
+      this.tabs = Array.from(container.querySelectorAll('[role="tab"]'));
+      this.panels = Array.from(container.querySelectorAll('[role="tabpanel"]'));
+
+      if (!this.tabs.length || !this.panels.length) return;
+
+      this.init();
+    }
+
+    init() {
+      this.tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => this.onTabClick(e));
+        // Add keyboard navigation if needed for full compliance
+      });
+    }
+
+    onTabClick(e: MouseEvent) {
+      const clickedTab = e.currentTarget as HTMLButtonElement;
+
+      // Deactivate all other tabs
+      this.tabs.forEach(tab => {
+        tab.setAttribute('aria-selected', 'false');
+        tab.classList.remove('is-active');
+      });
+      // Hide all panels
+      this.panels.forEach(panel => {
+        panel.hidden = true;
+        panel.classList.remove('is-active');
+      });
+
+      // Activate the clicked tab and its corresponding panel
+      clickedTab.setAttribute('aria-selected', 'true');
+      clickedTab.classList.add('is-active');
+      
+      const controlsPanelId = clickedTab.getAttribute('aria-controls');
+      const controlledPanel = this.container.querySelector<HTMLElement>(`#${controlsPanelId}`);
+      if (controlledPanel) {
+        controlledPanel.hidden = false;
+        controlledPanel.classList.add('is-active');
+      }
+    }
+  }
+
+  // Find the tab container on the page and initialize the script
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabContainer = document.getElementById('creator-tabs');
+    if (tabContainer) {
+      new AccessibleTabs(tabContainer);
+    }
+  });
+</script>

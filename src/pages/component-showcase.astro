@@ -1,0 +1,132 @@
+---
+// src/pages/component-showcase.astro
+// --- A simpler, more reliable showcase page ---
+import Layout from '../components/astro/layout.astro';
+
+// Import all UI components
+import { Alert, AlertTitle, AlertDescription } from '../components/ui/alert';
+import { Avatar, AvatarImage, AvatarFallback } from '../components/ui/avatar';
+import { Badge } from '../components/ui/badge';
+import { Button } from '../components/ui/button';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/card';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '../components/ui/dialog';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '../components/ui/dropdown-menu';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label'; // We will only use this for NON-interactive elements
+import { RadioGroup, RadioGroupItem } from '../components/ui/radio-group';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem, SelectLabel } from '../components/ui/select';
+import { Separator } from '../components/ui/separator';
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '../components/ui/sheet';
+import { Slider } from '../components/ui/slider';
+import { Switch } from '../components/ui/switch';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
+import { Textarea } from '../components/ui/textarea';
+
+// Import an icon library for demonstration
+import { Mail, UserPlus, Settings, LogOut } from 'lucide-react';
+---
+
+<Layout title="Component Showcase">
+  <div class="max-w-7xl mx-auto px-4 py-12 space-y-16">
+    <header>
+      <h1 class="text-5xl font-bold font-display text-white">Component Showcase</h1>
+      <p class="text-lg text-gray-400 mt-2">A display of all available UI components.</p>
+    </header>
+
+    <section>
+        <h2 class="text-3xl font-bold mb-6 text-pink-400">Static Components</h2>
+        <div class="space-y-8">
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-300">Alert</h3>
+                <div class="space-y-4">
+                    <Alert><AlertTitle>Heads up!</AlertTitle><AlertDescription>This is a default alert.</AlertDescription></Alert>
+                    <Alert variant="destructive"><AlertTitle>Error!</AlertTitle><AlertDescription>This is a destructive alert.</AlertDescription></Alert>
+                    <Alert variant="success"><AlertTitle>Success!</AlertTitle><AlertDescription>This is a success alert.</AlertDescription></Alert>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-300">Avatar</h3>
+                <div class="flex items-center gap-4"><Avatar><AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /><AvatarFallback>CN</AvatarFallback></Avatar><Avatar><AvatarFallback>ZA</AvatarFallback></Avatar></div>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-gray-300">Badge</h3>
+                <div class="flex flex-wrap gap-4"><Badge>Default</Badge><Badge variant="secondary">Secondary</Badge><Badge variant="destructive">Destructive</Badge><Badge variant="outline">Outline</Badge></div>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4 text-gray-300">Button</h3>
+                <div class="flex flex-wrap items-center gap-4"><Button>Default</Button><Button variant="destructive">Destructive</Button><Button variant="outline">Outline</Button><Button variant="secondary">Secondary</Button><Button variant="ghost">Ghost</Button><Button variant="link">Link</Button><Button><Mail className="mr-2 h-4 w-4" /> With Icon</Button></div>
+            </div>
+             <div>
+                <h3 class="text-xl font-bold mb-4 text-gray-300">Card</h3>
+                <Card class="w-[350px]"><CardHeader><CardTitle>Card Title</CardTitle><CardDescription>Card Description</CardDescription></CardHeader><CardContent><p>This is the card content area.</p></CardContent><CardFooter class="flex justify-between"><Button variant="outline">Cancel</Button><Button>Confirm</Button></CardFooter></Card>
+            </div>
+        </div>
+    </section>
+
+    <Separator />
+
+    <section>
+        <h2 class="text-3xl font-bold mb-6 text-pink-400">Interactive Components</h2>
+        <div class="space-y-8">
+            <div class="flex flex-wrap gap-4 items-start">
+                <div client:load>
+                    <Dialog><DialogTrigger asChild><Button variant="outline">Open Dialog</Button></DialogTrigger><DialogContent class="sm:max-w-[425px]"><DialogHeader><DialogTitle>Dialog Title</DialogTitle><DialogDescription>Description of the dialog goes here.</DialogDescription></DialogHeader><DialogFooter><DialogClose asChild><Button>Close</Button></DialogClose></DialogFooter></DialogContent></Dialog>
+                </div>
+                <div client:load>
+                    <Sheet><SheetTrigger asChild><Button variant="outline">Open Sheet</Button></SheetTrigger><SheetContent><SheetHeader><SheetTitle>Sheet Title</SheetTitle><SheetDescription>Description of the sheet goes here.</SheetDescription></SheetHeader></SheetContent></Sheet>
+                </div>
+                <div client:load>
+                    <DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline">Open Dropdown</Button></DropdownMenuTrigger><DropdownMenuContent class="w-56"><DropdownMenuLabel>My Account</DropdownMenuLabel><DropdownMenuSeparator /><DropdownMenuItem><UserPlus className="mr-2 h-4 w-4" /><span>Profile</span></DropdownMenuItem><DropdownMenuItem><Settings className="mr-2 h-4 w-4" /><span>Settings</span></DropdownMenuItem><DropdownMenuSeparator /><DropdownMenuItem><LogOut className="mr-2 h-4 w-4" /><span>Log out</span></DropdownMenuItem></DropdownMenuContent></DropdownMenu>
+                </div>
+            </div>
+             <div client:load class="w-full max-w-md">
+                <Tabs defaultValue="account">
+                    <TabsList><TabsTrigger value="account">Account</TabsTrigger><TabsTrigger value="password">Password</TabsTrigger></TabsList>
+                    <TabsContent value="account" class="p-4 border rounded-md mt-2">Account settings panel.</TabsContent>
+                    <TabsContent value="password" class="p-4 border rounded-md mt-2">Password settings panel.</TabsContent>
+                </Tabs>
+            </div>
+        </div>
+    </section>
+
+    <Separator />
+
+    <section>
+        <h2 class="text-3xl font-bold mb-6 text-pink-400">Form Inputs</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="space-y-8">
+                 <div>
+                    <Label htmlFor="email-input">Email Input</Label>
+                    <Input type="email" id="email-input" placeholder="user@example.com" class="mt-2" />
+                </div>
+                 <div>
+                    <Label htmlFor="text-area">Text Area</Label>
+                    <Textarea placeholder="Type your message here." id="text-area" class="mt-2" />
+                </div>
+                 <div class="flex items-center space-x-2" client:load>
+                    <Switch id="notifications" />
+                    <label for="notifications" class="text-sm font-medium">Enable Notifications</label>
+                </div>
+            </div>
+            <div class="space-y-8">
+                <div client:load>
+                    <p class="text-sm font-medium mb-2">Select an Option</p>
+                    <Select><SelectTrigger class="w-[240px]"><SelectValue placeholder="Choose a framework" /></SelectTrigger><SelectContent><SelectGroup><SelectLabel>Frameworks</SelectLabel><SelectItem value="astro">Astro</SelectItem><SelectItem value="next">Next.js</SelectItem><SelectItem value="remix">Remix</SelectItem></SelectGroup></SelectContent></Select>
+                </div>
+                <div client:load>
+                    <p class="text-sm font-medium mb-2">Choose a Plan</p>
+                    <RadioGroup defaultValue="free">
+                        <div class="flex items-center space-x-2"><RadioGroupItem value="free" id="plan-free" /><label for="plan-free">Free</label></div>
+                        <div class="flex items-center space-x-2"><RadioGroupItem value="pro" id="plan-pro" /><label for="plan-pro">Pro</label></div>
+                    </RadioGroup>
+                </div>
+                <div client:load>
+                    <p class="text-sm font-medium mb-2">Adjust Volume</p>
+                    <Slider defaultValue={[50]} max={100} step={1} />
+                </div>
+            </div>
+        </div>
+    </section>
+
+  </div>
+</Layout>
