@@ -1,0 +1,297 @@
+---
+// src/pages/photos.astro
+import Layout from '@/components/astro/layout.astro';
+import '@/styles/global.css';
+
+// --- Mock Data for the Photos Page ---
+const creators = [
+  { name: 'Aperture_Ace', avatarEmoji: '📸', photos: 214, specialty: 'Landscapes' },
+  { name: 'Portrait_Pixel', avatarEmoji: '🧑‍🎨', photos: 182, specialty: 'Portraits' },
+  { name: 'Urban_Utopia', avatarEmoji: '🏙️', photos: 305, specialty: 'Cityscapes' },
+  { name: 'Abstract_Lens', avatarEmoji: '🌀', photos: 98, specialty: 'Abstract' },
+];
+
+const categories = [
+  { title: 'Landscapes', gradient: 'from-blue-600/30 to-teal-600/30', icon: '🏞️' },
+  { title: 'Portraits', gradient: 'from-purple-600/30 to-pink-600/30', icon: '👤' },
+  { title: 'Cityscapes', gradient: 'from-orange-600/30 to-red-600/30', icon: '🌇' },
+  { title: 'Abstract', gradient: 'from-yellow-600/30 to-lime-600/30', icon: '🎨' },
+  { title: 'Wildlife', gradient: 'from-green-600/30 to-emerald-600/30', icon: '🐅' },
+  { title: 'Street', gradient: 'from-slate-600/30 to-gray-600/30', icon: '🚶' },
+];
+
+const latestPhotos = [
+  { id: 1, title: 'Neon Nights in Neo-Tokyo', user: '@Urban_Utopia', emoji: '🌃' },
+  { id: 2, title: 'Serenity Peak', user: '@Aperture_Ace', emoji: '🏔️' },
+  { id: 3, title: 'The Gaze', user: '@Portrait_Pixel', emoji: '👁️' },
+  { id: 4, title: 'Chromatic Chaos', user: '@Abstract_Lens', emoji: '💥' },
+  { id: 5, title: 'Golden Hour Savannah', user: '@WildLens', emoji: '🦓' },
+  { id: 6, title: 'Rainy Day Reflections', user: '@Street_Snapper', emoji: '💧' },
+];
+
+const topVotedPhotos = [
+  { id: 7, title: 'Galactic Gateway', user: '@Aperture_Ace', votes: '12.1k', aspect: 'aspect-[3/4]', emoji: '🌌' },
+  { id: 8, title: 'Concrete Jungle', user: '@Urban_Utopia', votes: '11.8k', aspect: 'aspect-[16/9]', emoji: '🌉' },
+  { id: 9, title: 'Whispers of the Past', user: '@Portrait_Pixel', votes: '9.5k', aspect: 'aspect-square', emoji: '📜' },
+  { id: 10, title: 'Molten Flow', user: '@Abstract_Lens', votes: '8.2k', aspect: 'aspect-[16/9]', emoji: '🌋' },
+  { id: 11, title: 'King of the Arctic', user: '@WildLens', votes: '7.9k', aspect: 'aspect-[3/4]', emoji: '🐻‍❄️' },
+  { id: 12, title: 'Market Hustle', user: '@Street_Snapper', votes: '6.4k', aspect: 'aspect-square', emoji: '🍎' },
+];
+
+// --- NEW MOCK DATA ---
+const trendingTags = [
+  '#futuristic', '#fantasy', '8K', 'photorealistic', 'cinematic', '#cyberpunk',
+  '#solarpunk', 'watercolor', '3D render', '#abstract', 'minimalist'
+];
+
+const aiTools = [
+  { name: 'Midjourney', icon: '🎨', gradient: 'from-indigo-500/30 to-purple-500/30' },
+  { name: 'DALL-E 3', icon: '✨', gradient: 'from-sky-500/30 to-blue-500/30' },
+  { name: 'Stable Diffusion', icon: '🌀', gradient: 'from-rose-500/30 to-red-500/30' },
+  { name: 'Firefly', icon: '🔥', gradient: 'from-amber-500/30 to-orange-500/30' }
+];
+
+const communitySpotlight = {
+  name: 'Pixel_Prophet',
+  avatarEmoji: '🔮',
+  bio: 'Weaving dreams into digital tapestries. Specializing in surreal and fantasy landscapes that tell a story.',
+  joinDate: 'Joined March 2025',
+  images: [
+    { id: 13, emoji: '🏰' },
+    { id: 14, emoji: '🐉' },
+    { id: 15, emoji: '🌲' },
+  ]
+};
+---
+
+<Layout 
+  title="Photos - Discover AI Photography" 
+  description="Explore a stunning gallery of AI-generated photography. From breathtaking landscapes to intimate portraits."
+  class="bg-gray-950"
+>
+  <!-- Hero Section -->
+  <section class="relative h-[60vh] min-h-[400px] flex items-end p-8 md:p-12 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-800 to-purple-800 z-0 flex items-center justify-center">
+        <div class="text-8xl opacity-30">🖼️</div>
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10"></div>
+    <div class="relative z-20">
+      <h1 class="text-4xl md:text-6xl font-black mb-2">AI Photo Gallery</h1>
+      <p class="text-lg md:text-xl text-gray-300 max-w-2xl">
+        Discover breathtaking images crafted by artificial intelligence. A new frontier in visual art.
+      </p>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 py-16">
+
+    <!-- Latest Shots Section -->
+    <section>
+      <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Latest Shots</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {latestPhotos.map(photo => (
+          <a href="#" class="photo-card group">
+            <div class="relative aspect-video rounded-lg overflow-hidden border border-gray-800">
+              <div class="w-full h-full bg-gray-900 flex items-center justify-center text-5xl">{photo.emoji}</div>
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="text-white font-bold text-lg">View Photo</span>
+              </div>
+            </div>
+            <div class="pt-3">
+              <h3 class="font-semibold text-white truncate">{photo.title}</h3>
+              <p class="text-sm text-pink-400">{photo.user}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+    
+    <!-- NEW: Trending Tags Section -->
+    <section>
+      <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Trending Tags</h2>
+      <div class="flex flex-wrap gap-3">
+        {trendingTags.map(tag => (
+          <a href="#" class="tag-chip">{tag}</a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Browse by Category Section -->
+    <section>
+      <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Browse by Category</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+        {categories.map(cat => (
+          <a href="#" class:list={[`category-tile group relative rounded-lg p-6 flex flex-col justify-end items-start overflow-hidden`, cat.style]}>
+            <div class={`absolute inset-0 bg-gradient-to-br ${cat.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}></div>
+            <div class="absolute inset-0 flex items-center justify-center text-6xl opacity-20 group-hover:opacity-30 transition-opacity scale-150 group-hover:scale-125">
+              {cat.icon}
+            </div>
+            <div class="relative z-10">
+              <h3 class="text-2xl font-bold text-white">{cat.title}</h3>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+    
+    <!-- NEW: Explore by AI Tool -->
+    <section>
+      <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Explore by AI Tool</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {aiTools.map(tool => (
+          <a href="#" class={`tool-card group relative rounded-lg p-6 flex flex-col items-center justify-center text-center overflow-hidden`}>
+            <div class={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}></div>
+            <div class="relative z-10">
+              <div class="text-5xl mb-3">{tool.icon}</div>
+              <h3 class="text-xl font-bold text-white">{tool.name}</h3>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+    
+    <!-- NEW: Community Spotlight Section -->
+    <section class="spotlight-section bg-gray-900/50 border border-gray-800 rounded-2xl p-8 md:p-12">
+        <div class="grid md:grid-cols-3 gap-8 items-center">
+            <div class="md:col-span-1 text-center md:text-left">
+                 <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-pink-600 to-purple-600 flex items-center justify-center text-6xl mx-auto md:mx-0 mb-4 shadow-lg">
+                    {communitySpotlight.avatarEmoji}
+                </div>
+                <h2 class="text-3xl font-bold text-white">{communitySpotlight.name}</h2>
+                <p class="text-gray-400 mb-4">{communitySpotlight.joinDate}</p>
+                <p class="text-gray-300 mb-6">{communitySpotlight.bio}</p>
+                <a href="#" class="inline-block bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">View Profile</a>
+            </div>
+            <div class="md:col-span-2">
+                <div class="grid grid-cols-3 gap-4">
+                    {communitySpotlight.images.map(img => (
+                        <div class="aspect-square bg-gray-800 rounded-lg flex items-center justify-center text-5xl hover:opacity-80 transition-opacity cursor-pointer border border-gray-700">
+                            {img.emoji}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Creators Section -->
+    <section>
+      <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">More Featured Creators</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {creators.map(creator => (
+          <div class="creator-card bg-gray-900/50 border border-gray-800 rounded-lg p-6 text-center">
+            <div class="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center text-4xl mx-auto mb-4">{creator.avatarEmoji}</div>
+            <h3 class="text-xl font-bold text-white">{creator.name}</h3>
+            <p class="text-sm text-gray-400 mb-4">{creator.specialty}</p>
+            <div class="text-sm font-medium text-pink-400">{creator.photos} Photos</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Top Voted Section (Masonry) -->
+    <section>
+        <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Top Voted This Week</h2>
+        <div class="masonry-grid">
+            {topVotedPhotos.map(photo => (
+                <div class:list={["masonry-item group relative rounded-lg overflow-hidden", photo.aspect]}>
+                    <div class="w-full h-full bg-gray-900 flex items-center justify-center text-6xl">{photo.emoji}</div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex flex-col justify-end">
+                        <h3 class="font-bold text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0">{photo.title}</h3>
+                        <p class="text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity delay-100 translate-y-4 group-hover:translate-y-0">{photo.user}</p>
+                        <div class="absolute top-4 right-4 bg-black/50 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                            <span class="text-pink-400">▲</span>
+                            <span>{photo.votes}</span>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </section>
+  </div>
+
+</Layout>
+
+<style>
+  .photo-card {
+    transition: transform 0.3s;
+  }
+  .photo-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .category-tile {
+    aspect-ratio: 4 / 3;
+    transition: all 0.3s;
+  }
+  .category-tile:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+
+  .creator-card {
+    transition: all 0.3s;
+  }
+  .creator-card:hover {
+    background-color: rgba(31, 41, 55, 0.7); /* bg-gray-800/70 */
+    border-color: #ec4899; /* pink-500 */
+  }
+
+  /* Masonry grid setup */
+  .masonry-grid {
+    column-count: 1;
+    column-gap: 1.5rem; /* gap-6 */
+  }
+
+  @media (min-width: 640px) {
+    .masonry-grid {
+        column-count: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .masonry-grid {
+        column-count: 3;
+    }
+  }
+
+  .masonry-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1.5rem; /* gap-6 */
+    break-inside: avoid;
+    border: 1px solid #374151; /* border-gray-700 */
+  }
+  .masonry-item:hover {
+     box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
+     border-color: rgba(236, 72, 153, 0.5);
+  }
+  
+  /* Styles for new sections */
+  .tag-chip {
+    display: inline-block;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    background-color: rgba(31, 41, 55, 0.5); /* bg-gray-800/50 */
+    border: 1px solid #4b5563; /* border-gray-600 */
+    border-radius: 9999px; /* rounded-full */
+    color: #d1d5db; /* text-gray-300 */
+    font-weight: 500; /* font-medium */
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .tag-chip:hover {
+    background-color: #ec4899; /* pink-500 */
+    color: white;
+    border-color: #ec4899;
+    transform: translateY(-2px);
+  }
+
+  .tool-card {
+    aspect-ratio: 1 / 1;
+    transition: all 0.3s ease;
+  }
+  .tool-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+</style>

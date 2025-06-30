@@ -1,0 +1,26 @@
+---
+// src/components/Hero.astro
+
+// --- Component Props ---
+interface Props {
+  title: string;
+  tagline: string;
+  titleSlot?: string; // Optional prop for the part of the title to be styled differently
+}
+
+const { title, tagline, titleSlot } = Astro.props;
+---
+
+<section class="py-8">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+        {title}
+        {titleSlot && <span class="text-gradient-pink">{titleSlot}</span>}
+      </h1>
+      <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+        {tagline} ✨
+      </p>
+    </div>
+  </div>
+</section>

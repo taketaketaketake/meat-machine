@@ -17,6 +17,23 @@ const newestMembers = [
     { handle: '@code_poet', avatarEmoji: '✍️' }
 ];
 
+const styleHotspots = [
+  { id: 'spot-1', title: 'Corktown Eats', creator: 'Motor City Muncher', coords: { top: '55%', left: '38%' } },
+  { id: 'spot-2', title: 'Midtown Art Scene', creator: 'Explore Detroit', coords: { top: '40%', left: '50%' } },
+  { id: 'spot-3', title: 'Eastern Market Haul', creator: 'Detroit Dabs', coords: { top: '45%', left: '65%' } },
+  { id: 'spot-4', title: 'Riverfront Skate Park', creator: 'Explore Detroit', coords: { top: '70%', left: '55%' } },
+];
+
+const themedCollection = {
+  title: "The Canna-seur's Guide to Edibles",
+  description: "A curated collection of videos covering everything from cooking basics to advanced infusion techniques. Your journey to becoming a cannabis culinary expert starts here.",
+  videos: [
+    { id: 'th-1', title: 'Cooking with Cannabis: The Basics', duration: '8:20' },
+    { id: 'th-2', title: 'DIY Tinctures & Oils', duration: '7:15' },
+    { id: 'th-3', title: 'Gourmet Gummy Recipe', duration: '12:45' },
+  ],
+};
+
 const categories = [ { id: "all", label: "All Videos" }, { id: "cannabis", label: "Cannabis" }, { id: "food", label: "Food & Drink" }, { id: "local", label: "Local Businesses" }, { id: "events", label: "Events" }];
 
 // --- NEW: Data for the Hero Slider ---
@@ -294,29 +311,6 @@ const tools = [
       </div>
     </section>
 
-    <section>
-      <div class="border-l-4 border-cyan-500 pl-6 mb-8">
-        <h2 class="text-3xl font-bold text-white">Spotlight on the Tools</h2>
-        <p class="text-gray-400">Discover the magic behind the masterpieces.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {tools.map(tool => (
-          <div class="bg-gray-900/50 rounded-xl p-6 border border-gray-800 hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col">
-            <div class={`w-16 h-16 rounded-lg bg-gradient-to-br ${tool.gradient} flex items-center justify-center text-4xl mb-4`}>
-              {tool.icon}
-            </div>
-            <h3 class="text-xl font-bold text-white">{tool.name}</h3>
-            <div class="flex gap-2 mt-2">
-              {tool.tags.map(tag => <span class="text-xs bg-cyan-500/10 text-cyan-300 px-2 py-1 rounded-full">{tag}</span>)}
-            </div>
-            <p class="text-gray-400 mt-4 text-sm flex-grow">{tool.description}</p>
-            <a href="#" class="inline-block mt-6 text-sm font-semibold text-cyan-400 hover:text-cyan-300">View Creations &rarr;</a>
-          </div>
-        ))}
-      </div>
-    </section>
-
-
     <section id="option5" class="space-y-6">
       <div class="border-l-4 border-purple-500 pl-6">
         <h2 class="text-2xl font-bold text-white">
@@ -347,6 +341,30 @@ const tools = [
         ))}
       </div>
     </section>
+
+          <!-- ======================================= -->
+      <!-- 3. INTERACTIVE: "Discover by Location" Map -->
+      <!-- ======================================= -->
+      <section>
+        <div class="text-center">
+          <h2 class="text-3xl font-bold text-white">Discover by Location</h2>
+          <p class="mt-2 text-lg text-gray-400">Explore an interactive map of Detroit. Click a hotspot to find content.</p>
+        </div>
+        <div class="relative w-full max-w-4xl mx-auto mt-12 aspect-video rounded-xl border-2 border-dashed border-gray-700/50 bg-gray-950/30 p-4">
+          <div class="absolute inset-0 bg-grid-gray-800/20 [mask-image:radial-gradient(ellipse_at_center,white,transparent_70%)]"></div>
+          {styleHotspots.map(spot => (
+            <div class="absolute" style={`top: ${spot.coords.top}; left: ${spot.coords.left};`}>
+              <a href="#" class="group relative">
+                <div class="w-4 h-4 rounded-full bg-pink-500 transition-all duration-300 group-hover:scale-150 animate-pulse"></div>
+                <div class="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-48 bg-gray-900 border border-gray-700 p-2 rounded-lg text-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  <p class="font-bold text-white text-sm">{spot.title}</p>
+                  <p class="text-xs text-gray-400">by {spot.creator}</p>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
 
     <section id="option6" class="space-y-6">
       <div class="border-l-4 border-teal-500 pl-6">
@@ -497,6 +515,32 @@ const tools = [
         </div>
       </div>
     </section>
+
+                <!-- ======================================= -->
+      <!-- 4. "Themed Collection" Feature          -->
+      <!-- ======================================= -->
+      <section>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+           <div class="text-center lg:text-left">
+              <p class="text-sm font-bold uppercase tracking-wider text-pink-400">Curated Collection</p>
+              <h2 class="mt-2 text-4xl font-black text-white">{themedCollection.title}</h2>
+              <p class="mt-4 text-lg text-gray-400">{themedCollection.description}</p>
+              <a href="#" class="btn-primary mt-8">Explore Collection</a>
+           </div>
+           <div class="space-y-4">
+              {themedCollection.videos.map((video, i) => (
+                 <a href="#" class="flex items-center gap-4 bg-gray-900/50 p-4 rounded-xl border border-gray-800 hover:bg-gray-800/50 hover:border-pink-500/30 transition-all">
+                    <div class="text-2xl font-bold text-gray-600">0{i + 1}</div>
+                    <div class="flex-grow">
+                       <h3 class="font-semibold text-white">{video.title}</h3>
+                       <p class="text-sm text-gray-400">{video.duration}</p>
+                    </div>
+                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700/50 text-white">▶</div>
+                 </a>
+              ))}
+           </div>
+        </div>
+     </section>
 
     <section id="option10" class="space-y-6">
       <div class="border-l-4 border-indigo-500 pl-6">

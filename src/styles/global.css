@@ -244,3 +244,26 @@ body {
 .bg-gallery-radial {
   background: radial-gradient(ellipse at center, rgba(236, 72, 153, 0.05) 0%, transparent 70%);
 }
+
+/* Add these styles to your global CSS file for the Swiper controls */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ec4899; /* This is Tailwind's pink-500 */
+  transition: color 0.2s;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: #f472b6; /* This is Tailwind's pink-400 */
+}
+
+.swiper-pagination-bullet {
+  background-color: #6b7280; /* gray-500 */
+  opacity: 0.8;
+  transition: all 0.2s;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #ec4899; /* pink-500 */
+  transform: scale(1.2);
+}

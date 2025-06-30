@@ -1,0 +1,46 @@
+---
+// --- Child Component: CreatorCard ---
+// This component's only job is to display one creator card.
+interface Creator {
+    id: number;
+    name: string;
+    handle: string;
+    avatarEmoji: string;
+    bannerGradient: string;
+    specialty: string;
+    specialtyColor: string;
+    bio: string;
+    subscriberCount: number;
+    videoCount: number;
+}
+
+interface Props {
+    creator: Creator;
+}
+
+const { creator } = Astro.props;
+---
+
+<div class="bg-gray-900/50 rounded-xl shadow-lg border border-gray-800 flex flex-col h-full">
+    <div class={`h-24 rounded-t-xl bg-gradient-to-br ${creator.bannerGradient}`}></div>
+    <div class="flex-grow p-6 pt-0">
+      <div class="flex justify-center -mt-12">
+        <div class="w-24 h-24 rounded-full bg-gray-800 border-4 border-gray-900 flex items-center justify-center text-4xl shadow-lg">{creator.avatarEmoji}</div>
+      </div>
+      <div class="text-center mt-4">
+        <h3 class="text-xl font-bold text-white">{creator.name}</h3>
+        <p class="text-pink-400 text-sm">@{creator.handle}</p>
+        <span class={`mt-3 inline-block text-xs font-medium px-3 py-1 rounded-full ${creator.specialtyColor}`}>{creator.specialty}</span>
+      </div>
+      <p class="text-gray-400 text-sm text-center my-4 min-h-[4rem]">{creator.bio}</p>
+      <div class="flex justify-around text-center text-sm border-y border-gray-800 py-3">
+        <div><div class="font-bold text-white">{(creator.subscriberCount / 1000).toFixed(1)}K</div><div class="text-gray-400 text-xs">Subscribers</div></div>
+        <div><div class="font-bold text-white">{creator.videoCount}</div><div class="text-gray-400 text-xs">Videos</div></div>
+      </div>
+    </div>
+    <div class="p-4 mt-auto">
+      <a href="#" class="w-full text-center inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-pink-600 text-white shadow hover:bg-pink-500 transition-colors">
+        View Channel
+      </a>
+    </div>
+</div>
