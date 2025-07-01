@@ -90,19 +90,21 @@ export default function Navbar({ children }) {
   const mainLinks = [ 
     { icon: <HomeIcon />, text: 'Home', url: '/' }, 
     { icon: <CompassIcon />, text: 'Explore', url: '/explore' }, 
-    { icon: <SubscriptionsIcon />, text: 'Subscriptions', url: '/feed/subscriptions' }, 
+    { icon: <HistoryIcon />, text: 'Audio', url: '/audio' }, 
+    { icon: <HistoryIcon />, text: 'Photos', url: '/photos' }, 
+    { icon: <SubscriptionsIcon />, text: 'Videos', url: '/videos' },
+    { icon: <HistoryIcon />, text: 'Words', url: '/words' }, 
   ];
   
   const secondaryLinks = [ 
     { icon: <DashboardIcon />, text: 'Dashboard', url: '/dashboard' },
-    { icon: <HistoryIcon />, text: 'History', url: '/feed/history' }, 
-    { icon: <VideoIcon />, text: 'Your Videos', url: '/content/my-videos' }, 
-    { icon: <WatchLaterIcon />, text: 'Watch Later', url: '/playlist/watch-later' }, 
+    { icon: <VideoIcon />, text: 'Your Profile', url: '/creator/[username]' }, 
+    { icon: <WatchLaterIcon />, text: 'Saved', url: '/playlist/watch-later' }, 
   ];
   
   const moreLinks = [ 
-      { icon: <FireIcon />, text: 'Trending', url: '/feed/trending'},
-      { icon: <ShoppingBagIcon />, text: 'Shopping', url: '/shopping'},
+      { icon: <FireIcon />, text: 'Settings', url: '/creator/settings'},
+      { icon: <ShoppingBagIcon />, text: 'Your Uploads', url: '/shopping'},
   ];
   const subscriptions = [ 
     { name: 'Awesome Channel', avatar: 'bg-indigo-500', url: '/content/videos' },
@@ -179,7 +181,7 @@ export default function Navbar({ children }) {
 
               <div className="border-t border-gray-700 my-4"></div>
 
-              {isSidebarExpanded && <h2 className="px-4 pt-2 pb-1 text-sm font-semibold text-gray-500 tracking-wider">Subscriptions</h2>}
+              {isSidebarExpanded && <h2 className="px-4 pt-2 pb-1 text-sm font-semibold text-gray-500 tracking-wider">Communities</h2>}
               
               {subscriptions.map(sub => <SubscriptionItem key={sub.name} {...sub} isExpanded={isSidebarExpanded} />)}
 

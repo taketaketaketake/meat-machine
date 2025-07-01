@@ -10,6 +10,8 @@ const user = {
   avatarEmoji: '🔮',
   joinDate: 'Joined March 2025',
   bio: 'Weaving dreams into digital tapestries. Specializing in surreal and fantasy landscapes that tell a story with AI.',
+  // ADDED: A donation link for this user.
+  donation_url: 'https://www.buymeacoffee.com/pixelprophet',
   stats: {
     creations: 128,
     collections: 12,
@@ -55,6 +57,13 @@ const user = {
         </div>
 
         <div class="mt-6 flex justify-center md:justify-end gap-3 flex-shrink-0">
+            <!-- ADDED: Conditionally render the Tip button -->
+            {user.donation_url && (
+              <a href={user.donation_url} target="_blank" rel="noopener noreferrer" class="btn-ghost flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg>
+                <span>Tip</span>
+              </a>
+            )}
             <button class="btn-ghost">Message</button>
             <button class="btn-primary">Follow</button>
         </div>
