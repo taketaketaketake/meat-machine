@@ -32,13 +32,11 @@ export default function Header() {
     return (
         <header className="bg-gray-950 text-white p-4 flex items-center justify-between z-40">
             {/* Left Section: Logo */}
-            <div className="flex items-center">
-                <a href="/" aria-label="Go to Homepage">
-                     <h1 className="text-2xl font-bold tracking-wider whitespace-nowrap">
-                        <span className="text-red-500">M</span>EAT
-                    </h1>
-                </a>
-            </div>
+            <div class="flex items-center">
+    <a href="/" aria-label="Go to Homepage">
+        <img src="/meat_logo.png" alt="Machine Creativity Logo" class="h-8 w-auto" />
+    </a>
+</div>
 
             {/* Center Section: Search Bar */}
             <div className="flex-1 flex justify-center px-4 lg:px-16">

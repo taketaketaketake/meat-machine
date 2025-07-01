@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase/supabase';
 
 // --- SVG Icon Components (No changes needed) ---
 const HomeIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" /> </svg> );
@@ -7,7 +8,7 @@ const SubscriptionsIcon = ({ className = "w-6 h-6" }) => ( <svg className={class
 const HistoryIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M13 3a9 9 0 00-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21a9 9 0 000-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" /> </svg> );
 const VideoIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4zM15 16H5V8h10v8z"/> </svg> );
 const WatchLaterIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.25 12.15L11 11.49v-5h2v4.1l4.5 2.65-1.25 2.4z"/> </svg> );
-const FireIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M17.63 7.84C17.27 7.32 16.63 7 16 7s-1.27.32-1.63.84L12 12.17l-2.37-4.33C9.27 7.32 8.63 7 8 7s-1.27.32-1.63.84l-3.37 6.1c-.38.68-.38 1.52 0 2.2l3.37 6.1c.36.52.99.85 1.63.85s1.27-.32 1.63-.84L12 13.83l2.37 4.33c.36.52.99.85 1.63.85s1.27-.32 1.63-.84l3.37-6.1c.38-.68-.38-1.52 0-2.2l-3.37-6.1zM11.33 13L10 15.27 8.67 13 10 10.73 11.33 13zm3.34 0L16 10.73 17.33 13 16 15.27 14.67 13z"/> </svg> );
+const FireIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M17.63 7.84C17.27 7.32 16.63 7 16 7s-1.27.32-1.63.84L12 12.17l-2.37-4.33C9.27 7.32 8.63 7 8 7s-1.27.32-1.63.84l-3.37 6.1c-.38.68-.38 1.52 0 2.2l3.37 6.1c.36.52.99.85 1.63.85s1.27-.32 1.63-.84L12 13.83l2.37 4.33c.36.52.99.85 1.63.85s1.27-.32 1.63-.84l3.37-6.1c-.38.68-.38-1.52 0-2.2l-3.37-6.1zM11.33 13L10 15.27 8.67 13 10 10.73 11.33 13zm3.34 0L16 10.73 17.33 13 16 15.27 14.67 13z"/> </svg> );
 const ShoppingBagIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/> </svg> );
 const ChevronDownIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" /> </svg> );
 const ChevronUpIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" /> </svg> );
@@ -15,21 +16,16 @@ const HamburgerIcon = ({ className = "w-6 h-6" }) => ( <svg className={className
 const SearchIcon = ({ className = "w-5 h-5" }) => ( <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> );
 const UserCircleIcon = ({ className = "w-8 h-8" }) => ( <svg className={className} fill="currentColor" viewBox="0 0 20 20"> <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zM8 13a4 4 0 104 0H8z" clipRule="evenodd" /> </svg> );
 const LogoutIcon = ({ className = "w-5 h-5" }) => ( <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path> </svg> );
+const DashboardIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg> );
 
-// --- Header Component ---
-const Header = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const handleLogin = () => setIsLoggedIn(true);
-    const handleLogout = () => setIsLoggedIn(false);
-
+// --- Header Component (Now Presentational) ---
+const Header = ({ session, onLogout }) => {
     return (
         <header className="bg-gray-950 text-white p-4 flex items-center justify-between z-40">
             <div className="flex items-center">
-                <a href="/" aria-label="Go to Homepage">
-                    <h1 className="text-2xl font-bold tracking-wider whitespace-nowrap">
-                        <span className="text-red-500">M</span>EAT
-                    </h1>
-                </a>
+              <a href="/" aria-label="Go to Homepage">
+                <img src="/meat_logo.png" alt="Machine Creativity Logo" className="h-8 w-auto" />
+              </a>
             </div>
             <div className="flex-1 flex justify-center px-4 lg:px-16">
                 <div className="w-full max-w-2xl relative">
@@ -40,7 +36,30 @@ const Header = () => {
                 </div>
             </div>
             <div className="flex items-center space-x-4">
-                {isLoggedIn ? ( <div className="relative group"> <button className="flex items-center space-x-2"> <UserCircleIcon className="text-gray-400 group-hover:text-white" /> </button> <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200"> <a href="/profile" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Profile</a> <a href="/settings" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Settings</a> <div className="border-t border-gray-700 my-1"></div> <button onClick={handleLogout} className="w-full text-left flex items-center px-4 py-2 text-sm text-red-400 hover:bg-gray-700"> <LogoutIcon className="mr-2" /> Logout </button> </div> </div> ) : ( <div className="flex items-center space-x-2"> <button onClick={handleLogin} className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-gray-600 rounded-full hover:bg-gray-800 transition"> Log In </button> <button className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-full hover:bg-red-700 transition"> Sign Up </button> </div> )}
+                {session ? ( 
+                    <div className="relative group"> 
+                        <button className="flex items-center space-x-2"> 
+                            <UserCircleIcon className="text-gray-400 group-hover:text-white" /> 
+                        </button> 
+                        <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200"> 
+                            <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Dashboard</a> 
+                            <a href="/settings" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Settings</a> 
+                            <div className="border-t border-gray-700 my-1"></div> 
+                            <button onClick={onLogout} className="w-full text-left flex items-center px-4 py-2 text-sm text-red-400 hover:bg-gray-700"> 
+                                <LogoutIcon className="mr-2" /> Logout 
+                            </button> 
+                        </div> 
+                    </div> 
+                ) : ( 
+                    <div className="flex items-center space-x-2"> 
+                        <a href="/register" className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-gray-600 rounded-full hover:bg-gray-800 transition">
+                            Log In
+                        </a>
+                        <a href="/register" className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-full hover:bg-red-700 transition">
+                            Sign Up
+                        </a>
+                    </div> 
+                )}
             </div>
         </header>
     );
@@ -50,18 +69,37 @@ const Header = () => {
 export default function Navbar({ children }) {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [session, setSession] = useState(null);
 
-  // STEP 1: Define all the URLs in your data arrays.
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   const mainLinks = [ 
     { icon: <HomeIcon />, text: 'Home', url: '/' }, 
     { icon: <CompassIcon />, text: 'Explore', url: '/explore' }, 
     { icon: <SubscriptionsIcon />, text: 'Subscriptions', url: '/feed/subscriptions' }, 
   ];
+  
   const secondaryLinks = [ 
+    { icon: <DashboardIcon />, text: 'Dashboard', url: '/dashboard' },
     { icon: <HistoryIcon />, text: 'History', url: '/feed/history' }, 
     { icon: <VideoIcon />, text: 'Your Videos', url: '/content/my-videos' }, 
     { icon: <WatchLaterIcon />, text: 'Watch Later', url: '/playlist/watch-later' }, 
   ];
+  
   const moreLinks = [ 
       { icon: <FireIcon />, text: 'Trending', url: '/feed/trending'},
       { icon: <ShoppingBagIcon />, text: 'Shopping', url: '/shopping'},
@@ -72,11 +110,9 @@ export default function Navbar({ children }) {
     { name: 'DesignMasters', avatar: 'bg-green-500', url: '/@designmasters' }
   ];
   
-  // --- Footer links don't usually change, but you could add URLs here too if needed ---
   const footerLinks = [ 'About', 'Press', 'Copyright', 'Contact us', 'Creators', 'Advertise', 'Developers' ];
   const footerLinks2 = [ 'Terms', 'Privacy', 'Policy & Safety', 'How YouTube works', 'Test new features' ];
 
-  // STEP 2: Update the components to accept and use the `url` prop.
   const NavItem = ({ icon, text, isActive, isExpanded, url }) => ( 
     <a href={url} title={isExpanded ? '' : text} className={`flex items-center py-2.5 text-sm font-medium rounded-lg transition-all duration-200 group ${ isActive ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' } ${isExpanded ? 'px-4' : 'justify-center'}`} > 
       {React.cloneElement(icon, { className: "w-6 h-6 shrink-0" })} 
@@ -93,15 +129,17 @@ export default function Navbar({ children }) {
 
   return (
     <div className="flex bg-gray-950">
-        <aside className={`h-screen bg-gray-900 text-white flex flex-col fixed top-0 left-0 overflow-y-auto z-50 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'w-64' : 'w-20'}`}>
+        <aside 
+          onMouseEnter={() => setIsSidebarExpanded(true)}
+          onMouseLeave={() => setIsSidebarExpanded(false)}
+          className={`h-screen bg-gray-900 text-white flex flex-col fixed top-0 left-0 overflow-y-auto z-50 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'w-64' : 'w-20'}`}
+        >
             <div className="flex items-center justify-center h-16 shrink-0 border-b border-gray-700">
-                <button onClick={() => setIsSidebarExpanded(p => !p)} className="p-2 rounded-full hover:bg-gray-700">
+                <button className="p-2 rounded-full hover:bg-gray-700">
                     <HamburgerIcon />
                 </button>
             </div>
-            {/* STEP 3: Pass the 'url' prop when mapping over the data. */}
             <nav className="flex-1 px-2 py-4 space-y-1">
-              {/* Pass all properties for main links */}
               {mainLinks.map((link) => ( 
                 <NavItem 
                   key={link.text} 
@@ -109,7 +147,7 @@ export default function Navbar({ children }) {
                   text={link.text} 
                   isExpanded={isSidebarExpanded} 
                   url={link.url}
-                  isActive={link.text === 'Home'} // Example of setting the active state
+                  isActive={link.text === 'Home'}
                 /> 
               ))}
 
@@ -117,7 +155,6 @@ export default function Navbar({ children }) {
 
               {isSidebarExpanded && <h2 className="px-4 pt-2 pb-1 text-sm font-semibold text-gray-500 tracking-wider">You</h2>}
 
-              {/* Pass all properties for secondary links */}
               {secondaryLinks.map((link) => ( 
                 <NavItem 
                   key={link.text} 
@@ -129,7 +166,6 @@ export default function Navbar({ children }) {
               ))}
 
               {isSidebarExpanded && ( <> <div className={`${showMore ? 'max-h-40' : 'max-h-0'} overflow-hidden transition-all duration-300`}> <div className='space-y-1'> 
-                {/* Pass all properties for "show more" links */}
                 {moreLinks.map((link) => ( 
                   <NavItem 
                     key={link.text} 
@@ -145,7 +181,6 @@ export default function Navbar({ children }) {
 
               {isSidebarExpanded && <h2 className="px-4 pt-2 pb-1 text-sm font-semibold text-gray-500 tracking-wider">Subscriptions</h2>}
               
-              {/* The spread operator `...sub` automatically passes `url` along with other properties */}
               {subscriptions.map(sub => <SubscriptionItem key={sub.name} {...sub} isExpanded={isSidebarExpanded} />)}
 
             </nav>
@@ -153,7 +188,7 @@ export default function Navbar({ children }) {
         </aside>
 
         <div className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${isSidebarExpanded ? 'ml-64' : 'ml-20'}`}>
-            <Header />
+            <Header session={session} onLogout={handleLogout} />
             <main className="flex-1 p-6 lg:p-8">
                 {children}
             </main>

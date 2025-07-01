@@ -107,47 +107,45 @@ const featureCategories = [
 ];
 ---
 
-<Layout 
-  title="Meat - AI Content Platform" 
-  description="A warm, visual community for AI-generated content. Discover amazing creations made with your favorite AI tools."
-  class="bg-gray-950"
->
-<Hero 
-title="Welcome to "
-titleSlot="Meat"
-tagline="The cozy corner of the internet for AI-generated awesomeness"
-/>
+  <Layout 
+    title="Meat - AI Content Platform" 
+    description="A warm, visual community for Machine Creativity and AI-generated content. Discover amazing creations made with your favorite AI tools."
+    class="bg-gray-950"
+  >
+
+  <Hero 
+    title="Welcome to "
+    titleSlot="Meat"
+    tagline="The cozy corner of the internet for Machine Creativity"
+  />
   
 <FeaturedCarousel client:load slides={featuredSlides} />
 
   <div class="max-w-7xl mx-auto px-4 space-y-16">
 
-    <FilteredContent 
-      client:load
-      categories={categories}
-      videos={recentVideos}
-      gradients={gradients}
-    />
+<FilteredContent 
+  client:load
+  categories={categories}
+  videos={recentVideos}
+  gradients={gradients}
+/>
 
-    <ReelsCarousel
-      client:visible
-      reels={reelsData}
-      title="AI Reels & Shorts"
-    />
+<ReelsCarousel
+  client:visible
+  reels={reelsData}
+  title="AI Reels & Shorts"
+/>
 
-    <CommunityCarousel
-      client:visible
-      creators={creators}
-      title="Featured Communities"
-      description="Meet the voices and visionaries behind the content."
-    />
+<CommunityCarousel
+  client:visible
+  creators={creators}
+  title="Featured Communities"
+  description="Meet the voices and visionaries behind the content."
+/>
     
-    <CategoryGrid client:visible />
+<CategoryGrid client:visible />
     
-    <NewsletterSignUp client:visible />
-
-
-    
+<NewsletterSignUp client:visible />
 
     <style>
       .category-card {

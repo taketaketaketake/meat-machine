@@ -1,0 +1,51 @@
+---
+// src/pages/register.astro
+import Layout from '@/components/astro/layout.astro';
+import AuthForm from '@/components/react/auth/AuthForm';
+import '@/styles/global.css'; // <--- Add this line
+
+---
+
+<Layout title="Join Meat-Machine" description="Create an account to showcase your AI creations, connect with other artists, and build your community.">
+  <div class="py-12 md:py-20">
+    <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Column: Benefits -->
+      <div class="text-center lg:text-left">
+        <h1 class="text-4xl lg:text-5xl font-black text-white leading-tight">
+          Join the Future of <span class="text-gradient-pink">Creativity</span>
+        </h1>
+        <p class="mt-4 text-lg text-gray-300">
+          Create an account to unlock the full power of the platform.
+        </p>
+        <ul class="mt-8 space-y-4 text-left inline-block">
+          <li class="flex items-start gap-3">
+            <svg class="w-6 h-6 text-green-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            <div>
+              <h3 class="font-semibold text-white">Showcase Your Work</h3>
+              <p class="text-gray-400 text-sm">Upload and share your AI-generated art, music, and videos with a growing community.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-6 h-6 text-green-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            <div>
+              <h3 class="font-semibold text-white">Connect with Creators</h3>
+              <p class="text-gray-400 text-sm">Follow your favorite artists, join discussions, and collaborate on new ideas.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-6 h-6 text-green-400 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            <div>
+              <h3 class="font-semibold text-white">Save & Collect</h3>
+              <p class="text-gray-400 text-sm">Keep track of inspiring content by saving it to your personal library.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right Column: Auth Form -->
+      <div>
+        <AuthForm client:load defaultMode="signUp" />
+      </div>
+    </div>
+  </div>
+</Layout>

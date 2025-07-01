@@ -16,7 +16,7 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:all": "npm run test && npm run test:e2e",
-    "db:generate-types": "supabase gen types typescript --project-id YOUR_PROJECT_ID > src/types/database.ts",
+    "db:generate-types": "supabase gen types typescript --project-id iogvkjrokqqklodthxya > src/types/database.ts",
     "db:reset": "supabase db reset",
     "db:migrate": "supabase db push",
     "db:start": "supabase start",

@@ -1,0 +1,11 @@
+---
+// src/pages/settings.astro
+import Layout from '@/components/astro/layout.astro';
+import SettingsPage from '@/components/react/settings/SettingsPage';
+import '@/styles/global.css'; // <--- Add this line
+
+---
+
+<Layout title="Settings">
+  <SettingsPage client:load />
+</Layout>

@@ -1,0 +1,203 @@
+---
+// src/pages/audio.astro
+import Layout from '@/components/astro/layout.astro';
+import '@/styles/global.css';
+
+// Expanded placeholder data for a richer page
+const featuredTracks = [
+  { id: 1, title: 'Cyberpunk Drive', artist: 'SynthWaveSurfer', duration: '3:45', coverEmoji: '🌃' },
+  { id: 2, title: 'Forest Lullaby', artist: 'AmbientDreamer', duration: '5:12', coverEmoji: '🌲' },
+  { id: 3, title: 'Orchestral Dawn', artist: 'MaestroAI', duration: '2:30', coverEmoji: '🎻' },
+  { id: 4, title: 'Lo-Fi Focus Beats', artist: 'ChillBot', duration: '4:20', coverEmoji: '🎧' },
+];
+
+const newReleases = [
+  { id: 5, title: 'Quantum Echoes', artist: 'Void Traveler', coverEmoji: '💠' },
+  { id: 6, title: 'Desert Sands', artist: 'MirageMaker', coverEmoji: '🏜️' },
+  { id: 7, title: 'Neon Interlude', artist: 'SynthWaveSurfer', coverEmoji: '👾' },
+  { id: 8, title: 'Rainy Day Cafe', artist: 'ChillBot', coverEmoji: '☕' },
+];
+
+const trendingTracks = [
+  { id: 9, rank: 1, title: 'Starfall', artist: 'GalacticMuse', coverEmoji: '🌠' },
+  { id: 10, rank: 2, title: 'The Last Stand', artist: 'MaestroAI', coverEmoji: '⚔️' },
+  { id: 11, rank: 3, title: 'Oceanic Depth', artist: 'AmbientDreamer', coverEmoji: '🌊' },
+  { id: 12, rank: 4, title: 'Metropolis Groove', artist: 'FunkBot9000', coverEmoji: '🕺' },
+];
+
+const genres = [
+    { name: 'Cinematic', icon: '🎬', gradient: 'from-red-500 to-orange-500' },
+    { name: 'Electronic', icon: '🎹', gradient: 'from-purple-500 to-pink-500' },
+    { name: 'Ambient', icon: '🌌', gradient: 'from-blue-500 to-cyan-500' },
+    { name: 'Hip Hop', icon: '🎤', gradient: 'from-yellow-500 to-amber-500' },
+    { name: 'Orchestral', icon: '🎻', gradient: 'from-rose-400 to-red-500' },
+    { name: 'Soundscapes', icon: '🏞️', gradient: 'from-green-500 to-teal-500' },
+];
+
+const playlists = [
+    { name: 'Focus & Study', icon: '📚', color: 'bg-blue-600' },
+    { name: 'Workout Fuel', icon: '💪', color: 'bg-red-600' },
+    { name: 'Late Night Chill', icon: '🌙', color: 'bg-indigo-600' },
+    { name: 'Epic Adventures', icon: '🗺️', color: 'bg-amber-600' },
+];
+
+const soundEffects = [
+    { name: 'Laser Blast', icon: '💥' },
+    { name: 'Computer Glitch', icon: '🤖' },
+    { name: 'Magic Spell', icon: '✨' },
+    { name: 'Rainstorm', icon: '🌧️' },
+    { name: 'Spaceship Whoosh', icon: '🚀' },
+    { name: 'Footsteps on Gravel', icon: '👣' },
+];
+
+const topCreators = [
+    { name: 'SynthWaveSurfer', avatar: '🤖', specialty: 'Retrowave' },
+    { name: 'AmbientDreamer', avatar: '🧠', specialty: 'Soundscapes' },
+    { name: 'MaestroAI', avatar: '🎼', specialty: 'Classical' },
+    { name: 'ChillBot', avatar: '🎧', specialty: 'Lo-Fi & Beats' },
+];
+---
+
+<Layout title="AI Audio Hub" description="Explore and create AI-generated music and soundscapes.">
+  
+  <!-- Hero Section -->
+  <section class="text-center py-20 md:py-32 bg-gallery-radial">
+    <div class="container">
+      <h1 class="text-5xl md:text-7xl font-black text-white leading-tight">
+        The Future of <span class="text-gradient-pink">Sound</span>
+      </h1>
+      <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-400">
+        Generate and discover unique, high-quality audio created with the power of artificial intelligence. From full-length tracks to sound effects, the possibilities are endless.
+      </p>
+      <div class="mt-8 flex justify-center gap-4">
+        <a href="/generate/audio" class="btn-primary">Generate Audio</a>
+        <a href="#featured" class="btn-ghost">Explore Tracks</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Tracks Section -->
+  <section id="featured" class="py-16">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-white mb-8">Featured Tracks</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {featuredTracks.map(track => (
+          <div class="bg-gray-900/50 p-4 rounded-xl border border-gray-800 hover:border-pink-500/30 transition-all duration-300 group">
+            <div class="aspect-square bg-gray-800 rounded-lg flex items-center justify-center text-5xl mb-4">
+              {track.coverEmoji}
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="font-semibold text-white truncate">{track.title}</h3>
+                    <p class="text-sm text-gray-400">{track.artist}</p>
+                </div>
+                <button class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-pink-600 hover:bg-pink-500 text-white transition-colors">
+                    <svg class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" /></svg>
+                </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- New Releases Section -->
+  <section class="py-16 bg-gray-900/20">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-white mb-8">New Releases</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {newReleases.map(track => (
+          <div class="bg-gray-900/50 p-4 rounded-xl border border-gray-800 hover:border-cyan-500/30 transition-all duration-300 group">
+            <div class="aspect-square bg-gray-800 rounded-lg flex items-center justify-center text-5xl mb-4">
+              {track.coverEmoji}
+            </div>
+            <div>
+                <h3 class="font-semibold text-white truncate">{track.title}</h3>
+                <p class="text-sm text-gray-400">{track.artist}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Trending Now Section -->
+  <section class="py-16">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-white mb-8">Trending Now</h2>
+      <div class="space-y-4">
+        {trendingTracks.map(track => (
+          <div class="flex items-center bg-gray-900/50 p-4 rounded-xl border border-gray-800 hover:bg-gray-800/50 transition-colors">
+            <div class="text-lg font-bold text-gray-500 w-8 text-center">{track.rank}</div>
+            <div class="text-4xl mx-4">{track.coverEmoji}</div>
+            <div class="flex-grow">
+              <h3 class="font-semibold text-white">{track.title}</h3>
+              <p class="text-sm text-gray-400">{track.artist}</p>
+            </div>
+            <button class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-pink-600 hover:bg-pink-500 text-white transition-colors">
+              <svg class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" /></svg>
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Browse by Genre & Moods Section -->
+  <section class="py-16 bg-gray-900/20">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-white text-center mb-8">Find Your Vibe</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {playlists.map(playlist => (
+          <a href="#" class={`flex items-center gap-4 p-4 rounded-xl ${playlist.color} hover:scale-105 transition-transform duration-300`}>
+            <div class="text-3xl">{playlist.icon}</div>
+            <p class="font-bold text-white">{playlist.name}</p>
+          </a>
+        ))}
+      </div>
+       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-8">
+        {genres.map(genre => (
+          <a href="#" class={`flex flex-col items-center justify-center p-6 rounded-xl bg-gray-800 hover:bg-gray-700 transition-colors`}>
+            <div class="text-4xl">{genre.icon}</div>
+            <p class="mt-2 font-bold text-white text-center text-sm">{genre.name}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Sound Effects Section -->
+  <section class="py-16">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-white mb-8">Sound Effects Library</h2>
+      <div class="flex flex-wrap gap-3">
+        {soundEffects.map(sfx => (
+          <button class="bg-gray-800 text-gray-300 hover:bg-pink-600 hover:text-white transition-colors px-4 py-2 rounded-full flex items-center gap-2">
+            <span>{sfx.icon}</span>
+            <span>{sfx.name}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Creators Section -->
+  <section class="py-16 bg-gray-900/20">
+    <div class="container">
+        <h2 class="text-3xl font-bold text-white mb-8">Top Audio Creators</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {topCreators.map(creator => (
+                <div class="text-center bg-gray-900 p-8 rounded-xl border border-gray-800">
+                    <div class="w-24 h-24 mx-auto rounded-full bg-gray-800 flex items-center justify-center text-4xl mb-4">
+                        {creator.avatar}
+                    </div>
+                    <h3 class="text-xl font-bold text-white">{creator.name}</h3>
+                    <p class="text-pink-400 text-sm">{creator.specialty}</p>
+                    <a href="#" class="btn-ghost mt-6">View Profile</a>
+                </div>
+            ))}
+        </div>
+    </div>
+  </section>
+
+</Layout>
