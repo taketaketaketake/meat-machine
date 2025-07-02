@@ -31,13 +31,15 @@ const DashboardIcon = ({ className = "w-6 h-6" }) => ( <svg className={className
 // --- Header Component (Corrected) ---
 const Header = ({ session, onLogout }) => {
     return (
-        <header className="bg-gray-950 text-white p-4 flex items-center justify-between z-40">
+        <header className="bg-gray-950 text-white p-2 sm:p-4 flex items-center justify-between z-40">
             <div className="flex items-center">
               <a href="/" aria-label="Go to Homepage">
                 <img src="/meat_logo.png" alt="Machine Creativity Logo" className="h-8 w-auto" />
               </a>
             </div>
-            <div className="flex-1 flex justify-center px-4 lg:px-16">
+
+            {/* Desktop Search Bar */}
+            <div className="hidden sm:flex flex-1 justify-center px-4 lg:px-16">
                 <div className="w-full max-w-2xl relative">
                     <input type="search" placeholder="Search..." className="w-full bg-gray-800 border border-gray-700 text-white rounded-full py-2.5 pl-5 pr-12 focus:outline-none focus:ring-2 focus:ring-red-500 transition"/>
                     <button className="absolute inset-y-0 right-0 flex items-center justify-center w-12 text-gray-400 hover:text-white">
@@ -45,7 +47,13 @@ const Header = ({ session, onLogout }) => {
                     </button>
                 </div>
             </div>
-            <div className="flex items-center space-x-4">
+
+            <div className="flex items-center space-x-2 sm:space-x-4">
+                {/* Mobile Search Icon */}
+                <button className="sm:hidden p-2 rounded-full hover:bg-gray-800">
+                    <SearchIcon />
+                </button>
+
                 {session ? (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -81,11 +89,11 @@ const Header = ({ session, onLogout }) => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 ) : (
-                    <div className="flex items-center space-x-2">
-                        <a href="/login" className="px-4 py-2 text-sm font-medium text-white bg-transparent border border-gray-600 rounded-full hover:bg-gray-800 transition">
+                    <div className="flex items-center space-x-1 sm:space-x-2">
+                        <a href="/login" className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-transparent border border-gray-600 rounded-full hover:bg-gray-800 transition">
                             Log In
                         </a>
-                        <a href="/register" className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-full hover:bg-red-700 transition">
+                        <a href="/register" className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-red-600 rounded-full hover:bg-red-700 transition">
                             Sign Up
                         </a>
                     </div>

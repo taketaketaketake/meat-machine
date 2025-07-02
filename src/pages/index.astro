@@ -207,7 +207,13 @@ const featureCategories = [
     display: flex;
     align-items: center; /* Vertically center the slide content */
     box-sizing: border-box; /* Ensures padding is included in height calculation */
-    min-height: 80vh; /* Minimum height for slides */
+    min-height: 60vh; /* Minimum height for slides on mobile */
+  }
+
+  @media (min-width: 768px) { /* md breakpoint */
+    .hero-slider .swiper-slide {
+      min-height: 80vh; /* Taller height on larger screens */
+    }
   }
   /* The pagination container for the dots */
   .hero-pagination {
