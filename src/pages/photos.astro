@@ -3,6 +3,11 @@
 import Layout from '@/components/astro/layout.astro';
 import '@/styles/global.css';
 
+// --- ADD THIS ---
+const shareDescription = "Explore a gallery of stunning, mind-bending images created with the latest in AI technology on the Meat platform.";
+const shareImage = "/images/social/photos-page.jpg"; // Example path to a share image for this page
+// ---------------
+
 // --- Mock Data for the Photos Page ---
 const creators = [
   { name: 'Aperture_Ace', avatarEmoji: '📸', photos: 214, specialty: 'Landscapes' },
@@ -38,7 +43,6 @@ const topVotedPhotos = [
   { id: 12, title: 'Market Hustle', user: '@Street_Snapper', votes: '6.4k', aspect: 'aspect-square', emoji: '🍎' },
 ];
 
-// --- NEW MOCK DATA ---
 const trendingTags = [
   '#futuristic', '#fantasy', '8K', 'photorealistic', 'cinematic', '#cyberpunk',
   '#solarpunk', 'watercolor', '3D render', '#abstract', 'minimalist'
@@ -65,11 +69,11 @@ const communitySpotlight = {
 ---
 
 <Layout 
-  title="Photos - Discover AI Photography" 
-  description="Explore a stunning gallery of AI-generated photography. From breathtaking landscapes to intimate portraits."
+  title="AI Photo Gallery" 
+  description={shareDescription}
+  shareImage={shareImage}
   class="bg-gray-950"
 >
-  <!-- Hero Section -->
   <section class="relative h-[60vh] min-h-[400px] flex items-end p-8 md:p-12 text-white overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-indigo-800 to-purple-800 z-0 flex items-center justify-center">
         <div class="text-8xl opacity-30">🖼️</div>
@@ -85,7 +89,6 @@ const communitySpotlight = {
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 py-16">
 
-    <!-- Latest Shots Section -->
     <section>
       <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Latest Shots</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -106,7 +109,6 @@ const communitySpotlight = {
       </div>
     </section>
     
-    <!-- NEW: Trending Tags Section -->
     <section>
       <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Trending Tags</h2>
       <div class="flex flex-wrap gap-3">
@@ -116,7 +118,6 @@ const communitySpotlight = {
       </div>
     </section>
 
-    <!-- Browse by Category Section -->
     <section>
       <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Browse by Category</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -134,7 +135,6 @@ const communitySpotlight = {
       </div>
     </section>
     
-    <!-- NEW: Explore by AI Tool -->
     <section>
       <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Explore by AI Tool</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -150,7 +150,6 @@ const communitySpotlight = {
       </div>
     </section>
     
-    <!-- NEW: Community Spotlight Section -->
     <section class="spotlight-section bg-gray-900/50 border border-gray-800 rounded-2xl p-8 md:p-12">
         <div class="grid md:grid-cols-3 gap-8 items-center">
             <div class="md:col-span-1 text-center md:text-left">
@@ -174,7 +173,6 @@ const communitySpotlight = {
         </div>
     </section>
 
-    <!-- Featured Creators Section -->
     <section>
       <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">More Featured Creators</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -189,7 +187,6 @@ const communitySpotlight = {
       </div>
     </section>
 
-    <!-- Top Voted Section (Masonry) -->
     <section>
         <h2 class="text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4">Top Voted This Week</h2>
         <div class="masonry-grid">
@@ -209,7 +206,6 @@ const communitySpotlight = {
         </div>
     </section>
   </div>
-
 </Layout>
 
 <style>

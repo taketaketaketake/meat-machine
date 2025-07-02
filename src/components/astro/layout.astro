@@ -1,11 +1,16 @@
 ---
-// src/components/astro/layout.astro
-import Footer from '../react/ui/Footer.jsx';
 import AppLayout from '../react/ui/AppLayout.jsx';
-import '@/styles/global.css';
+// ... other imports
 
-const { title, description } = Astro.props;
+// Destructure the new props from Astro.props and provide fallbacks
+const { 
+  title, 
+  description = "Your default site description goes here.", // Fallback description
+  shareImage = "/images/social/default-share-image.jpg"    // Fallback image
+} = Astro.props;
+
 const pathname = Astro.url.pathname;
+const absoluteShareImageUrl = new URL(shareImage, Astro.url.origin).href;
 ---
 
 <!DOCTYPE html>
@@ -13,11 +18,22 @@ const pathname = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
     <title>{title} | Meat-Machine</title>
+    
     <meta name="description" content={description} />
-  </head>
+
+    <meta property="og:title" content={`${title} | Meat-Machine`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteShareImageUrl} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | Meat-Machine`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteShareImageUrl} />
+
+    </head>
   <body>
     <AppLayout client:load pathname={pathname}>
       <slot />

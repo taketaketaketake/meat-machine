@@ -251,7 +251,6 @@ export default function AppLayout({ children, pathname }) {
             <div className="h-16 flex items-center p-4 border-b border-gray-700 flex-shrink-0">
               <a href="/" aria-label="Go to Homepage" className="flex items-center gap-3 w-full">
                   <img src="/meat_logo.png" alt="Machine Creativity Logo" className="h-8 w-auto flex-shrink-0" />
-                  <h1 className="font-bold text-white text-lg whitespace-nowrap">Meat-Machine</h1>
               </a>
             </div>
             <div className="flex-1 overflow-y-auto">

@@ -33,6 +33,9 @@ const featuredSlides = [
   }
 ];
 
+const shareImage = "/images/social/home-page-share-image.jpg"; // Path to your share image
+const shareDescription = "A warm, visual community for Machine Creativity and AI-generated content. Discover amazing creations made with your favorite AI tools.";
+
 // --- Data for the Reels Carousel ---
 const reelsData = [
   { id: 'reel-1', emoji: '🎨', title: 'Quick Art', user: '@QuickArtist', views: '2.1K', duration: '0:30', gradient: 'from-purple-600/30 to-pink-600/30' },
@@ -108,10 +111,10 @@ const featureCategories = [
 ---
 
   <Layout 
-    title="Meat - AI Content Platform" 
-    description="A warm, visual community for Machine Creativity and AI-generated content. Discover amazing creations made with your favorite AI tools."
-    class="bg-gray-950"
-  >
+    title="Meat - The home for Machine Creativity" 
+    description={shareDescription}
+    shareImage={shareImage}
+    >
 
   <Hero 
     title="Welcome to "
