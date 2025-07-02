@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-// Swiper.js is loaded globally from your layout.astro, so we don't need to import it here.
+import React from 'react';
 
 // --- Child Component: CreatorCard ---
 // This component remains unchanged.
@@ -29,45 +28,11 @@ const CreatorCard = ({ creator }) => (
   </div>
 );
 
-// --- Main Parent Component ---
-export default function CreatorCarousel({ title = "Featured Communities", description = "Meet the voices and visionaries behind the content.", creators = [] }) {
 
-  useEffect(() => {
-    // Ensure Swiper is available on the window object before initializing
-    if (window.Swiper) {
-      const swiper = new Swiper('.creator-swiper-container', {
-        // --- UPDATED SWIPER OPTIONS ---
-        slidesPerView: 1.2, // Show 1 full card and 20% of the next on mobile
-        spaceBetween: 16,
-        loop: false, // Loop is often disabled with this effect for a better UX
-        grabCursor: true,
-        mousewheel: true, // Enables trackpad/mousewheel control
-        freeMode: true, // Allows for more fluid, non-snapping scrolling
-        
-        // Responsive breakpoints
-        breakpoints: {
-          // when window width is >= 640px
-          640: {
-            slidesPerView: 2.2,
-            spaceBetween: 20,
-          },
-          // when window width is >= 1024px
-          1024: {
-            slidesPerView: 3.5,
-            spaceBetween: 30,
-          },
-           // when window width is >= 1280px
-          1280: {
-            slidesPerView: 4.2,
-            spaceBetween: 30,
-          },
-        },
-      });
-    }
-  }, []); // Empty dependency array ensures this runs only once after mount
-
+// --- Main Parent Component (Refactored to use CSS scroll) ---
+export default function CommunityCarousel({ title = "Featured Communities", description = "Meet the voices and visionaries behind the content.", creators = [] }) {
   if (!creators || creators.length === 0) {
-    return null; // Don't render anything if there are no creators
+    return null;
   }
 
   return (
@@ -77,15 +42,14 @@ export default function CreatorCarousel({ title = "Featured Communities", descri
         <p className="text-gray-400">{description}</p>
       </div>
 
-      {/* Swiper Container with horizontal padding to allow peeking */}
-      <div className="creator-swiper-container overflow-hidden pl-4 sm:pl-6 lg:pl-8 -mr-4 sm:-mr-6 lg:-mr-8">
-        <div className="swiper-wrapper">
-          {creators.map((creator) => (
-            <div key={creator.id} className="swiper-slide h-auto pb-8">
-              <CreatorCard creator={creator} />
-            </div>
-          ))}
-        </div>
+      {/* This container is now identical to the one in ReelsCarousel */}
+      <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide">
+        {creators.map((creator) => (
+          // Each card is now a flex item with a defined width
+          <div key={creator.id} className="flex-none w-80 snap-start">
+            <CreatorCard creator={creator} />
+          </div>
+        ))}
       </div>
     </section>
   );

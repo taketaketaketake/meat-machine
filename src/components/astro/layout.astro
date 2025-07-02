@@ -1,81 +1,26 @@
 ---
 // src/components/astro/layout.astro
-import Navbar from '../react/ui/Navbar.jsx';
-// No need to import Header here anymore
 import Footer from '../react/ui/Footer.jsx';
+import AppLayout from '../react/ui/AppLayout.jsx';
+import '@/styles/global.css';
 
-export interface Props {
-  title?: string;
-  description?: string;
-  image?: string;
-  noIndex?: boolean;
-  class?: string;
-}
-
-const {
-  title,
-  description = "Discover, create, and share the future of AI-generated content. Where human creativity meets artificial intelligence.",
-  image = "/images/og-image.jpg",
-  noIndex = false,
-  class: className = "",
-} = Astro.props;
-
-const siteName = "Meat";
-const defaultTitle = "Meat - AI Content Platform";
-const formattedTitle = title ? `${title} | ${siteName}` : defaultTitle;
-const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : new URL(Astro.url.pathname, 'http://localhost:4321');
-const socialImageUrl = new URL(image, Astro.site || 'http://localhost:4321').toString();
+const { title, description } = Astro.props;
+const pathname = Astro.url.pathname;
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script is:inline src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <link rel="canonical" href={canonicalURL} />
-    <title>{formattedTitle}</title>
-    
-    <!-- Meta Tags -->
-    <meta name="title" content={formattedTitle} />
+    <title>{title} | Meat-Machine</title>
     <meta name="description" content={description} />
-    {noIndex && <meta name="robots" content="noindex, nofollow" />}
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:title" content={formattedTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={socialImageUrl} />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={formattedTitle} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={socialImageUrl} />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    
-    <!-- Preload -->
-    <link rel="preload" href="/images/hero-bg.jpg" as="image" />
   </head>
-  
-  <body class:list={["bg-gray-950 text-white", className]}>
-    {/*
-      This is now the correct structure.
-      Navbar is the main layout component that wraps your page content.
-    */}
-    <Navbar client:load>
+  <body>
+    <AppLayout client:load pathname={pathname}>
       <slot />
-      <Footer client:load /> 
-    </Navbar>
+    </AppLayout>
   </body>
 </html>

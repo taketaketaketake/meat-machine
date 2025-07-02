@@ -1,34 +1,17 @@
 import React from 'react';
 
-// Each icon is now its own component for reusability and clarity.
-export const HomeIcon = () => (
-    <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-);
-
-export const DiscoverIcon = () => (
-    <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 21a9 9 0 01-6.81-3.32M9 21v0m0 0a9 9 0 005.86-2.17M9 21v0m0 0a9 9 0 01-3.32-6.81m6.49-3.69a9.01 9.01 0 00-3.17 0m0 0a9.01 9.01 0 01-3.17 0m0 0A9.01 9.01 0 003 12c0-1.6.4-3.1.9-4.5M3.9 7.5A9.01 9.01 0 016 4.9m-2.1 2.6A9.01 9.01 0 013 12m0 0c0 1.6.4 3.1.9 4.5m-2.1-2.6A9.01 9.01 0 003 12m9-9a9 9 0 016.81 3.32M15 3v0m0 0a9 9 0 00-5.86 2.17M15 3v0m0 0a9 9 0 013.32 6.81m-6.49 3.69a9.01 9.01 0 003.17 0m0 0a9.01 9.01 0 013.17 0m0 0A9.01 9.01 0 0021 12c0-1.6-.4-3.1-1.1-4.5m-2.1 2.6c.6.9 1.1 2 .1 3.1m-2.1-2.6A9.01 9.01 0 0015 3"/></svg>
-);
-
-export const VideosIcon = () => (
-    <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-);
-
-export const DiscussionsIcon = () => (
-    <svg className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V7a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V8z"/></svg>
-);
-
-export const MenuIcon = () => (
-    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-);
-
-export const UserIcon = () => (
-    <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-);
-
-export const SearchIcon = () => (
-    <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-);
+export const HomeIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" /> </svg> );
+export const CompassIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v5h-2zm0 6h2v2h-2zM7.5 10.5l1.41-1.41L12 12.12l3.09-3.03L16.5 10.5 12 15l-4.5-4.5z" /> </svg> );
+export const SubscriptionsIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M20 8H4V6h16v2zm-2-6H6v2h12V2zm4 10v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2v-8c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2zm-6 4l-6-3.27v6.53L16 16z" /> </svg> );
+export const HistoryIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M13 3a9 9 0 00-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21a9 9 0 000-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" /> </svg> );
+export const VideoIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4zM15 16H5V8h10v8z"/> </svg> );
+export const WatchLaterIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.25 12.15L11 11.49v-5h2v4.1l4.5 2.65-1.25 2.4z"/> </svg> );
+export const FireIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M17.63 7.84C17.27 7.32 16.63 7 16 7s-1.27.32-1.63.84L12 12.17l-2.37-4.33C9.27 7.32 8.63 7 8 7s-1.27.32-1.63.84l-3.37 6.1c-.38.68-.38 1.52 0 2.2l3.37 6.1c.36.52.99.85 1.63.85s1.27-.32 1.63-.84L12 13.83l2.37 4.33c.36.52.99.85 1.63.85s1.27-.32 1.63-.84l3.37-6.1c-.38-.68-.38-1.52 0-2.2l-3.37-6.1zM11.33 13L10 15.27 8.67 13 10 10.73 11.33 13zm3.34 0L16 10.73 17.33 13 16 15.27 14.67 13z"/> </svg> );
+export const ShoppingBagIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor" > <path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/> </svg> );
+export const ChevronDownIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" /> </svg> );
+export const ChevronUpIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} viewBox="0 0 24 24" fill="currentColor"> <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" /> </svg> );
+export const HamburgerIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg> );
+export const SearchIcon = ({ className = "w-5 h-5" }) => ( <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> );
+export const UserCircleIcon = ({ className = "w-8 h-8" }) => ( <svg className={className} fill="currentColor" viewBox="0 0 20 20"> <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zM8 13a4 4 0 104 0H8z" clipRule="evenodd" /> </svg> );
+export const LogoutIcon = ({ className = "w-5 h-5" }) => ( <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path> </svg> );
+export const DashboardIcon = ({ className = "w-6 h-6" }) => ( <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg> );
