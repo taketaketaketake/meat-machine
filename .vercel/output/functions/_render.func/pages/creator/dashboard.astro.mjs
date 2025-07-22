@@ -5,7 +5,6 @@ import { jsxs, jsx } from 'react/jsx-runtime';
 import { useState } from 'react';
 import '../../chunks/label_CSm-QMlh.mjs';
 import '../../chunks/textarea_CMBKWg9Z.mjs';
-/* empty css                                    */
 export { renderers } from '../../renderers.mjs';
 
 const tabs = [
