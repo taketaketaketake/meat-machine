@@ -124,13 +124,15 @@ const SidebarFooter = ({ session, onLogout, isExpanded, onUserMenuToggle }) => (
     </div>
 );
 
-const Header = ({ onMobileMenuClick }) => (
+const Header = () => (
     <header className="h-16 bg-gray-950 text-white flex items-center z-10 border-b border-gray-700 flex-shrink-0 px-4 sm:px-6">
       <div className="flex items-center gap-4">
         <div className="lg:hidden">
-          <Button variant="ghost" size="icon" onClick={onMobileMenuClick}>
-              <HamburgerIcon />
-          </Button>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon">
+                <HamburgerIcon />
+            </Button>
+          </SheetTrigger>
         </div>
         <a href="/" aria-label="Go to Homepage" className="items-center gap-3 hidden lg:flex">
           <img src="/meat_logo.png" alt="Machine Creativity Logo" className="h-8 w-auto flex-shrink-0" />
@@ -230,7 +232,7 @@ export default function AppLayout({ children, pathname }) {
   return (
     <div className="flex flex-col h-screen bg-gray-950 text-white overflow-hidden">
       <Sheet>
-        <Header onMobileMenuClick={() => document.querySelector('[data-radix-collection-item]').click()} />
+        <Header />
         
         <div className="flex flex-1 overflow-hidden">
           <DesktopSidebar 

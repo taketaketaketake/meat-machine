@@ -100,13 +100,31 @@ const CarouselItem = ({ slide }) => (
 // Renders all the buttons, labels, and pagination dots
 const ControlsAndIndicators = ({ slides }) => {
   const { current, count, scrollPrev, scrollNext, scrollTo } = useCarousel();
+  
+  // Check if the current slide is a video (both explicit flag and URL detection)
+  const currentSlide = slides[current];
+  const hasVideoFlag = currentSlide?.isVideo === true;
+  const hasVideoUrl = currentSlide?.url && 
+    (currentSlide.url.includes('youtube.com') || 
+     currentSlide.url.includes('youtu.be') ||
+     currentSlide.url.includes('vimeo.com') || 
+     currentSlide.url.includes('.mp4') ||
+     currentSlide.url.includes('.webm') ||
+     currentSlide.url.includes('.mov') ||
+     currentSlide.url.includes('.avi'));
+  
+  const isVideoSlide = hasVideoFlag || hasVideoUrl;
 
   return (
     <>
-      {/* Play Icon Overlay on Hover */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 rounded-xl pointer-events-none">
-        <div className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center"><span className="text-black text-3xl ml-1">▶</span></div>
-      </div>
+      {/* Play Icon Overlay on Hover - Only for video slides */}
+      {isVideoSlide && (
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 rounded-xl pointer-events-none">
+          <div className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center">
+            <span className="text-black text-3xl ml-1">▶</span>
+          </div>
+        </div>
+      )}
       
       {/* Featured Label */}
       <div className="absolute bottom-4 left-4 bg-pink-500 text-white px-3 py-1 rounded font-bold z-10">
@@ -134,4 +152,4 @@ const ControlsAndIndicators = ({ slides }) => {
       </div>
     </>
   );
-}
+};
