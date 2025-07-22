@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_ANON_KEY);
+import { supabase } from '@/lib/supabase/supabase';
 
 export default function UploadForm() {
   const [file, setFile] = useState(null);
