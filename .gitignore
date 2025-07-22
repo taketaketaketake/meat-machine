@@ -31,3 +31,6 @@ pnpm-debug.log*
 
 # But allow .env.example
 !.env.example
+
+# Local Netlify folder
+.netlify

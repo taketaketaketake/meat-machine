@@ -1,1 +1,0 @@
-import{j as e}from"./jsx-runtime.D_zvdyIk.js";import"./index.D_OVTONV.js";import{S as i}from"./SectionTitle.DTb8v_6b.js";function c({title:a,data:r}){return e.jsxs("section",{children:[e.jsx(i,{title:a}),e.jsx("div",{className:"flex flex-wrap gap-3",children:r.map(s=>e.jsx("a",{href:"#",className:"tag-chip",children:s},s))})]})}export{c as default};

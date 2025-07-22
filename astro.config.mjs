@@ -1,22 +1,19 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import vercel from '@astrojs/vercel';
+import netlify from '@astrojs/netlify';
 import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
-  site: 'https://meat-platform.vercel.app', // Add your site URL
+  site: 'https://meat-platform.netlify.app', // Update to Netlify URL
   integrations: [
     react(),
     tailwind({
       applyBaseStyles: false, // We'll handle this in our global.css
     })
   ],
-  output: 'server', // Changed from 'hybrid' to 'server'
-  adapter: vercel({
-    functionPerRoute: false,
-    runtime: 'nodejs20.x'
-  }), // Updated from deprecated serverless import
+  output: 'server', // Server-side rendering
+  adapter: netlify(), // Use Netlify adapter
   vite: {
         resolve: {
             alias: {
