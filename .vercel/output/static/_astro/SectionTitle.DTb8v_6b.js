@@ -1,0 +1,1 @@
+import{j as t}from"./jsx-runtime.D_zvdyIk.js";import"./index.D_OVTONV.js";function i({title:r}){return t.jsx("h2",{className:"text-3xl font-bold mb-8 border-l-4 border-pink-500 pl-4",children:r})}export{i as S};

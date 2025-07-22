@@ -1,0 +1,308 @@
+---
+// src/pages/index.astro
+import Layout from '../components/astro/layout.astro';
+import Hero from '../components/astro/hp-hero.astro'; // <-- 1. Import the new component
+import FeaturedCarousel from '../components/react/content/FeaturedCarousel.jsx'; // <-- 1. Import the new component
+import FilteredContent from '../components/react/content/FilteredContent.jsx';
+import ReelsCarousel from '../components/react/content/ReelsCarousel.jsx';
+import CommunityCarousel from '../components/react/content/CommunityCarousel.jsx';
+import CategoryGrid from '../components/react/discovery/CategoryGrid.jsx';
+import NewsletterSignUp from '../components/react/ui/NewsletterSignUp.jsx'
+
+import '../styles/global.css';
+
+// --- Data definitions ---
+const featuredSlides = [
+  {
+    label: 'FEATURED',
+    title: 'Mind-Bending AI Video',
+    emoji: '🎬',
+    gradient: 'from-blue-600/40 to-indigo-600/40'
+  },
+  {
+    label: 'COMMUNITY PICK',
+    title: 'AI Rock Revolution',
+    emoji: '🎸',
+    gradient: 'from-purple-600/40 to-pink-600/40'
+  },
+  {
+    label: 'STAFF PICK',
+    title: 'The Last Algorithm',
+    emoji: '📖',
+    gradient: 'from-emerald-600/40 to-teal-600/40'
+  }
+];
+
+const shareImage = "/images/social/home-page-share-image.jpg"; // Path to your share image
+const shareDescription = "A warm, visual community for Machine Creativity and AI-generated content. Discover amazing creations made with your favorite AI tools.";
+
+// --- Data for the Reels Carousel ---
+const reelsData = [
+  { id: 'reel-1', emoji: '🎨', title: 'Quick Art', user: '@QuickArtist', views: '2.1K', duration: '0:30', gradient: 'from-purple-600/30 to-pink-600/30' },
+  { id: 'reel-2', emoji: '🎵', title: 'Beat Drop', user: '@BeatMaker', views: '1.8K', duration: '0:15', gradient: 'from-emerald-600/30 to-blue-600/30' },
+  { id: 'reel-3', emoji: '🤖', title: 'Code Magic', user: '@CodeWizard', views: '950', duration: '0:45', gradient: 'from-red-600/30 to-orange-600/30' },
+  { id: 'reel-4', emoji: '✨', title: 'Transform', user: '@StyleTransfer', views: '3.4K', duration: '0:20', gradient: 'from-yellow-600/30 to-orange-600/30' },
+  { id: 'reel-5', emoji: '🎬', title: 'Quick Edit', user: '@EditBot', views: '1.2K', duration: '0:25', gradient: 'from-indigo-600/30 to-purple-600/30' },
+  { id: 'reel-6', emoji: '🧠', title: 'Mind Meld', user: '@MindReader', views: '4.2K', duration: '0:35', gradient: 'from-teal-600/30 to-cyan-600/30' },
+];
+
+// --- Data definitions ---
+const recentVideos = Array(12).fill(null).map((_, i) => ({
+  id: i + 4,
+  title: [`Cannabis Strain Review: Blue Dream`, `How to Roll the Perfect Joint`, `Top 5 Detroit Coffee Shops`, `Food Truck Festival Highlights`, `Downtown Detroit Dispensary Tour`, `Cooking with Cannabis: Basics`, `Local Artist Spotlight`, `Morning Routine at Coffee House Detroit`, `Product Unboxing: New Vape Pen`, `Late Night Food Options in Detroit`, `DIY Cannabis Tinctures`, `Weekend Events Roundup`][i],
+  business: [`Detroit Dabs`, `Detroit Dabs`, `Motor City Muncher`, `Motor City Muncher`, `Detroit Dabs`, `The Canna-seur`, `Explore Detroit`, `Motor City Muncher`, `The Canna-seur`, `Motor City Muncher`, `The Canna-seur`, `Explore Detroit`][i],
+  duration: [`3:45`, `1:20`, `4:10`, `2:35`, `5:15`, `8:20`, `2:45`, `0:58`, `6:32`, `1:45`, `7:15`, `3:20`][i],
+  date: new Date(2025, 5, 24 - i * 2).toISOString().split('T')[0],
+  category: [`videos`, `videos`, `photos`, `photos`, `videos`, `videos`, `events`, `photos`, `videos`, `photos`, `videos`, `events`][i]
+}));
+
+const gradients = [
+    'from-pink-500/20 to-purple-500/20',
+    'from-emerald-500/20 to-teal-500/20',
+    'from-sky-500/20 to-indigo-500/20'
+];
+
+const creators = [
+  { id: 1, name: 'Motor City Muncher', handle: '@mcmuncher', avatarEmoji: '🍕', bannerGradient: 'from-orange-500/20 to-red-500/20', specialty: 'Food Reviews', specialtyColor: 'bg-red-500/20 text-red-300', bio: "Your go-to guide for Detroit's food scene. From greasy spoons to gourmet dining, I'm eating my way through the city one bite at a time.", subscriberCount: 18400, videoCount: 112, latestVideos: recentVideos.filter(v => v.business === 'Motor City Muncher').slice(0, 2) },
+  { id: 2, name: 'Detroit Dabs', handle: '@detroitdabs', avatarEmoji: '🌿', bannerGradient: 'from-emerald-500/20 to-green-500/20', specialty: 'Cannabis Education', specialtyColor: 'bg-green-500/20 text-green-300', bio: "Exploring the world of cannabis with a focus on education, strain reviews, and responsible consumption. Learn and vibe with me.", subscriberCount: 26200, videoCount: 238, latestVideos: recentVideos.filter(v => v.business === 'Detroit Dabs').slice(0, 2) },
+  { id: 3, name: 'Explore Detroit', handle: '@exploredetroit', avatarEmoji: '🏙️', bannerGradient: 'from-sky-500/20 to-indigo-500/20', specialty: 'City Vlogging', specialtyColor: 'bg-sky-500/20 text-sky-300', bio: "Showcasing the art, culture, and hidden gems of Detroit. Follow along for event coverage and local business spotlights.", subscriberCount: 9800, videoCount: 76, latestVideos: recentVideos.filter(v => v.business === 'Explore Detroit').slice(0, 2) },
+  { id: 4, name: 'The Canna-seur', handle: '@thecannaseur', avatarEmoji: '🧑‍🍳', bannerGradient: 'from-amber-500/20 to-yellow-500/20', specialty: 'Cannabis Cooking', specialtyColor: 'bg-amber-500/20 text-amber-300', bio: "From gourmet meals to simple tinctures, I'm exploring the art and science of cannabis-infused cuisine.", subscriberCount: 15100, videoCount: 88 },
+  { id: 5, name: 'Detroit Auto Scene', handle: '@detroitautoscene', avatarEmoji: '🚗', bannerGradient: 'from-gray-500/20 to-slate-500/20', specialty: 'Auto Vlogging', specialtyColor: 'bg-gray-500/20 text-gray-300', bio: "Car reviews, custom builds, and coverage of every auto event that makes the Motor City roar. Vroom vroom.", subscriberCount: 31500, videoCount: 152 }
+];
+
+const tools = [
+  { name: 'Midjourney', icon: '⛵️', description: 'The industry-leading platform for crafting breathtaking, high-resolution images from simple text prompts.', tags: ['Image', 'Art'], gradient: 'from-indigo-500/20 to-blue-500/20' },
+  { name: 'OpenAI Sora', icon: '🎬', description: 'A revolutionary text-to-video model that generates cinematic, high-fidelity video clips from your imagination.', tags: ['Video', 'Cinematic'], gradient: 'from-teal-500/20 to-cyan-500/20' },
+  { name: 'Suno', icon: '🎵', description: 'Create radio-quality music in any genre, complete with custom lyrics and vocals, in just a matter of seconds.', tags: ['Music', 'Audio'], gradient: 'from-orange-500/20 to-amber-500/20' },
+  { name: 'ElevenLabs', icon: '🎤', description: 'The premier toolkit for generating ultra-realistic text-to-speech and cloning voices for any project.', tags: ['Voice', 'Audio'], gradient: 'from-rose-500/20 to-pink-500/20' }
+];
+
+const trendingTags = ['#cyberpunk', '#solarpunk', 'cinematic lighting', '80s anime style', 'photorealistic', '#creepy', 'lofi beats', '#fantasyart'];
+const topVoted = [
+    { id: 1, title: 'Mind-Bending AI Video', creator: '@VideoMage_99', votes: 12500, emoji: '🎬' },
+    { id: 2, title: 'AI Rock Revolution', creator: '@RockBot_AI', votes: 11800, emoji: '🎸' },
+    { id: 3, title: 'The Last Algorithm', creator: '@StoryWeaver_AI', votes: 9600, emoji: '📖' },
+    { id: 4, title: 'Forest Rain Meditation', creator: '@NatureSounds_AI', votes: 8200, emoji: '🌿' }
+];
+const newestMembers = [
+    { handle: '@pixel_dreamer', avatarEmoji: '🧑‍🚀' },
+    { handle: '@synthwave_sound', avatarEmoji: '🎧' },
+    { handle: '@glitch_in_art', avatarEmoji: '👾' },
+    { handle: '@code_poet', avatarEmoji: '✍️' }
+];
+
+const categories = [ { id: "all", label: "All" }, { id: "photos", label: "Photos" }, { id: "videos", label: "Videos" }, { id: "music", label: "Audio" }, { id: "3d-models", label: "3D Models" }, { id: "words", label: "Words" }];
+
+const today = new Date('2025-06-28T18:30:00'); 
+
+function isNew(videoDateStr: string) {
+  const videoDate = new Date(videoDateStr);
+  const diffTime = today.getTime() - videoDate.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays <= 10 && diffDays >= 0;
+}
+
+const featureCategories = [
+  { title: 'AI Art', icon: '🎨', href: '/art', style: 'bg-category-art' },
+  { title: 'AI Music', icon: '🎵', href: '/music', style: 'bg-category-music' },
+  { title: 'AI Video', icon: '🎬', href: '/video', style: 'bg-category-video' },
+  { title: 'Storytelling', icon: '📚', href: '/storytelling', style: 'bg-category-story' }
+];
+---
+
+  <Layout 
+    title="Meat - The home for Machine Creativity" 
+    description={shareDescription}
+    shareImage={shareImage}
+    >
+
+  <Hero 
+    title="Welcome to "
+    titleSlot="Meat"
+    tagline="The cozy corner of the internet for Machine Creativity"
+  />
+  
+<FeaturedCarousel client:load slides={featuredSlides} />
+
+  <div class="max-w-7xl mx-auto px-4 space-y-16">
+
+<FilteredContent 
+  client:load
+  categories={categories}
+  videos={recentVideos}
+  gradients={gradients}
+/>
+
+<ReelsCarousel
+  client:visible
+  reels={reelsData}
+  title="AI Reels & Shorts"
+/>
+
+<CommunityCarousel
+  client:visible
+  creators={creators}
+  title="Featured Communities"
+  description="Meet the voices and visionaries behind the content."
+/>
+    
+<CategoryGrid client:visible />
+    
+<NewsletterSignUp client:visible />
+
+    <style>
+      .category-card {
+        border-radius: 0.75rem; /* rounded-xl */
+        border-width: 1px;
+        padding: 1.5rem; /* p-6 */
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+        aspect-ratio: 1 / 1;
+      }
+      .category-card:hover {
+        transform: translateY(-0.25rem); /* -translate-y-1 */
+        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
+      }
+      .category-card .icon {
+        font-size: 2.25rem; /* text-4xl */
+        line-height: 2.5rem;
+        margin-bottom: 0.75rem; /* mb-3 */
+      }
+      .category-card .title {
+        font-size: 1.125rem; /* text-lg */
+        line-height: 1.75rem;
+        font-weight: 700; /* font-bold */
+        color: white;
+      }
+      .bg-category-art {
+        background-color: rgba(147, 51, 234, 0.2); /* bg-purple-600/20 */
+        border-color: rgba(168, 85, 247, 0.3); /* border-purple-500/30 */
+      }
+      .bg-category-music {
+        background-color: rgba(5, 150, 105, 0.2); /* bg-emerald-600/20 */
+        border-color: rgba(16, 185, 129, 0.3); /* border-emerald-500/30 */
+      }
+      .bg-category-video {
+        background-color: rgba(220, 38, 38, 0.2); /* bg-red-600/20 */
+        border-color: rgba(239, 68, 68, 0.3); /* border-red-500/30 */
+      }
+      .bg-category-story {
+        background-color: rgba(37, 99, 235, 0.2); /* bg-blue-600/20 */
+        border-color: rgba(59, 130, 246, 0.3); /* border-blue-500/30 */
+      }
+    </style>
+  </div>
+  
+</Layout>
+
+<style is:global>
+  /* Styles for the new Hero Slider */
+  .hero-slider {
+    position: relative; /* Needed for pagination positioning */
+  }
+  .hero-slider .swiper-slide {
+    display: flex;
+    align-items: center; /* Vertically center the slide content */
+    box-sizing: border-box; /* Ensures padding is included in height calculation */
+    min-height: 60vh; /* Minimum height for slides on mobile */
+  }
+
+  @media (min-width: 768px) { /* md breakpoint */
+    .hero-slider .swiper-slide {
+      min-height: 80vh; /* Taller height on larger screens */
+    }
+  }
+  /* The pagination container for the dots */
+  .hero-pagination {
+    position: absolute;
+    bottom: 1.5rem; /* Position dots at the bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 0.75rem; /* Space between dots */
+    padding: 0.5rem 1rem;
+    background-color: rgba(17, 24, 39, 0.5); /* bg-gray-900 with 50% opacity */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 9999px;
+    border: 1px solid rgba(55, 65, 81, 0.5); /* border-gray-700 with 50% opacity */
+  }
+  /* Individual dot style */
+  .hero-pagination .swiper-pagination-bullet {
+    width: 0.75rem; /* 12px */
+    height: 0.75rem; /* 12px */
+    background-color: #6b7280; /* gray-500 */
+    opacity: 0.7;
+    border-radius: 9999px;
+    transition: all 300ms ease-in-out;
+    cursor: pointer;
+  }
+  /* Active dot style */
+  .hero-pagination .swiper-pagination-bullet-active {
+    background-color: #ffffff; /* white */
+    opacity: 1;
+    width: 2.5rem; /* Make active dot wider */
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof Swiper !== 'undefined') {
+      const heroSwiper = new Swiper('.hero-slider', {
+        loop: true,
+        effect: 'fade',
+        fadeEffect: {
+          crossFade: true
+        },
+        autoplay: {
+          delay: 7000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.hero-pagination',
+          clickable: true,
+        },
+        observer: true,
+        observeParents: true,
+      });
+    }
+
+    // Your existing filter logic
+    const filterBar = document.getElementById('filter-bar');
+    const videoCards = document.querySelectorAll('.video-card');
+
+    if (filterBar && videoCards.length > 0) {
+      filterBar.addEventListener('click', (e) => {
+        const target = e.target.closest('.filter-btn');
+        if (!target) return;
+
+        const category = target.dataset.category;
+
+        filterBar.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('border-pink-500', 'text-pink-500');
+          btn.classList.add('border-transparent', 'text-gray-400');
+        });
+        target.classList.add('border-pink-500', 'text-pink-500');
+        target.classList.remove('border-transparent', 'text-gray-400');
+
+        videoCards.forEach(card => {
+          if (card instanceof HTMLElement) { 
+            const cardCategory = card.dataset.category;
+            if (category === 'all' || category === cardCategory) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          }
+        });
+      });
+    }
+  });
+</script>

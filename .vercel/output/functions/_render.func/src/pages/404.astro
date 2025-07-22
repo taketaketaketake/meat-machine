@@ -1,0 +1,17 @@
+
+---
+// src/pages/404.astro
+import Layout from '@/components/astro/layout.astro';
+import NotFoundHero from '@/components/react/ui/NotFoundHero';
+import SuggestedContent from '@/components/react/content/SuggestedContent';
+import '@/styles/global.css';
+
+---
+
+<Layout title="404: Not Found" description="The page you were looking for could not be found.">
+  <div class="py-20 md:py-32">
+        <div class="container mx-auto px-4">
+            <NotFoundHero client:load />
+        </div>
+    </div>
+</Layout>

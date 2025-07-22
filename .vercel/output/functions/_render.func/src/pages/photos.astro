@@ -1,0 +1,126 @@
+---
+// src/pages/photos.astro
+import Layout from '@/components/astro/layout.astro';
+import HeroSection from '@/components/react/content/HeroSection';
+import PhotoGrid from '@/components/react/content/PhotoGrid';
+import TrendingTags from '@/components/react/content/TrendingTags';
+import CategoryGrid from '@/components/react/discovery/CategoryGrid';
+import ToolGrid from '@/components/react/content/ToolGrid';
+import CommunitySpotlight from '@/components/react/content/CommunitySpotlight';
+import CreatorList from '@/components/react/content/CreatorList';
+import TopVotedMasonry from '@/components/react/content/TopVotedMasonry';
+import SectionTitle from '@/components/astro/SectionTitle';
+
+import '@/styles/global.css';
+
+// --- Page & SEO Data ---
+const shareDescription = "Explore a gallery of stunning, mind-bending images created with the latest in AI technology on the Meat platform.";
+const shareImage = "/images/social/photos-page.jpg";
+
+// --- Data for Components ---
+const heroData = {
+  title: "AI Photo Gallery",
+  description: "Discover breathtaking images crafted by artificial intelligence. A new frontier in visual art.",
+  emoji: "🖼️"
+};
+
+const creators = [
+  { name: 'Aperture_Ace', avatarEmoji: '📸', photos: 214, specialty: 'Landscapes' },
+  { name: 'Portrait_Pixel', avatarEmoji: '🧑‍🎨', photos: 182, specialty: 'Portraits' },
+  { name: 'Urban_Utopia', avatarEmoji: '🏙️', photos: 305, specialty: 'Cityscapes' },
+  { name: 'Abstract_Lens', avatarEmoji: '🌀', photos: 98, specialty: 'Abstract' },
+];
+
+const categories = [
+  { title: 'Landscapes', gradient: 'from-blue-600/30 to-teal-600/30', icon: '🏞️' },
+  { title: 'Portraits', gradient: 'from-purple-600/30 to-pink-600/30', icon: '👤' },
+  { title: 'Cityscapes', gradient: 'from-orange-600/30 to-red-600/30', icon: '🌇' },
+  { title: 'Abstract', gradient: 'from-yellow-600/30 to-lime-600/30', icon: '🎨' },
+  { title: 'Wildlife', gradient: 'from-green-600/30 to-emerald-600/30', icon: '🐅' },
+  { title: 'Street', gradient: 'from-slate-600/30 to-gray-600/30', icon: '🚶' },
+];
+
+const latestPhotos = [
+  { id: 1, title: 'Neon Nights in Neo-Tokyo', user: '@Urban_Utopia', emoji: '🌃' },
+  { id: 2, title: 'Serenity Peak', user: '@Aperture_Ace', emoji: '🏔️' },
+  { id: 3, title: 'The Gaze', user: '@Portrait_Pixel', emoji: '👁️' },
+  { id: 4, title: 'Chromatic Chaos', user: '@Abstract_Lens', emoji: '💥' },
+  { id: 5, title: 'Golden Hour Savannah', user: '@WildLens', emoji: '🦓' },
+  { id: 6, title: 'Rainy Day Reflections', user: '@Street_Snapper', emoji: '💧' },
+];
+
+const topVotedPhotos = [
+  { id: 7, title: 'Galactic Gateway', user: '@Aperture_Ace', votes: '12.1k', aspect: 'aspect-[3/4]', emoji: '🌌' },
+  { id: 8, title: 'Concrete Jungle', user: '@Urban_Utopia', votes: '11.8k', aspect: 'aspect-[16/9]', emoji: '🌉' },
+  { id: 9, title: 'Whispers of the Past', user: '@Portrait_Pixel', votes: '9.5k', aspect: 'aspect-square', emoji: '📜' },
+  { id: 10, title: 'Molten Flow', user: '@Abstract_Lens', votes: '8.2k', aspect: 'aspect-[16/9]', emoji: '🌋' },
+  { id: 11, title: 'King of the Arctic', user: '@WildLens', votes: '7.9k', aspect: 'aspect-[3/4]', emoji: '🐻‍❄️' },
+  { id: 12, title: 'Market Hustle', user: '@Street_Snapper', votes: '6.4k', aspect: 'aspect-square', emoji: '🍎' },
+];
+
+const trendingTags = [
+  '#futuristic', '#fantasy', '8K', 'photorealistic', 'cinematic', '#cyberpunk',
+  '#solarpunk', 'watercolor', '3D render', '#abstract', 'minimalist'
+];
+
+const aiTools = [
+  { name: 'Midjourney', icon: '🎨', gradient: 'from-indigo-500/30 to-purple-500/30' },
+  { name: 'DALL-E 3', icon: '✨', gradient: 'from-sky-500/30 to-blue-500/30' },
+  { name: 'Stable Diffusion', icon: '🌀', gradient: 'from-rose-500/30 to-red-500/30' },
+  { name: 'Firefly', icon: '🔥', gradient: 'from-amber-500/30 to-orange-500/30' }
+];
+
+const communitySpotlight = {
+  name: 'Pixel_Prophet',
+  avatarEmoji: '🔮',
+  bio: 'Weaving dreams into digital tapestries. Specializing in surreal and fantasy landscapes that tell a story.',
+  joinDate: 'Joined March 2025',
+  images: [
+    { id: 13, emoji: '🏰' },
+    { id: 14, emoji: '🐉' },
+    { id: 15, emoji: '🌲' },
+  ]
+};
+---
+
+<Layout
+  title="AI Photo Gallery"
+  description={shareDescription}
+  shareImage={shareImage}
+  class="bg-gray-950"
+>
+  <HeroSection client:load data={heroData} />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 py-16">
+    <PhotoGrid client:visible title="Latest Shots" data={latestPhotos} />
+    <TrendingTags client:visible title="Trending Tags" data={trendingTags} />
+    <CategoryGrid client:visible title="Browse by Category" data={categories} />
+    <ToolGrid client:visible title="Explore by AI Tool" data={aiTools} />
+    <CommunitySpotlight client:visible data={communitySpotlight} />
+    <CreatorList client:visible title="More Featured Creators" data={creators} />
+    <TopVotedMasonry client:visible title="Top Voted This Week" data={topVotedPhotos} />
+  </div>
+</Layout>
+
+<style>
+
+.tag-chip {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(31, 41, 55, 0.5);
+  border: 1px solid #4b5563;
+  border-radius: 9999px;
+  color: #d1d5db;
+  font-weight: 500;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.tag-chip:hover {
+  background-color: #ec4899;
+  color: white;
+  border-color: #ec4899;
+  transform: translateY(-2px);
+}
+
+</style>

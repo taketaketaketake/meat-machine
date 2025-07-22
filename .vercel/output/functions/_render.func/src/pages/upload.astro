@@ -1,0 +1,12 @@
+---
+// src/pages/create.astro
+import Layout from '../components/astro/layout.astro';
+import '../styles/global.css';
+import CreationPage from '@/components/react/content/CreationPage';
+// This page is self-contained and uses hardcoded values for UI elements.
+---
+<Layout title="Create - Meat" description="Create and share your next AI-generated masterpiece.">
+  <div class="py-12">
+    <CreationPage client:load mode="create" />
+  </div>
+</Layout>
