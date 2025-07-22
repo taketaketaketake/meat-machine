@@ -1,0 +1,57 @@
+import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, b as addAttribute } from '../../chunks/astro/server_DoWU9KzR.mjs';
+import 'kleur/colors';
+import { $ as $$Layout } from '../../chunks/layout_0jEJ4wg3.mjs';
+/* empty css                                    */
+export { renderers } from '../../renderers.mjs';
+
+const $$Playlist = createComponent(($$result, $$props, $$slots) => {
+  const playlist = {
+    title: "Cybernetic Dreams: A Retrowave Journey",
+    creator: "SynthWaveSurfer",
+    description: "A collection of synth-heavy, neon-drenched tracks for late-night drives through a futuristic metropolis.",
+    coverEmoji: "\u{1F303}",
+    trackCount: 20,
+    totalDuration: "1 hr 15 min",
+    tracks: [
+      { id: 1, title: "Neon Sunset", artist: "SynthWaveSurfer", duration: "3:45", coverEmoji: "\u{1F306}" },
+      { id: 2, title: "Grid Runner", artist: "VectorVibe", duration: "4:12", coverEmoji: "\u{1F3CE}\uFE0F" },
+      { id: 3, title: "Midnight Protocol", artist: "DataDriver", duration: "3:55", coverEmoji: "\u{1F4BB}" },
+      { id: 4, title: "Arcade Memories", artist: "PixelPilot", duration: "4:30", coverEmoji: "\u{1F579}\uFE0F" },
+      { id: 5, title: "Chrome Reflections", artist: "SynthWaveSurfer", duration: "3:20", coverEmoji: "\u{1FA9E}" },
+      { id: 6, title: "Digital Ocean", artist: "VectorVibe", duration: "5:05", coverEmoji: "\u{1F30A}" },
+      { id: 7, title: "First Contact", artist: "GalacticMuse", duration: "4:50", coverEmoji: "\u{1F47D}" },
+      { id: 8, title: "Megastructure", artist: "DataDriver", duration: "3:10", coverEmoji: "\u{1F3D7}\uFE0F" },
+      { id: 9, title: "Escape Velocity", artist: "SynthWaveSurfer", duration: "4:00", coverEmoji: "\u{1F680}" },
+      { id: 10, title: "Hotline Zero", artist: "PixelPilot", duration: "3:33", coverEmoji: "\u260E\uFE0F" },
+      { id: 11, title: "Lagoon", artist: "VectorVibe", duration: "4:24", coverEmoji: "\u{1F3DD}\uFE0F" },
+      { id: 12, title: "Replicant's Dream", artist: "DataDriver", duration: "3:58", coverEmoji: "\u{1F916}" },
+      { id: 13, title: "Starlight Cruise", artist: "GalacticMuse", duration: "5:15", coverEmoji: "\u2728" },
+      { id: 14, title: "System Shock", artist: "SynthWaveSurfer", duration: "3:48", coverEmoji: "\u26A1" },
+      { id: 15, title: "Virtual Plaza", artist: "PixelPilot", duration: "4:10", coverEmoji: "\u{1F3E2}" },
+      { id: 16, title: "Alpha Wave", artist: "VectorVibe", duration: "3:59", coverEmoji: "\u3030\uFE0F" },
+      { id: 17, title: "The Glitch", artist: "DataDriver", duration: "2:55", coverEmoji: "\u{1F47E}" },
+      { id: 18, title: "Andromeda", artist: "GalacticMuse", duration: "6:02", coverEmoji: "\u{1F30C}" },
+      { id: 19, title: "Final Boss", artist: "PixelPilot", duration: "3:21", coverEmoji: "\u{1F479}" },
+      { id: 20, title: "Sunrise on Titan", artist: "SynthWaveSurfer", duration: "4:44", coverEmoji: "\u{1F305}" }
+    ]
+  };
+  const nowPlayingId = 3;
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": playlist.title, "description": playlist.description }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="container mx-auto px-4 py-8"> <!-- Playlist Header --> <header class="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8 bg-gradient-to-b from-purple-900/50 to-gray-950/0 p-8 rounded-2xl"> <div class="flex-shrink-0 w-48 h-48 md:w-56 md:h-56"> <div class="aspect-square bg-gray-800 rounded-xl flex items-center justify-center text-8xl shadow-lg border-2 border-gray-700"> ${playlist.coverEmoji} </div> </div> <div class="flex-grow text-center md:text-left"> <p class="text-sm font-bold text-gray-400 uppercase">Playlist</p> <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mt-1">${playlist.title}</h1> <p class="text-gray-300 mt-4">${playlist.description}</p> <p class="text-sm text-gray-400 mt-2">Created by <a href="#" class="font-bold text-pink-400 hover:underline">${playlist.creator}</a> • ${playlist.trackCount} songs, ${playlist.totalDuration}</p> </div> </header> <!-- Action Bar --> <div class="py-6 flex items-center gap-4"> <button class="w-16 h-16 flex items-center justify-center rounded-full bg-pink-600 hover:bg-pink-500 text-white transition-colors shadow-lg"> <svg class="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path></svg> </button> <button class="text-gray-300 hover:text-white transition-colors"> <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M14.83 4.75C14.28 4.29 13.56 4 12.8 4s-1.48.29-2.03.75L8.41 7.11 7.12 5.83A.996.996 0 105.7 7.24l1.41 1.41-1.41 1.41A.996.996 0 107.12 11.5l1.29-1.29 2.34 2.34c.56.56 1.33.81 2.07.73L18 16.94V18a1 1 0 001 1h1a1 1 0 001-1v-3.17l-3.17-3.17-3-3.01zm-1.42 2.82l1.41 1.41L12.03 12l-1.41-1.41 2.79-2.82zM4.93 12.07L3.5 13.5c-1.56 1.56-1.56 4.09 0 5.66l1.41 1.41c1.56 1.56 4.09 1.56 5.66 0l1.43-1.43L10.58 18 4.93 12.35v-.28z"></path></svg> </button> <button class="text-gray-300 hover:text-white transition-colors"> <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg> </button> </div> <!-- Track List Table --> <div class="space-y-2"> ${playlist.tracks.map((track, index) => {
+    const isPlaying = track.id === nowPlayingId;
+    return renderTemplate`<div${addAttribute(`flex items-center p-3 rounded-lg transition-colors group ${isPlaying ? "bg-pink-600/20" : "hover:bg-gray-800/50"}`, "class")}> <div class="w-8 text-center text-sm font-medium \${isPlaying ? 'text-pink-400' : 'text-gray-400'}">${index + 1}</div> <div class="w-12 h-12 bg-gray-800 rounded-md flex items-center justify-center text-2xl mx-4 flex-shrink-0">${track.coverEmoji}</div> <div class="flex-grow"> <p${addAttribute(`font-semibold truncate ${isPlaying ? "text-pink-400" : "text-white"}`, "class")}>${track.title}</p> <p class="text-sm text-gray-400 truncate">${track.artist}</p> </div> <div class="text-sm text-gray-400 hidden sm:block mx-4">${track.duration}</div> <button class="text-gray-400 hover:text-white transition-colors p-2 rounded-full opacity-0 group-hover:opacity-100"> <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg> </button> </div>`;
+  })} </div> </div> ` })}`;
+}, "/Users/Zach/Github_Projects/meat-machine/src/pages/audio/playlist.astro", void 0);
+
+const $$file = "/Users/Zach/Github_Projects/meat-machine/src/pages/audio/playlist.astro";
+const $$url = "/audio/playlist";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$Playlist,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
