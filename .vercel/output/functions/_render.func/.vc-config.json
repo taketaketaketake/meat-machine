@@ -1,6 +1,6 @@
 {
 	"runtime": "nodejs20.x",
-	"handler": "_functions/entry.mjs",
+	"handler": "entry.mjs",
 	"launcherType": "Nodejs",
 	"supportsResponseStreaming": true
 }
