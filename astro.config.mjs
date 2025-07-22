@@ -13,7 +13,10 @@ export default defineConfig({
     })
   ],
   output: 'server', // Changed from 'hybrid' to 'server'
-  adapter: vercel(), // Updated from deprecated serverless import
+  adapter: vercel({
+    functionPerRoute: false,
+    runtime: 'nodejs20.x'
+  }), // Updated from deprecated serverless import
   vite: {
         resolve: {
             alias: {
