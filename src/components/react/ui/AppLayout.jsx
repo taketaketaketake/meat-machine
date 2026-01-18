@@ -247,10 +247,8 @@ export default function AppLayout({ children, pathname }) {
       <Sheet>
         <Header
           mobileMenuTrigger={
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-white">
-                <HamburgerIcon />
-              </Button>
+            <SheetTrigger className="p-2 rounded-md text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-white">
+              <HamburgerIcon className="w-6 h-6" />
             </SheetTrigger>
           }
         />
