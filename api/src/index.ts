@@ -1,9 +1,22 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import { PrismaClient } from "@prisma/client";
+import cookie from "@fastify/cookie";
+import rateLimit from "@fastify/rate-limit";
+import { prisma } from "./lib/prisma.js";
+import { errorHandler } from "./lib/errors.js";
+import {
+  enforceHttps,
+  securityHeaders,
+  registerCsrfRoute,
+  rateLimitConfigs,
+} from "./lib/security.js";
+import authRoutes from "./routes/auth.js";
+import usersRoutes from "./routes/users.js";
+import creationsRoutes from "./routes/creations.js";
+import commentsRoutes from "./routes/comments.js";
 
-// Initialize Prisma
-const prisma = new PrismaClient();
+// Import types
+import "./types.js";
 
 // Initialize Fastify
 const fastify = Fastify({
@@ -17,18 +30,49 @@ const fastify = Fastify({
           }
         : undefined,
   },
+  // Trust proxy headers for HTTPS detection behind load balancer
+  trustProxy: true,
 });
 
-// Register plugins
+// =============================================================================
+// Security Middleware
+// =============================================================================
+
+// HTTPS enforcement (production only)
+fastify.addHook("onRequest", enforceHttps);
+
+// Security headers
+securityHeaders(fastify);
+
+// =============================================================================
+// Plugins
+// =============================================================================
+
+// CORS
 await fastify.register(cors, {
   origin: process.env.FRONTEND_URL || "http://localhost:4321",
   credentials: true,
+  exposedHeaders: ["set-cookie"],
 });
 
-// Decorate fastify with prisma
-fastify.decorate("prisma", prisma);
+// Cookies
+await fastify.register(cookie);
 
-// Health check
+// Global rate limiting (applies to all routes)
+await fastify.register(rateLimit, {
+  max: rateLimitConfigs.api.max,
+  timeWindow: rateLimitConfigs.api.timeWindow,
+  errorResponseBuilder: rateLimitConfigs.api.errorResponseBuilder,
+});
+
+// Global error handler
+fastify.setErrorHandler(errorHandler);
+
+// =============================================================================
+// Routes
+// =============================================================================
+
+// Health check (no rate limit override needed)
 fastify.get("/health", async () => {
   return { status: "ok", timestamp: new Date().toISOString() };
 });
@@ -41,38 +85,27 @@ fastify.get("/", async () => {
     description: "Backend API for AI Content Platform",
     endpoints: {
       health: "/health",
+      csrf: "/api/csrf-token",
       auth: "/api/auth/*",
       users: "/api/users/*",
       creations: "/api/creations/*",
-      channels: "/api/channels/*",
-      threads: "/api/threads/*",
-      rooms: "/api/rooms/*",
-      tags: "/api/tags/*",
-      search: "/api/search",
+      comments: "/api/comments/*",
     },
   };
 });
 
+// CSRF token endpoint
+registerCsrfRoute(fastify);
+
+// Route modules
+await fastify.register(authRoutes, { prefix: "/api/auth" });
+await fastify.register(usersRoutes, { prefix: "/api/users" });
+await fastify.register(creationsRoutes, { prefix: "/api/creations" });
+await fastify.register(commentsRoutes, { prefix: "/api/comments" });
+
 // =============================================================================
-// TODO: Register route modules
+// Lifecycle
 // =============================================================================
-// import authRoutes from './routes/auth.js';
-// import userRoutes from './routes/users.js';
-// import creationRoutes from './routes/creations.js';
-// import channelRoutes from './routes/channels.js';
-// import threadRoutes from './routes/threads.js';
-// import roomRoutes from './routes/rooms.js';
-// import tagRoutes from './routes/tags.js';
-// import searchRoutes from './routes/search.js';
-//
-// await fastify.register(authRoutes, { prefix: '/api/auth' });
-// await fastify.register(userRoutes, { prefix: '/api/users' });
-// await fastify.register(creationRoutes, { prefix: '/api/creations' });
-// await fastify.register(channelRoutes, { prefix: '/api/channels' });
-// await fastify.register(threadRoutes, { prefix: '/api/threads' });
-// await fastify.register(roomRoutes, { prefix: '/api/rooms' });
-// await fastify.register(tagRoutes, { prefix: '/api/tags' });
-// await fastify.register(searchRoutes, { prefix: '/api/search' });
 
 // Graceful shutdown
 const signals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
@@ -99,6 +132,8 @@ const start = async () => {
     🚀 Server running at http://${host}:${port}
     📊 Health check:   http://${host}:${port}/health
     🔧 Environment:    ${process.env.NODE_ENV || "development"}
+    🔒 HTTPS:          ${process.env.NODE_ENV === "production" ? "Enforced" : "Disabled"}
+    🛡️  Rate Limit:     ${rateLimitConfigs.api.max} req/${rateLimitConfigs.api.timeWindow}
     ═══════════════════════════════════════
     `);
   } catch (err) {
@@ -108,10 +143,3 @@ const start = async () => {
 };
 
 start();
-
-// Type augmentation for Fastify
-declare module "fastify" {
-  interface FastifyInstance {
-    prisma: PrismaClient;
-  }
-}
