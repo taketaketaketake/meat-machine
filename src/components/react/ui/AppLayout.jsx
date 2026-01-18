@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '@/lib/api/client';
+import { authApi } from '@/lib/api';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -124,29 +124,28 @@ const SidebarFooter = ({ user, onLogout, isExpanded, onUserMenuToggle }) => (
     </div>
 );
 
-const Header = () => (
+const Header = ({ mobileMenuTrigger }) => (
     <header className="h-16 bg-gray-950 text-white flex items-center z-10 border-b border-gray-700 flex-shrink-0 px-4 sm:px-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         <div className="lg:hidden">
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-                <HamburgerIcon />
-            </Button>
-          </SheetTrigger>
+          {mobileMenuTrigger}
         </div>
-        <a href="/" aria-label="Go to Homepage" className="items-center gap-3 hidden lg:flex">
+        <a href="/" aria-label="Go to Homepage" className="flex items-center gap-3">
           <img src="/meat_logo.png" alt="Machine Creativity Logo" className="h-8 w-auto flex-shrink-0" />
         </a>
       </div>
-      <div className="flex-1 flex justify-center px-4 lg:px-8">
+      <div className="flex-1 flex justify-center px-2 sm:px-4 lg:px-8">
         <div className="w-full max-w-lg relative">
-            <input type="search" placeholder="Search..." className="w-full bg-gray-800 border border-gray-700 text-white rounded-full py-2.5 pl-5 pr-12 focus:outline-none focus:ring-2 focus:ring-red-500 transition"/>
-            <button className="absolute inset-y-0 right-0 flex items-center justify-center w-12 text-gray-400 hover:text-white">
+            <input type="search" placeholder="Search..." className="w-full bg-gray-800 border border-gray-700 text-white rounded-full py-2 sm:py-2.5 pl-4 sm:pl-5 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500 transition"/>
+            <button className="absolute inset-y-0 right-0 flex items-center justify-center w-10 sm:w-12 text-gray-400 hover:text-white">
                 <SearchIcon />
             </button>
         </div>
       </div>
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end gap-1 sm:gap-2">
+        <Button variant="ghost" size="icon" className="rounded-full lg:hidden">
+            <BellIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+        </Button>
         <div className="hidden lg:flex items-center gap-2">
             <Button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-full text-sm px-4 py-2 flex items-center">
                 <PlusIcon className="mr-1.5 h-5 w-5" />
@@ -216,7 +215,7 @@ export default function AppLayout({ children, pathname }) {
 
   useEffect(() => {
     // Check if user is logged in by calling the backend
-    api.get('/auth/me')
+    authApi.me()
       .then((data) => {
         setUser(data);
       })
@@ -230,7 +229,7 @@ export default function AppLayout({ children, pathname }) {
 
   const handleLogout = async () => {
     try {
-      await api.post('/auth/logout');
+      await authApi.logout();
     } catch (err) {
       // Ignore logout errors
     }
@@ -246,7 +245,15 @@ export default function AppLayout({ children, pathname }) {
   return (
     <div className="flex flex-col h-screen bg-gray-950 text-white overflow-hidden">
       <Sheet>
-        <Header />
+        <Header
+          mobileMenuTrigger={
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-white">
+                <HamburgerIcon />
+              </Button>
+            </SheetTrigger>
+          }
+        />
 
         <div className="flex flex-1 overflow-hidden">
           <DesktopSidebar
