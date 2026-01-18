@@ -1,9 +1,10 @@
 // src/components/react/auth/SignUpForm.jsx
 import React, { useState } from 'react';
-import { api } from '@/lib/api/client';
+import { authApi } from '@/lib/api';
 
 export default function SignUpForm() {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,8 +16,9 @@ export default function SignUpForm() {
     setError(null);
 
     try {
-      await api.post('/auth/register', {
+      await authApi.register({
         email,
+        username,
         password,
       });
       setSuccess(true);
@@ -37,12 +39,21 @@ export default function SignUpForm() {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        required
       />
       <button type="submit" disabled={loading}>
         {loading ? 'Signing Up...' : 'Sign Up'}

@@ -1,6 +1,6 @@
 // src/components/react/auth/AuthForm.jsx
 import React, { useState } from 'react';
-import { api } from '@/lib/api/client';
+import { authApi } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -33,7 +33,7 @@ export default function AuthForm({ defaultMode = 'signUp' }) {
     try {
       if (isSignUp) {
         // Sign Up
-        await api.post('/auth/register', {
+        await authApi.register({
           email,
           password,
           username,
@@ -41,7 +41,7 @@ export default function AuthForm({ defaultMode = 'signUp' }) {
         setMessage('Account created successfully! Please check your email to verify.');
       } else {
         // Sign In
-        await api.post('/auth/login', {
+        await authApi.login({
           email,
           password,
         });
@@ -58,7 +58,7 @@ export default function AuthForm({ defaultMode = 'signUp' }) {
   const handleGoogleSignIn = async () => {
     // Redirect to backend OAuth endpoint
     const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
-    window.location.href = `${API_URL}/auth/google`;
+    window.location.href = `${API_URL}/api/auth/google`;
   };
 
   return (
