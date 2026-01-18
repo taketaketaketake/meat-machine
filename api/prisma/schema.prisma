@@ -1,0 +1,604 @@
+// Meat-Machine API - Database Schema
+// Using Prisma with PostgreSQL
+// Workflow: prisma db push (no migration files)
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // For connection pooling (Neon/PlanetScale)
+}
+
+// =============================================================================
+// ENUMS
+// =============================================================================
+
+enum ContentType {
+  video
+  photo
+  audio
+  article
+}
+
+enum ContentStatus {
+  draft
+  published
+  archived
+  removed
+}
+
+enum PostType {
+  discussion
+  showcase
+  question
+}
+
+enum CommentableType {
+  creation
+  thread
+  community_post
+}
+
+enum LikeableType {
+  creation
+  thread
+  community_post
+  comment
+}
+
+// =============================================================================
+// USER & AUTHENTICATION
+// =============================================================================
+
+model User {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String   @unique @db.VarChar(255)
+  username      String   @unique @db.VarChar(50)
+  passwordHash  String?  @map("password_hash") @db.VarChar(255)
+
+  // Profile
+  displayName   String?  @map("display_name") @db.VarChar(100)
+  avatarEmoji   String   @default("👤") @map("avatar_emoji") @db.VarChar(10)
+  avatarUrl     String?  @map("avatar_url")
+  bio           String?
+  bioLong       String?  @map("bio_long")
+  website       String?
+  donationUrl   String?  @map("donation_url")
+
+  // Creator-specific
+  specialty       String?  @db.VarChar(100)
+  specialtyColor  String?  @map("specialty_color") @db.VarChar(50)
+  bannerGradient  String?  @map("banner_gradient") @db.VarChar(200)
+  isCreator       Boolean  @default(false) @map("is_creator")
+  isVerified      Boolean  @default(false) @map("is_verified")
+
+  // Social links stored as JSON
+  socialLinks   Json     @default("{}") @map("social_links")
+
+  // Denormalized counts (updated via application logic or triggers)
+  followersCount   Int   @default(0) @map("followers_count")
+  followingCount   Int   @default(0) @map("following_count")
+  creationsCount   Int   @default(0) @map("creations_count")
+  collectionsCount Int   @default(0) @map("collections_count")
+
+  // Timestamps
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  creations       Creation[]
+  threads         Thread[]
+  communityPosts  CommunityPost[]
+  comments        Comment[]
+  likes           Like[]
+  collections     Collection[]
+  playlists       Playlist[]
+  contentViews    ContentView[]
+
+  // Follow relations
+  followers       UserFollow[] @relation("following")
+  following       UserFollow[] @relation("follower")
+
+  // Room membership
+  roomMemberships RoomMember[]
+
+  // OAuth accounts
+  oauthAccounts   OAuthAccount[]
+
+  // Sessions
+  sessions        Session[]
+
+  @@index([username])
+  @@index([isCreator])
+  @@index([createdAt])
+  @@map("users")
+}
+
+model OAuthAccount {
+  id                String   @id @default(uuid()) @db.Uuid
+  userId            String   @map("user_id") @db.Uuid
+  provider          String   @db.VarChar(50) // "google", "github", etc.
+  providerAccountId String   @map("provider_account_id") @db.VarChar(255)
+  accessToken       String?  @map("access_token")
+  refreshToken      String?  @map("refresh_token")
+  expiresAt         DateTime? @map("expires_at")
+
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("oauth_accounts")
+}
+
+model Session {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  token        String   @unique @db.VarChar(255)
+  userAgent    String?  @map("user_agent")
+  ipAddress    String?  @map("ip_address") @db.VarChar(45)
+  expiresAt    DateTime @map("expires_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+// =============================================================================
+// USER FOLLOWS
+// =============================================================================
+
+model UserFollow {
+  id          String   @id @default(uuid()) @db.Uuid
+  followerId  String   @map("follower_id") @db.Uuid
+  followingId String   @map("following_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  follower    User     @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("user_follows")
+}
+
+// =============================================================================
+// CREATIONS (Content: Videos, Photos, Audio, Articles)
+// =============================================================================
+
+model Creation {
+  id            String        @id @default(uuid()) @db.Uuid
+  userId        String        @map("user_id") @db.Uuid
+
+  // Core content
+  title         String        @db.VarChar(255)
+  description   String?
+  contentType   ContentType   @map("content_type")
+  status        ContentStatus @default(draft)
+
+  // Files
+  fileUrl       String        @map("file_url")
+  thumbnailUrl  String?       @map("thumbnail_url")
+
+  // AI creation metadata
+  prompt        String?
+  toolUsed      String?       @map("tool_used") @db.VarChar(100)
+  parameters    String?       // e.g., "--ar 16:9 --style raw"
+  toolsMetadata Json          @default("[]") @map("tools_metadata") // [{name, icon, description}]
+
+  // Type-specific metadata (flexible JSON)
+  // video: {duration, resolution, category}
+  // audio: {duration, genre, bpm}
+  // photo: {aspectRatio, dimensions}
+  // article: {readTime, wordCount}
+  metadata      Json          @default("{}")
+
+  // Categorization
+  category      String?       @db.VarChar(100)
+  license       String?       @db.VarChar(100)
+
+  // Denormalized counts
+  viewsCount    Int           @default(0) @map("views_count")
+  likesCount    Int           @default(0) @map("likes_count")
+  commentsCount Int           @default(0) @map("comments_count")
+
+  // Timestamps
+  publishedAt   DateTime?     @map("published_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  // Relations
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags            CreationTag[]
+  comments        Comment[]
+  likes           Like[]
+  views           ContentView[]
+  collectionItems CollectionItem[]
+  playlistTracks  PlaylistTrack[]
+
+  @@index([userId])
+  @@index([contentType])
+  @@index([status])
+  @@index([category])
+  @@index([publishedAt(sort: Desc)])
+  @@index([toolUsed])
+  @@index([likesCount(sort: Desc)])
+  @@index([viewsCount(sort: Desc)])
+  @@map("creations")
+}
+
+// =============================================================================
+// TAGS
+// =============================================================================
+
+model Tag {
+  id          String   @id @db.VarChar(100) // slug: "cyberpunk"
+  name        String   @db.VarChar(100)     // display: "#cyberpunk"
+  usageCount  Int      @default(0) @map("usage_count")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  creations        CreationTag[]
+  communityPosts   CommunityPostTag[]
+
+  @@index([usageCount(sort: Desc)])
+  @@map("tags")
+}
+
+model CreationTag {
+  creationId  String   @map("creation_id") @db.Uuid
+  tagId       String   @map("tag_id") @db.VarChar(100)
+
+  creation    Creation @relation(fields: [creationId], references: [id], onDelete: Cascade)
+  tag         Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([creationId, tagId])
+  @@index([tagId])
+  @@map("creation_tags")
+}
+
+// =============================================================================
+// AI TOOLS (Reference Data)
+// =============================================================================
+
+model AiTool {
+  id          String   @id @db.VarChar(50)  // "midjourney"
+  name        String   @db.VarChar(100)     // "Midjourney"
+  description String?
+  icon        String?  @db.VarChar(10)
+  category    String?  @db.VarChar(50)      // "image", "video", "audio"
+  websiteUrl  String?  @map("website_url")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([category])
+  @@map("ai_tools")
+}
+
+// =============================================================================
+// DISCUSSION CHANNELS & THREADS
+// =============================================================================
+
+model Channel {
+  id          String   @id @db.VarChar(50)  // "tool-talk"
+  name        String   @db.VarChar(100)
+  description String?
+  icon        String?  @db.VarChar(10)
+  sortOrder   Int      @default(0) @map("sort_order")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  threads     Thread[]
+
+  @@index([sortOrder])
+  @@map("channels")
+}
+
+model Thread {
+  id           String   @id @default(uuid()) @db.Uuid
+  channelId    String   @map("channel_id") @db.VarChar(50)
+  authorId     String   @map("author_id") @db.Uuid
+
+  title        String   @db.VarChar(255)
+  body         String?
+
+  isPinned     Boolean  @default(false) @map("is_pinned")
+  isLocked     Boolean  @default(false) @map("is_locked")
+
+  // Denormalized counts
+  repliesCount Int      @default(0) @map("replies_count")
+  likesCount   Int      @default(0) @map("likes_count")
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  channel      Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  author       User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments     Comment[]
+  likes        Like[]
+
+  @@index([channelId, createdAt(sort: Desc)])
+  @@index([authorId])
+  @@index([channelId, isPinned])
+  @@map("threads")
+}
+
+// =============================================================================
+// COMMUNITY ROOMS & POSTS
+// =============================================================================
+
+model CommunityRoom {
+  id            String   @id @db.VarChar(50)  // "prompt-crafting"
+  name          String   @db.VarChar(100)     // "#prompt-crafting"
+  description   String?
+  icon          String?  @db.VarChar(10)
+  gradient      String?  @db.VarChar(200)
+  rules         Json     @default("[]")       // Array of rule strings
+
+  membersCount  Int      @default(0) @map("members_count")
+  onlineCount   Int      @default(0) @map("online_count")
+
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  members       RoomMember[]
+  posts         CommunityPost[]
+
+  @@map("community_rooms")
+}
+
+model RoomMember {
+  roomId      String   @map("room_id") @db.VarChar(50)
+  userId      String   @map("user_id") @db.Uuid
+  isModerator Boolean  @default(false) @map("is_moderator")
+  joinedAt    DateTime @default(now()) @map("joined_at")
+
+  room        CommunityRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([roomId, userId])
+  @@index([userId])
+  @@map("room_members")
+}
+
+model CommunityPost {
+  id           String   @id @default(uuid()) @db.Uuid
+  roomId       String   @map("room_id") @db.VarChar(50)
+  authorId     String   @map("author_id") @db.Uuid
+
+  title        String   @db.VarChar(255)
+  body         String?
+  postType     PostType @map("post_type")
+
+  // Denormalized counts
+  upvotesCount Int      @default(0) @map("upvotes_count")
+  repliesCount Int      @default(0) @map("replies_count")
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  room         CommunityRoom      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  author       User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags         CommunityPostTag[]
+  comments     Comment[]
+  likes        Like[]
+
+  @@index([roomId, createdAt(sort: Desc)])
+  @@index([authorId])
+  @@map("community_posts")
+}
+
+model CommunityPostTag {
+  postId  String @map("post_id") @db.Uuid
+  tagId   String @map("tag_id") @db.VarChar(100)
+
+  post    CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag     Tag           @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@index([tagId])
+  @@map("community_post_tags")
+}
+
+// =============================================================================
+// COMMENTS (Polymorphic via separate relation fields)
+// =============================================================================
+
+model Comment {
+  id              String          @id @default(uuid()) @db.Uuid
+  authorId        String          @map("author_id") @db.Uuid
+
+  // Polymorphic relations (only one should be set)
+  creationId      String?         @map("creation_id") @db.Uuid
+  threadId        String?         @map("thread_id") @db.Uuid
+  communityPostId String?         @map("community_post_id") @db.Uuid
+
+  // For tracking type (useful for queries)
+  commentableType CommentableType @map("commentable_type")
+
+  // Nested comments
+  parentId        String?         @map("parent_id") @db.Uuid
+
+  body            String
+
+  likesCount      Int             @default(0) @map("likes_count")
+  repliesCount    Int             @default(0) @map("replies_count")
+
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  // Relations
+  author          User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  creation        Creation?       @relation(fields: [creationId], references: [id], onDelete: Cascade)
+  thread          Thread?         @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  communityPost   CommunityPost?  @relation(fields: [communityPostId], references: [id], onDelete: Cascade)
+  parent          Comment?        @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies         Comment[]       @relation("CommentReplies")
+  likes           Like[]
+
+  @@index([creationId, createdAt])
+  @@index([threadId, createdAt])
+  @@index([communityPostId, createdAt])
+  @@index([authorId])
+  @@index([parentId])
+  @@map("comments")
+}
+
+// =============================================================================
+// LIKES (Polymorphic via separate relation fields)
+// =============================================================================
+
+model Like {
+  id              String       @id @default(uuid()) @db.Uuid
+  userId          String       @map("user_id") @db.Uuid
+
+  // Polymorphic relations (only one should be set)
+  creationId      String?      @map("creation_id") @db.Uuid
+  threadId        String?      @map("thread_id") @db.Uuid
+  communityPostId String?      @map("community_post_id") @db.Uuid
+  commentId       String?      @map("comment_id") @db.Uuid
+
+  // For tracking type
+  likeableType    LikeableType @map("likeable_type")
+
+  createdAt       DateTime     @default(now()) @map("created_at")
+
+  // Relations
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  creation        Creation?      @relation(fields: [creationId], references: [id], onDelete: Cascade)
+  thread          Thread?        @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  communityPost   CommunityPost? @relation(fields: [communityPostId], references: [id], onDelete: Cascade)
+  comment         Comment?       @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  // Unique constraints for each type
+  @@unique([userId, creationId])
+  @@unique([userId, threadId])
+  @@unique([userId, communityPostId])
+  @@unique([userId, commentId])
+  @@index([creationId])
+  @@index([threadId])
+  @@index([communityPostId])
+  @@index([commentId])
+  @@index([userId])
+  @@map("likes")
+}
+
+// =============================================================================
+// COLLECTIONS & PLAYLISTS
+// =============================================================================
+
+model Collection {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  name        String   @db.VarChar(100)
+  description String?
+  isPublic    Boolean  @default(true) @map("is_public")
+  itemsCount  Int      @default(0) @map("items_count")
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       CollectionItem[]
+
+  @@index([userId])
+  @@map("collections")
+}
+
+model CollectionItem {
+  id           String   @id @default(uuid()) @db.Uuid
+  collectionId String   @map("collection_id") @db.Uuid
+  creationId   String   @map("creation_id") @db.Uuid
+  sortOrder    Int      @default(0) @map("sort_order")
+  addedAt      DateTime @default(now()) @map("added_at")
+
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  creation     Creation   @relation(fields: [creationId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, creationId])
+  @@index([collectionId, sortOrder])
+  @@map("collection_items")
+}
+
+model Playlist {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String?  @map("user_id") @db.Uuid // NULL = system playlist
+  name        String   @db.VarChar(100)
+  description String?
+  icon        String?  @db.VarChar(10)
+  color       String?  @db.VarChar(50)
+  isPublic    Boolean  @default(true) @map("is_public")
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  tracksCount Int      @default(0) @map("tracks_count")
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tracks      PlaylistTrack[]
+
+  @@index([userId])
+  @@index([isFeatured])
+  @@map("playlists")
+}
+
+model PlaylistTrack {
+  id         String   @id @default(uuid()) @db.Uuid
+  playlistId String   @map("playlist_id") @db.Uuid
+  creationId String   @map("creation_id") @db.Uuid
+  sortOrder  Int      @default(0) @map("sort_order")
+  addedAt    DateTime @default(now()) @map("added_at")
+
+  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  creation   Creation @relation(fields: [creationId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, creationId])
+  @@index([playlistId, sortOrder])
+  @@map("playlist_tracks")
+}
+
+// =============================================================================
+// ANALYTICS
+// =============================================================================
+
+model ContentView {
+  id         String   @id @default(uuid()) @db.Uuid
+  creationId String   @map("creation_id") @db.Uuid
+  userId     String?  @map("user_id") @db.Uuid // NULL for anonymous
+  ipHash     String?  @map("ip_hash") @db.VarChar(64)
+  userAgent  String?  @map("user_agent")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  creation   Creation @relation(fields: [creationId], references: [id], onDelete: Cascade)
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([creationId, createdAt])
+  @@index([userId])
+  @@map("content_views")
+}
+
+// Daily aggregated views (for performance)
+model ContentViewsDaily {
+  creationId    String   @map("creation_id") @db.Uuid
+  viewDate      DateTime @map("view_date") @db.Date
+  viewCount     Int      @default(0) @map("view_count")
+  uniqueViewers Int      @default(0) @map("unique_viewers")
+
+  @@id([creationId, viewDate])
+  @@map("content_views_daily")
+}

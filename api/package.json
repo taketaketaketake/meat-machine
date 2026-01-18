@@ -1,0 +1,46 @@
+{
+  "name": "meat-machine-api",
+  "version": "1.0.0",
+  "description": "Backend API for Meat-Machine - AI Content Platform",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:push": "prisma db push",
+    "db:push:force": "prisma db push --accept-data-loss",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "prisma db push --force-reset && npm run db:seed",
+    "lint": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.ts\" \"prisma/**/*.ts\""
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0",
+    "fastify": "^5.0.0",
+    "@fastify/cors": "^10.0.0",
+    "@fastify/jwt": "^9.0.0",
+    "@fastify/cookie": "^10.0.0",
+    "@fastify/multipart": "^9.0.0",
+    "@fastify/rate-limit": "^10.0.0",
+    "@fastify/swagger": "^9.0.0",
+    "@fastify/swagger-ui": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "zod": "^3.23.0",
+    "nanoid": "^5.0.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.0",
+    "typescript": "^5.6.0",
+    "tsx": "^4.19.0",
+    "@types/node": "^22.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "prettier": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
