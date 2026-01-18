@@ -1,6 +1,6 @@
 // src/components/react/settings/SettingsPage.jsx
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase/supabase';
+import { api } from '@/lib/api/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -84,23 +84,15 @@ const ProfileSettings = () => {
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', user.id)
-                    .single();
-                
-                if (error) {
-                    setError('Could not fetch your profile.');
-                } else if (data) {
-                    setProfile({
-                        username: data.username || '',
-                        bio: data.bio || '',
-                        donation_url: data.donation_url || ''
-                    });
-                }
+            try {
+                const data = await api.get('/auth/me');
+                setProfile({
+                    username: data.username || '',
+                    bio: data.bio || '',
+                    donation_url: data.donation_url || ''
+                });
+            } catch (err) {
+                setError('Could not fetch your profile.');
             }
             setLoading(false);
         };
@@ -115,22 +107,16 @@ const ProfileSettings = () => {
         setLoading(true);
         setMessage('');
         setError('');
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-            const { error: updateError } = await supabase
-                .from('profiles')
-                .update({
-                    username: profile.username,
-                    bio: profile.bio,
-                    donation_url: profile.donation_url
-                })
-                .eq('id', user.id);
-            
-            if (updateError) {
-                setError(updateError.message);
-            } else {
-                setMessage('Profile saved successfully!');
-            }
+
+        try {
+            await api.patch('/users/me', {
+                username: profile.username,
+                bio: profile.bio,
+                donation_url: profile.donation_url
+            });
+            setMessage('Profile saved successfully!');
+        } catch (err) {
+            setError(err.message);
         }
         setLoading(false);
     };

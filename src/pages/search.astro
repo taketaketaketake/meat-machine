@@ -26,7 +26,7 @@ async function getSearchResults(query: string) {
         content: [
             { id: 1, title: 'Downtown Detroit Dispensary Tour', description: 'A guided tour of the top-rated cannabis dispensaries in the heart of the city.', creator: 'Detroit Dabs', type: 'video', tags: ['cannabis', 'tour', 'detroit'] },
             { id: 2, title: 'Top 5 Detroit Coffee Shops', description: 'From cozy corners to bustling cafes, here are the must-visit coffee spots in Detroit.', creator: 'Motor City Muncher', type: 'video', tags: ['food', 'coffee', 'detroit'] },
-            { id: 3, title: 'Detroit Riverfront Photowalk', description: 'A collection of stunning, high-resolution photographs taken along the iconic Detroit riverfront at sunset.', creator: 'Explore Detroit', type: 'image', tags: ['photography', 'cityscape', 'detroit'] },
+            { id: 3, title: 'Detroit Riverfront Photowalk', description: 'A collection of stunning, high-resolution photographs taken along the iconic Detroit riverfront at sunset.', creator: 'Explore Detroit', type: 'photo', tags: ['photography', 'cityscape', 'detroit'] },
         ]
     };
     // To test the "no results" case, you could return this instead:
@@ -88,7 +88,7 @@ const noResultsFound = !hasCreators && !hasContent;
                         {results.content.map(item => (
                              <a href={`/content/${item.id}`} class="group bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-start gap-6 hover:border-cyan-500/50 hover:bg-gray-800/50 transition-all duration-300">
                                 <div class="w-32 h-20 md:w-40 md:h-24 rounded-lg bg-gray-800 flex items-center justify-center text-2xl text-gray-500 flex-shrink-0">
-                                    {item.type === 'video' ? '🎬' : '🖼️'}
+                                    {item.type === 'video' ? '🎬' : item.type === 'photo' ? '🖼️' : item.type === 'audio' ? '🎵' : '📝'}
                                 </div>
                                 <div class="flex-grow pt-1 overflow-hidden">
                                     <h3 class="font-bold text-white truncate group-hover:text-cyan-400 transition-colors">{item.title}</h3>

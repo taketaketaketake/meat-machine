@@ -1,32 +1,34 @@
+// src/components/react/auth/SignUpForm.jsx
 import React, { useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_ANON_KEY);
+import { api } from '@/lib/api/client';
 
 export default function SignUpForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      // Handle successful sign-up (e.g., show a success message)
-      console.log('User signed up successfully!');
+    try {
+      await api.post('/auth/register', {
+        email,
+        password,
+      });
+      setSuccess(true);
+    } catch (err) {
+      setError(err.message);
     }
     setLoading(false);
   };
+
+  if (success) {
+    return <p>Account created! Please check your email to verify.</p>;
+  }
 
   return (
     <form onSubmit={handleSignUp}>

@@ -1,6 +1,6 @@
 // src/components/react/content/CreationForm.jsx
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase/supabase.ts';
+import { api } from '@/lib/api/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -39,47 +39,22 @@ export default function CreationForm({ mode = 'create', initialData = null, crea
     setError('');
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('You must be logged in to manage content.');
-
-      let fileUrl = initialData?.file_url;
-
-      // 1. If a new file is provided, upload it
+      // Build FormData for file upload
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('prompt', prompt);
       if (file) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}.${fileExt}`;
-        const filePath = `${user.id}/${fileName}`;
-        
-        const { error: uploadError } = await supabase.storage
-          .from('creations')
-          .upload(filePath, file, { upsert: mode === 'edit' }); // Use upsert for edits to overwrite
-
-        if (uploadError) throw uploadError;
-
-        const { data: { publicUrl } } = supabase.storage.from('creations').getPublicUrl(filePath);
-        fileUrl = publicUrl;
+        formData.append('file', file);
       }
 
-      if (!fileUrl) throw new Error("Could not determine the file URL.");
-
-      // 2. Prepare data for the database
-      const creationData = {
-        user_id: user.id,
-        title,
-        prompt,
-        file_url: fileUrl,
-      };
-
-      // 3. Insert or Update the record
       if (mode === 'create') {
-        const { error: insertError } = await supabase.from('creations').insert(creationData);
-        if (insertError) throw insertError;
+        // Upload new creation
+        await api.upload('/creations', formData);
         setMessage('Creation uploaded successfully!');
-        // Redirect or clear form
-        window.location.href = '/dashboard';
+        window.location.href = '/creator/dashboard';
       } else {
-        const { error: updateError } = await supabase.from('creations').update(creationData).eq('id', creationId);
-        if (updateError) throw updateError;
+        // Update existing creation
+        await api.upload(`/creations/${creationId}`, formData);
         setMessage('Creation updated successfully!');
       }
 

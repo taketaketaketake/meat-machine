@@ -1,6 +1,6 @@
 // src/components/react/content/CreationPage.jsx
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase/supabase';
+import { creationsApi } from '@/lib/api';
 import ContentSource from './ContentSource';
 import ContentDetailsForm from './ContentDetailsForm';
 import FormActions from './FormActions';
@@ -15,24 +15,18 @@ export default function CreationPage({ mode = 'create', creationId = null }) {
   useEffect(() => {
     if (mode === 'edit' && creationId) {
       const fetchCreation = async () => {
-        const { data, error } = await supabase
-          .from('creations')
-          .select('*')
-          .eq('id', creationId)
-          .single();
-        
-        if (error) {
-          setError('Could not fetch creation data.');
-        } else if (data) {
-          // Map database columns to form fields
+        try {
+          const data = await creationsApi.get(creationId);
           setFormData({
             title: data.title,
-            description: data.prompt, // Assuming 'prompt' column is used for description
-            toolsUsed: data.tool,
-            // Add other fields as needed
+            description: data.description,
+            contentType: data.contentType,
           });
+        } catch (err) {
+          setError('Could not fetch creation data.');
+        } finally {
+          setIsLoading(false);
         }
-        setIsLoading(false);
       };
       fetchCreation();
     }

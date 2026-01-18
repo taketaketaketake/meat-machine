@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../../lib/supabase/supabase';
+import { api } from '@/lib/api/client';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -86,16 +86,16 @@ const CommunitiesPlaceholder = ({ isExpanded }) => {
     );
 };
 
-const SidebarFooter = ({ session, onLogout, isExpanded, onUserMenuToggle }) => (
+const SidebarFooter = ({ user, onLogout, isExpanded, onUserMenuToggle }) => (
     <div className="p-4 border-t border-gray-700 flex-shrink-0">
-        {session ? (
+        {user ? (
             <DropdownMenu onOpenChange={onUserMenuToggle}>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="w-full justify-start p-2 h-auto text-white hover:bg-gray-700 hover:text-white">
                         <div className="flex items-center gap-3 w-full">
                             <UserCircleIcon className="h-10 w-10 text-gray-400 flex-shrink-0" />
                             <div className={`text-left overflow-hidden transition-all ${isExpanded ? "w-full opacity-100" : "w-0 opacity-0"}`}>
-                                <p className="text-sm font-medium leading-none truncate">{session.user.email}</p>
+                                <p className="text-sm font-medium leading-none truncate">{user.email}</p>
                             </div>
                         </div>
                     </Button>
@@ -190,7 +190,7 @@ const SidebarContent = ({ isExpanded, pathname }) => (
     </div>
 );
 
-const DesktopSidebar = ({ isExpanded, onMouseEnter, onMouseLeave, pathname, session, onLogout, onUserMenuToggle }) => (
+const DesktopSidebar = ({ isExpanded, onMouseEnter, onMouseLeave, pathname, user, onLogout, onUserMenuToggle }) => (
     <aside
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -199,9 +199,9 @@ const DesktopSidebar = ({ isExpanded, onMouseEnter, onMouseLeave, pathname, sess
         <div className="flex-1 overflow-y-auto pt-4">
             <SidebarContent isExpanded={isExpanded} pathname={pathname} />
         </div>
-        <SidebarFooter 
-          session={session} 
-          onLogout={onLogout} 
+        <SidebarFooter
+          user={user}
+          onLogout={onLogout}
           isExpanded={isExpanded}
           onUserMenuToggle={onUserMenuToggle}
         />
@@ -209,21 +209,35 @@ const DesktopSidebar = ({ isExpanded, onMouseEnter, onMouseLeave, pathname, sess
 );
 
 export default function AppLayout({ children, pathname }) {
-  const [session, setSession] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [isHoverExpanded, setIsHoverExpanded] = useState(false);
   const [isMenuLockedOpen, setIsMenuLockedOpen] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => setSession(session));
-    return () => subscription.unsubscribe();
+    // Check if user is logged in by calling the backend
+    api.get('/auth/me')
+      .then((data) => {
+        setUser(data);
+      })
+      .catch(() => {
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    try {
+      await api.post('/auth/logout');
+    } catch (err) {
+      // Ignore logout errors
+    }
+    setUser(null);
     window.location.href = '/';
   };
-  
+
   const handleMouseEnter = () => setIsHoverExpanded(true);
   const handleMouseLeave = () => setIsHoverExpanded(false);
 
@@ -233,14 +247,14 @@ export default function AppLayout({ children, pathname }) {
     <div className="flex flex-col h-screen bg-gray-950 text-white overflow-hidden">
       <Sheet>
         <Header />
-        
+
         <div className="flex flex-1 overflow-hidden">
-          <DesktopSidebar 
+          <DesktopSidebar
               isExpanded={isSidebarExpanded}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               pathname={pathname}
-              session={session}
+              user={user}
               onLogout={handleLogout}
               onUserMenuToggle={setIsMenuLockedOpen}
           />
@@ -248,7 +262,7 @@ export default function AppLayout({ children, pathname }) {
               {children}
           </main>
         </div>
-        
+
         <SheetContent side="left" className="bg-gray-900 text-white p-0 w-64 border-r-gray-800 flex flex-col">
             <div className="h-16 flex items-center p-4 border-b border-gray-700 flex-shrink-0">
               <a href="/" aria-label="Go to Homepage" className="flex items-center gap-3 w-full">
@@ -258,10 +272,10 @@ export default function AppLayout({ children, pathname }) {
             <div className="flex-1 overflow-y-auto">
                 <SidebarContent isExpanded={true} pathname={pathname} />
             </div>
-            <SidebarFooter 
-              session={session} 
-              onLogout={handleLogout} 
-              isExpanded={true} 
+            <SidebarFooter
+              user={user}
+              onLogout={handleLogout}
+              isExpanded={true}
               onUserMenuToggle={() => {}}
             />
         </SheetContent>

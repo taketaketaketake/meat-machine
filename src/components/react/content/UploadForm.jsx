@@ -1,10 +1,12 @@
+// src/components/react/content/UploadForm.jsx
 import React, { useState } from 'react';
-import { supabase } from '@/lib/supabase/supabase';
+import { api } from '@/lib/api/client';
 
 export default function UploadForm() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -20,18 +22,21 @@ export default function UploadForm() {
     setUploading(true);
     setError(null);
 
-    const { data, error } = await supabase.storage
-      .from('user-uploads')
-      .upload(`public/${file.name}`, file);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
 
-    if (error) {
-      setError(error.message);
-    } else {
-      console.log('File uploaded successfully:', data);
-      // Handle successful upload (e.g., save the URL to the database)
+      await api.upload('/uploads', formData);
+      setSuccess(true);
+    } catch (err) {
+      setError(err.message);
     }
     setUploading(false);
   };
+
+  if (success) {
+    return <p>File uploaded successfully!</p>;
+  }
 
   return (
     <form onSubmit={handleUpload}>

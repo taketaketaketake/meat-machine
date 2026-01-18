@@ -1,6 +1,6 @@
 // src/components/react/auth/AuthForm.jsx
 import React, { useState } from 'react';
-import { supabase } from '@/lib/supabase/supabase';
+import { api } from '@/lib/api/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -33,26 +33,20 @@ export default function AuthForm({ defaultMode = 'signUp' }) {
     try {
       if (isSignUp) {
         // Sign Up
-        const { data, error: signUpError } = await supabase.auth.signUp({
+        await api.post('/auth/register', {
           email,
           password,
-          options: {
-            data: {
-              username: username,
-            }
-          }
+          username,
         });
-        if (signUpError) throw signUpError;
-        setMessage('Check your email for the confirmation link!');
+        setMessage('Account created successfully! Please check your email to verify.');
       } else {
         // Sign In
-        const { error: signInError } = await supabase.auth.signInWithPassword({
+        await api.post('/auth/login', {
           email,
           password,
         });
-        if (signInError) throw signInError;
         // On successful login, redirect the user
-        window.location.href = '/dashboard';
+        window.location.href = '/creator/dashboard';
       }
     } catch (err) {
       setError(err.message);
@@ -62,16 +56,9 @@ export default function AuthForm({ defaultMode = 'signUp' }) {
   };
 
   const handleGoogleSignIn = async () => {
-    setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-    });
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-    }
-    // The user will be redirected to Google and then back to your site.
-    // The onAuthStateChange listener in Navbar.jsx will handle the session.
+    // Redirect to backend OAuth endpoint
+    const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
+    window.location.href = `${API_URL}/auth/google`;
   };
 
   return (
