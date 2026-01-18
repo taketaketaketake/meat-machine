@@ -12,10 +12,8 @@ export default function NewsletterSignUp({
   const handleSubmit = (event) => {
     event.preventDefault();
     setStatus('loading');
-    console.log('Subscribing with email:', email);
 
-    // Placeholder for your actual subscription logic (e.g., API call)
-    // In a real app, you would replace this with a fetch request to your backend.
+    // TODO: Replace with actual API call to subscription endpoint
     setTimeout(() => {
       if (email.includes('@')) {
         setStatus('success');

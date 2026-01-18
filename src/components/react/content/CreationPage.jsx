@@ -38,13 +38,9 @@ export default function CreationPage({ mode = 'create', creationId = null }) {
     setError('');
 
     const action = e.nativeEvent.submitter.value;
-    console.log(`Submitting for action: ${action}`);
-    console.log('Form Data:', formData);
-    console.log('File:', file);
 
-    // Placeholder for actual submission logic
+    // TODO: Implement actual submission logic
     setTimeout(() => {
-        alert(`Form submitted for action: "${action}"! Check the console for data.`);
         setIsLoading(false);
     }, 1500);
   };

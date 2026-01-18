@@ -13,11 +13,9 @@ if (!searchQuery) {
     return Astro.redirect('/');
 }
 
-// 3. FIX: Simulate a real API call. This would be replaced with your actual backend logic.
+// TODO: Replace with actual API call to search endpoint
 async function getSearchResults(query: string) {
-    // In a real application, you would use the `query` parameter to filter your database.
-    // For this design mock, we'll return hardcoded data.
-    console.log(`Simulating search for: ${query}`);
+    // Mock data - replace with actual backend call
     return {
         creators: [
             { id: 2, handle: '@detroitdabs', name: 'Detroit Dabs', avatarEmoji: '🌿', bio: "Exploring the world of cannabis with a focus on education, strain reviews, and responsible consumption." },
