@@ -1,14 +1,10 @@
 import React, { useState, useMemo } from 'react';
+import { isNew as checkIsNew } from '@/utils/date';
+import { getGradient } from '@/utils/format';
 
-// --- Child Component: ContentCard (Unchanged) ---
+// --- Child Component: ContentCard ---
 const ContentCard = ({ video, gradient }) => {
-  const isNew = useMemo(() => {
-    const today = new Date('2025-06-28T18:30:00');
-    const videoDate = new Date(video.date);
-    const diffTime = today.getTime() - videoDate.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays <= 10 && diffDays >= 0;
-  }, [video.date]);
+  const isNewVideo = useMemo(() => checkIsNew(video.date), [video.date]);
 
   return (
     <a href="#" className="video-card group" data-category={video.category}>
@@ -22,7 +18,7 @@ const ContentCard = ({ video, gradient }) => {
           </div>
         </div>
         <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-md">{video.duration}</div>
-        {isNew && <div className="absolute top-2 left-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold px-2 py-1 rounded-md animate-pulse">NEW</div>}
+        {isNewVideo && <div className="absolute top-2 left-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold px-2 py-1 rounded-md animate-pulse">NEW</div>}
       </div>
       <div className="pt-3">
         <p className="font-semibold text-white line-clamp-2">{video.title}</p>
@@ -76,7 +72,7 @@ export default function FilteredContent({ categories = [], videos = [], gradient
             <ContentCard
               key={video.id}
               video={video}
-              gradient={gradients[i % gradients.length]}
+              gradient={getGradient(i, gradients)}
             />
           ))}
         </div>

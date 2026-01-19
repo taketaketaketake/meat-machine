@@ -28,10 +28,15 @@ export default function AudioPageLayout({ data }) {
   
   const [filteredTracks, setFilteredTracks] = useState(tracks);
 
+  // TODO: Implement actual filtering logic when AudioFilters component is complete
+  const handleFilterChange = () => {
+    setFilteredTracks(tracks);
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 py-12">
       <AudioHero track={featuredTrack} />
-      <AudioFilters onFilterChange={(filters) => setFilteredTracks(tracks)} />
+      <AudioFilters onFilterChange={handleFilterChange} />
       <TrackList tracks={filteredTracks} />
       
       {/* Restore all the previous sections */}

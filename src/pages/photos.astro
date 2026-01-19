@@ -9,8 +9,7 @@ import ToolGrid from '@/components/react/content/ToolGrid';
 import CommunitySpotlight from '@/components/react/content/CommunitySpotlight';
 import CreatorList from '@/components/react/content/CreatorList';
 import TopVotedMasonry from '@/components/react/content/TopVotedMasonry';
-import SectionTitle from '@/components/astro/SectionTitle';
-
+import { PHOTO_CATEGORIES, AI_TOOLS_SIMPLE } from '@/data/constants';
 import '@/styles/global.css';
 
 // --- Page & SEO Data ---
@@ -31,14 +30,7 @@ const creators = [
   { name: 'Abstract_Lens', avatarEmoji: '🌀', photos: 98, specialty: 'Abstract' },
 ];
 
-const categories = [
-  { title: 'Landscapes', gradient: 'from-blue-600/30 to-teal-600/30', icon: '🏞️' },
-  { title: 'Portraits', gradient: 'from-purple-600/30 to-pink-600/30', icon: '👤' },
-  { title: 'Cityscapes', gradient: 'from-orange-600/30 to-red-600/30', icon: '🌇' },
-  { title: 'Abstract', gradient: 'from-yellow-600/30 to-lime-600/30', icon: '🎨' },
-  { title: 'Wildlife', gradient: 'from-green-600/30 to-emerald-600/30', icon: '🐅' },
-  { title: 'Street', gradient: 'from-slate-600/30 to-gray-600/30', icon: '🚶' },
-];
+const categories = PHOTO_CATEGORIES;
 
 const latestPhotos = [
   { id: 1, title: 'Neon Nights in Neo-Tokyo', user: '@Urban_Utopia', emoji: '🌃' },
@@ -63,12 +55,7 @@ const trendingTags = [
   '#solarpunk', 'watercolor', '3D render', '#abstract', 'minimalist'
 ];
 
-const aiTools = [
-  { name: 'Midjourney', icon: '🎨', gradient: 'from-indigo-500/30 to-purple-500/30' },
-  { name: 'DALL-E 3', icon: '✨', gradient: 'from-sky-500/30 to-blue-500/30' },
-  { name: 'Stable Diffusion', icon: '🌀', gradient: 'from-rose-500/30 to-red-500/30' },
-  { name: 'Firefly', icon: '🔥', gradient: 'from-amber-500/30 to-orange-500/30' }
-];
+const aiTools = AI_TOOLS_SIMPLE;
 
 const communitySpotlight = {
   name: 'Pixel_Prophet',
@@ -101,26 +88,3 @@ const communitySpotlight = {
     <TopVotedMasonry client:visible title="Top Voted This Week" data={topVotedPhotos} />
   </div>
 </Layout>
-
-<style>
-
-.tag-chip {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: rgba(31, 41, 55, 0.5);
-  border: 1px solid #4b5563;
-  border-radius: 9999px;
-  color: #d1d5db;
-  font-weight: 500;
-  transition: all 0.2s;
-  text-decoration: none;
-}
-
-.tag-chip:hover {
-  background-color: #ec4899;
-  color: white;
-  border-color: #ec4899;
-  transform: translateY(-2px);
-}
-
-</style>
