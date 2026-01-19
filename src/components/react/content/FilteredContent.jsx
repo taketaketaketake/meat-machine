@@ -45,8 +45,8 @@ export default function FilteredContent({ categories = [], videos = [], gradient
   return (
     // The root element is now a <section> for better semantics
     <section>
-      {/* FilterBar Section: This can now correctly bleed to full-width */}
-      <div className="bg-gray-900/70 backdrop-blur-md border-y border-gray-800 sticky top-16 z-20">
+      {/* FilterBar Section: sticky to top of scroll container, negative margin to counter main padding */}
+      <div className="bg-gray-900/70 backdrop-blur-md border-y border-gray-800 sticky top-0 z-20 -mx-4 sm:-mx-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex overflow-x-auto scrollbar-hide">
             {categories.map((category) => (
