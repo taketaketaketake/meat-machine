@@ -10,31 +10,28 @@ export interface ListCommentsParams {
 }
 
 export interface AddCommentRequest {
+  creationId: string
   body: string
   parentId?: string
 }
 
 export const commentsApi = {
-  // GET /api/comments/creations/:id/comments
+  // GET /api/comments?creationId=:id
   async list(
     creationId: string,
     params: ListCommentsParams = {}
   ): Promise<PaginatedResponse<Comment>> {
     const searchParams = new URLSearchParams()
+    searchParams.set('creationId', creationId)
     if (params.page) searchParams.set('page', String(params.page))
     if (params.limit) searchParams.set('limit', String(params.limit))
 
-    const query = searchParams.toString()
-    const path = `/api/comments/creations/${encodeURIComponent(creationId)}/comments${query ? `?${query}` : ''}`
-    return api.get<PaginatedResponse<Comment>>(path)
+    return api.get<PaginatedResponse<Comment>>(`/api/comments?${searchParams.toString()}`)
   },
 
-  // POST /api/comments/creations/:id/comments
-  async add(creationId: string, data: AddCommentRequest): Promise<Comment> {
-    return api.post<Comment>(
-      `/api/comments/creations/${encodeURIComponent(creationId)}/comments`,
-      data
-    )
+  // POST /api/comments
+  async add(data: AddCommentRequest): Promise<Comment> {
+    return api.post<Comment>('/api/comments', data)
   },
 
   // DELETE /api/comments/:commentId
